@@ -1,0 +1,35 @@
+// owner id 690b07682769c649b2a65e22
+POST http://localhost:3001/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "password": "admin4",
+  "email": "admin4@gmail.com"
+}
+
+###
+
+POST http://localhost:3001/api/auth/signUp HTTP/1.1
+content-type: application/json
+
+
+{
+  "fullName": "admin4",
+  "password": "admin4",
+  "email": "admin4@gmail.com",
+  "requestedRole": "admin",
+  "adminCode": "0001"
+}
+
+###
+
+POST http://localhost:3001/api/teams HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDg0MzE5MywiZXhwIjoxNzY0OTI5NTkzfQ.0MrjhN4Ut4dHyL75YszavA7--vZKMuZsXLa607lyqJY
+
+{
+  "name": "admin4",
+  "admin": "692fd400fc9b7ac541cd1e32"
+}
+
+###
