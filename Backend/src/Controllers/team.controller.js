@@ -39,17 +39,18 @@ const getAllTeams = async (req, res) => {
 
     return res.json(allTeams);
   } catch (error) {
+    console.error("TEAM ERROR:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
 const getSingleTeam = async (req, res) => {
   try {
-    const teamId = req.params.id;
+    const teamId = req.params.teamId;
 
     const team = await Team.findById(teamId)
       .populate("admin", "name email")
-      .populate("members", "name email")
+      .populate("members", "fullName email")
       .populate("tasks");
 
     if (!team) {

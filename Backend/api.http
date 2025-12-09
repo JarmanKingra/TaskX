@@ -9,6 +9,16 @@ content-type: application/json
 
 ###
 
+POST http://localhost:3001/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "password": "demo1",
+  "email": "demo1@gmail.com"
+}
+
+###
+
 POST http://localhost:3001/api/auth/signUp HTTP/1.1
 content-type: application/json
 
@@ -32,4 +42,91 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZ
   "admin": "692fd400fc9b7ac541cd1e32"
 }
 
+### 
+
+GET http://localhost:3001/api/teams HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+
 ###
+
+GET http://localhost:3001/api/teams/69315fdcca40c1824a7a8a7e HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+
+###
+
+POST http://localhost:3001/api/teams/69315fdcca40c1824a7a8a7e/members/692fcfd2d4b1d470e8cc4631 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+
+### 
+
+DELETE  http://localhost:3001/api/teams/69315fdcca40c1824a7a8a7e/members/692fcde94be44f28d8894642 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+
+###
+
+POST   http://localhost:3001/api/tasks HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3MzMyOCwiZXhwIjoxNzY1MjU5NzI4fQ.Tc7r2Wy4MFQY-wT2fSk-2YJusC4sLSevFvYK1W2BCKs
+
+{
+  "title": "testinging Title",
+  "team": "69315fdcca40c1824a7a8a7e",
+  "description": "testinging Title",
+  "assignedTo": "692fcc78bd3bcff4fbee7d3c"
+}
+
+###
+PATCH    http://localhost:3001/api/tasks/6936698ec82249f989f473c9 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3MzMyOCwiZXhwIjoxNzY1MjU5NzI4fQ.Tc7r2Wy4MFQY-wT2fSk-2YJusC4sLSevFvYK1W2BCKs
+
+{
+  "title": "testinging Title edited",
+  "team": "69315fdcca40c1824a7a8a7e",
+  "description": "testinging Title edited",
+  "assignedTo": "692fcc78bd3bcff4fbee7d3c"
+}
+
+###
+
+GET    http://localhost:3001/api/tasks/69315fdcca40c1824a7a8a7e HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3MzMyOCwiZXhwIjoxNzY1MjU5NzI4fQ.Tc7r2Wy4MFQY-wT2fSk-2YJusC4sLSevFvYK1W2BCKs
+
+###
+PATCH      http://localhost:3001/api/tasks/6936698ec82249f989f473c9/status HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZjYzc4YmQzYmNmZjRmYmVlN2QzYyIsImVtYWlsIjoiZGVtbzFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjUxNzQ0MDgsImV4cCI6MTc2NTI2MDgwOH0.qWj12Q4ciVt5HECwyEETv3PT9DGUEGMULOrkynPxptQ
+
+{
+  "status": "completed"
+}
+
+###
+GET      http://localhost:3001/api/tasks/my/tasks HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZjYzc4YmQzYmNmZjRmYmVlN2QzYyIsImVtYWlsIjoiZGVtbzFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjUxNzQ0MDgsImV4cCI6MTc2NTI2MDgwOH0.qWj12Q4ciVt5HECwyEETv3PT9DGUEGMULOrkynPxptQ
+
+###
+GET      http://localhost:3001/api/tasks/user/692fcc78bd3bcff4fbee7d3c/tasks HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3NDgyOSwiZXhwIjoxNzY1MjYxMjI5fQ.K2V1awfEVw6KaIiVWbmi8Y-nGpt3-5-waIlf25ait9k
+
+###
+
+DELETE       http://localhost:3001/api/tasks/6936698ec82249f989f473c9 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3NDgyOSwiZXhwIjoxNzY1MjYxMjI5fQ.K2V1awfEVw6KaIiVWbmi8Y-nGpt3-5-waIlf25ait9k
+
+###
+POST       http://localhost:3001/api/messages/69367ac4ce52d56d57d8a02c HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZjYzc4YmQzYmNmZjRmYmVlN2QzYyIsImVtYWlsIjoiZGVtbzFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjUxNzk0NzEsImV4cCI6MTc2NTI2NTg3MX0.S_9Hnph-P5AcsfQdwMVtJhNatRQh7m-AqBvSqZExjvU
+
+{
+  "message": "added a message"
+}

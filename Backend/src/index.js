@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import userRoutes from "./Routes/user.routes.js"
 import teamRoutes from "./Routes/team.routes.js"
+import taskRoutes from "./Routes/task.routes.js"
+import messageRoutes from "./Routes/message.routes.js";
 
 
 
@@ -19,6 +21,9 @@ app.use(express.json({limit: "40kb"}));
 app.use(express.urlencoded({limit: "40kb", extended: true}))
 app.use("/api/auth",userRoutes); 
 app.use("/api/teams", teamRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/messages", messageRoutes);
+
 
 app.get("/", (req, res) => {
     return res.json({"hello" : "World"})
