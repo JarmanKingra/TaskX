@@ -1,29 +1,115 @@
-.container{
-    padding: 1.2rem;
-    background-color: #CD8987;
+.container {
+  position: fixed;
+  width: 99%;
+  background-color: #000000;
+  z-index: 1000;
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: center;
+  border: 2px solid red;
+  border-radius: 20px;
 }
 
+
 .navBar {
+  width: 100%;
+  max-width: 1200px;
+  height: 64px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  padding: 0 1.8rem;
+
+  background: rgba(20, 20, 30, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+
+  transition: all 0.3s ease;
 }
 
-.navBar h1{
-  font-size: 1rem;
+
+.navBar h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  background: linear-gradient(
+    90deg,
+    #7aa2ff,
+    #9b7cff,
+    #ff7ad9
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  cursor: pointer;
 }
+
 
 .navBarOptionContainer {
   display: flex;
+  align-items: center;
 }
 
+.navBarOptionContainer p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+
+  transition: all 0.25s ease;
+}
+
+.navBarOptionContainer p:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
 .buttonJoin {
-  background: #CD8987;
-  border-radius: 10px;
-  padding-block: 0.6rem;
-  padding-inline: 1.2rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
   color: white;
-  font-size: 0.7rem;
   cursor: pointer;
-  font-weight: bold;
+
+  background: linear-gradient(
+    90deg,
+    #00d4ff,
+    #7a7cff,
+    #ff7ad9
+  );
+
+  box-shadow:
+    0 0 0 rgba(255, 255, 255, 0),
+    0 8px 30px rgba(122, 124, 255, 0.35);
+
+  transition: all 0.3s ease;
+}
+
+.buttonJoin:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.25),
+    0 12px 40px rgba(122, 124, 255, 0.55);
+}
+
+
+.navBarOptionContainer p:last-child:hover {
+  background: rgba(255, 80, 80, 0.12);
+  color: #ff6b6b;
 }

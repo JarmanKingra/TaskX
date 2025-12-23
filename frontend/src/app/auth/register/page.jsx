@@ -21,13 +21,17 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [fullName, setfullName] = useState("");
   const [password, setPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminCode, setAdminCode] = useState("");
 
   async function handleRegister() {
     try {
-      await clientServer.post("/api/auth/signup", {
+      const res = await clientServer.post("/api/auth/signup", {
         email,
         password,
         fullName,
+        adminCode,
+        requestedRole: isAdmin ? "admin" : "user"
       });
 
       const token = res.data.token;
@@ -36,7 +40,7 @@ export default function RegisterPage() {
       loginStore({ token, user });
 
       alert("Registration successful!");
-      router.push("/login");
+      router.replace("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Registration failed");
     }
@@ -68,6 +72,31 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
+          {isAdmin && (
+            <input
+              className={styles.input}
+              type="password"
+              placeholder="Admin Secret Code"
+              value={adminCode}
+              onChange={(e) => setAdminCode(e.target.value)}
+            />
+          )}
+          <label
+            style={{ color: "black", fontSize: "16px", cursor: "pointer" }}
+          >
+            <input
+              type="checkbox"
+              checked={isAdmin}
+              style={{
+                width: "18px",
+                height: "18px",
+                marginRight: "8px",
+                cursor: "pointer",
+              }}
+              onChange={(e) => setIsAdmin(e.target.checked)}
+            />
+            Register as Admin
+          </label>
 
           <button className={styles.button} onClick={handleRegister}>
             Register

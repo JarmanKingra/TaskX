@@ -35,10 +35,10 @@ content-type: application/json
 
 POST http://localhost:3001/api/teams HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDg0MzE5MywiZXhwIjoxNzY0OTI5NTkzfQ.0MrjhN4Ut4dHyL75YszavA7--vZKMuZsXLa607lyqJY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5M2UyOWUxNzc5YWIyZGY1NDQ5ZTdjYyIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTc5MzE1NCwiZXhwIjoxNzY1ODc5NTU0fQ.pc6t0A7CuUCwOyAw5Tlw49-kncsBG4wEP7DBO7b6IZY
 
 {
-  "name": "admin4",
+  "name": "sample team",
   "admin": "692fd400fc9b7ac541cd1e32"
 }
 
@@ -56,9 +56,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZ
 
 ###
 
-POST http://localhost:3001/api/teams/69315fdcca40c1824a7a8a7e/members/692fcfd2d4b1d470e8cc4631 HTTP/1.1
+POST http://localhost:3001/api/teams/6944e49026c8f347c2442b58/members/693e2a19779ab2df5449e7d4 HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5M2UyOWUxNzc5YWIyZGY1NDQ5ZTdjYyIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NjEyNDY3MywiZXhwIjoxNzY2MjExMDczfQ.gCHxDtSGb6SyCzmr4D3Sr_rkPH6ydUkOl1qlElR7Klg
 
 ### 
 
@@ -70,13 +70,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZ
 
 POST   http://localhost:3001/api/tasks HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3MzMyOCwiZXhwIjoxNzY1MjU5NzI4fQ.Tc7r2Wy4MFQY-wT2fSk-2YJusC4sLSevFvYK1W2BCKs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5M2UyOWUxNzc5YWIyZGY1NDQ5ZTdjYyIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NjEyNDY3MywiZXhwIjoxNzY2MjExMDczfQ.gCHxDtSGb6SyCzmr4D3Sr_rkPH6ydUkOl1qlElR7Klg
 
 {
-  "title": "testinging Title",
-  "team": "69315fdcca40c1824a7a8a7e",
+  "title": "assigned t0 admin 6 which user",
+  "team": "6944e49026c8f347c2442b58",
   "description": "testinging Title",
-  "assignedTo": "692fcc78bd3bcff4fbee7d3c"
+  "assignedTo": "693e2a19779ab2df5449e7d4"
 }
 
 ###

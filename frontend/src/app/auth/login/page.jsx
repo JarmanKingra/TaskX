@@ -36,7 +36,7 @@ export default function LoginPage() {
         return;
       }
 
-      loginStore({ token, user });
+      loginStore(token, user);
 
       alert("Login success!");
       router.push("/dashboard");

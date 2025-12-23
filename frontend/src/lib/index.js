@@ -16,3 +16,19 @@ clientServer.interceptors.request.use((config) => {
 
   return config;
 });
+
+clientServer.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      const { logout } = useAuthStore.getState();
+      logout();
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/auth/login";
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);

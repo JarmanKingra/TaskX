@@ -1,0 +1,136 @@
+.page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #111 0%, #000 60%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(18, 18, 18, 0.85);
+  border: 1px solid #262626;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.heading {
+  color: #f5f5f5;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.error {
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  color: #b3b3b3;
+}
+
+.field input,
+.field textarea {
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  color: #eaeaea;
+  font-size: 0.9rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.button {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dateWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dateWrapper input {
+  width: 100%;
+  background: linear-gradient(180deg, #0f0f0f, #121212);
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 0.65rem 2.4rem 0.65rem 0.75rem;
+  color: #eaeaea;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.dateWrapper input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dateWrapper input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.dateIcon {
+  position: absolute;
+  right: 0.75rem;
+  font-size: 1rem;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+
+.dateWrapper:hover input {
+  border-color: #3b82f6;
+}
+

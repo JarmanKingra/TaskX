@@ -1,0 +1,136 @@
+
+.mainContainer {
+  height: 100vh;
+  background: radial-gradient(circle at top, #0b0b0b, #000);
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  gap: 3rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+.greeting {
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: #d1d5db;
+  letter-spacing: 0.3px;
+}
+
+.greeting span {
+  font-weight: 600;
+  background: linear-gradient(
+    90deg,
+    #60a5fa,
+    #38bdf8,
+    #22d3ee
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientMove 6s ease infinite;
+}
+
+/* Very slow, calm motion */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+
+/* ===== MAIN CONTENT ===== */
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+/* Left side (text) */
+.container1 {
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+/* Right side (image) */
+.container2 {
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container2 img {
+  /* max-width: 100%; */
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+}
+
+/* ===== TEXT BLOCKS ===== */
+
+.tagLine p {
+  color: #60a5fa;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+}
+
+.container1 h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.paraLine p {
+  max-width: 550px;
+  color: #9ca3af;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* ===== BUTTON ===== */
+
+.button {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.55);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .container1 {
+    align-items: center;
+  }
+
+  .paraLine p {
+    max-width: 100%;
+  }
+}

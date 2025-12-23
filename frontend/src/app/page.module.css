@@ -1,0 +1,104 @@
+.main {
+  min-height: 100vh;
+  background: radial-gradient(
+      circle at top left,
+      rgba(99, 102, 241, 0.15),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(168, 85, 247, 0.15),
+      transparent 40%
+    ),
+    #0b0d17;
+  color: #ffffff;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLinks a {
+  color: #c7c9d9;
+  cursor: pointer;
+}
+
+.navBtn {
+  background: #6366f1;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 6rem;
+  padding: 0 1rem;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 1.5rem auto;
+  color: #b6b8d6;
+  font-size: 1.1rem;
+}
+
+.cta {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cta input {
+  padding: 0.8rem 1rem;
+  width: 260px;
+  background: #11132a;
+  border: 1px solid #2a2d55;
+  border-radius: 8px;
+  color: white;
+}
+
+.cta button {
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.subText {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #8f92b5;
+}

@@ -16,6 +16,7 @@ const createTeam = async (req, res) => {
     const newTeam = await Team.create({
       name,
       admin: adminId,
+      members: [adminId],
     });
 
     res.status(201).json({

@@ -1,0 +1,184 @@
+.mainContainer {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(
+      circle at top left,
+      #1a1a1a,
+      #0e0e0e 70%
+  );
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.tasksWrapper {
+  margin-top: 1.5rem;
+
+  /* 👇 IMPORTANT */
+  max-height: calc(100vh - 220px); 
+  overflow-y: auto;
+
+  padding-right: 6px; /* space for scrollbar */
+}
+
+/* Smooth scrolling */
+.tasksWrapper {
+  scroll-behavior: smooth;
+}
+
+/* Premium scrollbar (optional but recommended) */
+.tasksWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tasksWrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tasksWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.tasksWrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
+
+.container {
+  width: 100%;
+  height: 100vh;
+  max-width: 1100px;
+  background: rgba(18, 18, 18, 0.85);
+  border-radius: 18px;
+  padding: 2.5rem;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+
+.MyTasksheading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.8rem;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.myTasks h3,
+.noOfTasks h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #eaeaea;
+  letter-spacing: 0.3px;
+}
+
+.noOfTasks h3 {
+  color: #9ca3af;
+}
+
+
+.MyTasksDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 0.7rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.25s ease;
+}
+
+.MyTasksDetails:hover {
+  background: rgba(255, 255, 255, 0.045);
+  transform: translateY(-1px);
+}
+
+
+.myTasks {
+  flex: 1.5;
+}
+
+.myTasks h3 {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #d1d5db;
+}
+
+
+.myTasksOptions {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.eachTasksOptions {
+  min-width: 130px;
+  text-align: center;
+  font-size: 1rem;
+  color: #777c86;
+}
+
+.eachTasksOption {
+  min-width: 130px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #777c86;
+}
+
+
+.eachTasksOptions:nth-child(2) {
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+
+.taskDetailBtn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    #1f2933,
+    #111827
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f9fafb;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.taskDetailBtn:hover {
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.taskDetailBtn:active {
+  transform: scale(0.97);
+}
+
+
+.eachTasksOptions:last-child {
+  cursor: pointer;
+  color: #60a5fa;
+  font-weight: 500;
+}
+
+.eachTasksOptions:last-child:hover {
+  text-decoration: underline;
+}

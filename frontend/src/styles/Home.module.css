@@ -10,6 +10,7 @@
   --button-secondary-border: #ebebeb;
 
   display: flex;
+  overflow: hidden;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
@@ -26,6 +27,8 @@
   align-items: flex-start;
   justify-content: space-between;
   background-color: var(--foreground);
+  border: 2px solid greenyellow;
+  
   padding: 120px 60px;
 }
 
@@ -138,4 +141,9 @@ a.secondary {
     --button-secondary-hover: #1a1a1a;
     --button-secondary-border: #1a1a1a;
   }
+}
+
+.protectedRoutes{
+  padding-top: 100px;
+  height: 100vh;
 }

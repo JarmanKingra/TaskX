@@ -1,6 +1,4 @@
 "use client";
-
-import { useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import styles from "./navbar.module.css";
@@ -9,14 +7,8 @@ export default function NavBarComponent() {
   const router = useRouter();
   const token = useAuthStore((s) => s.token);
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
-  const currUser = useAuthStore((s) => s.user);
+  const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
-
-  useEffect(() => {
-    if (isLoggedIn && token) {
-      router.replace("/dashboard");
-    }
-  }, [isLoggedIn, token]);
 
   return (
     <div className={styles.container}>
@@ -33,13 +25,27 @@ export default function NavBarComponent() {
           {isLoggedIn && token ? (
             <div>
               <div style={{ display: "flex", gap: "1.2rem" }}>
-                <p>Hey, {currUser.name}</p>
                 <p
-                  onClick={() => router.replace("/profile")}
+                  onClick={() => router.replace("/dashboard")}
                   style={{ fontWeight: "bold", cursor: "pointer" }}
                 >
-                  Profile
+                  Home
                 </p>
+                {user.role == "admin" ? (
+                  <p
+                    onClick={() => router.replace("/teams/myTeams")}
+                    style={{ fontWeight: "bold", cursor: "pointer" }}
+                  >
+                    My Teams
+                  </p>
+                ) : (
+                  <p
+                    onClick={() => router.replace("/tasks/myTasks")}
+                    style={{ fontWeight: "bold", cursor: "pointer" }}
+                  >
+                    My Tasks
+                  </p>
+                )}
                 <p
                   onClick={() => {
                     logout();
@@ -47,11 +53,11 @@ export default function NavBarComponent() {
                   }}
                   style={{ fontWeight: "bold", cursor: "pointer" }}
                 >
-                  LogOut
+                  Logout
                 </p>
               </div>
             </div>
-          ): (
+          ) : (
             <div
               onClick={() => {
                 router.replace("/auth/login");

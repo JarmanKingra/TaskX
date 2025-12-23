@@ -5,20 +5,20 @@ import { persist } from "zustand/middleware";
 export const useAuthStore = create(
   persist(
     (set) => ({
-      token: "",
+      token: null,
       user: null,
       isLoggedIn: false,
 
-      login: (data) =>
+      login: (token, user) =>
         set({
-          token: data.token,
-          user: data.user,
+          token,
+          user,
           isLoggedIn: true,
         }),
 
       logout: () =>
         set({
-          token: "",
+          token: null,
           user: null,
           isLoggedIn: false,
         }),
