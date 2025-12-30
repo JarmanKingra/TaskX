@@ -66,4 +66,59 @@ export const useTeamStore = create((set) => ({
       });
     }
   },
+
+  removeMember: async(teamId, memberId) => {
+    try {
+
+      set({ loading: true, error: null });
+      const res = await clientServer.delete(`/api/teams/${teamId}/members/${memberId}`);
+
+      set((state) => ({
+      currTeam: {
+        ...state.currTeam,
+        members: state.currTeam.members.filter(
+          (member) => member._id !== memberId
+        ),
+      },
+      loading: false,
+    }));
+      
+    } catch (err) {
+      set({
+        error: err.response?.data?.message || "Failed to Remove member",
+        loading: false,
+      });
+    }
+  },
+
+  addMember: async (teamId, email) => {
+  try {
+    set({ loading: true, error: null });
+
+    const res = await clientServer.post(
+      `/api/teams/${teamId}/members`,
+      { email }
+    );
+
+    set((state) => ({
+      currTeam: {
+        ...state.currTeam,
+        members: [...state.currTeam.members, res.data.member],
+      },
+      loading: false,
+    }));
+
+    return { success: true };
+
+  } catch (err) {
+    set({
+      error: err.response?.data?.message || "Failed to add member",
+      loading: false,
+    });
+
+    return { success: false };
+  }
+},
+
+
 }));

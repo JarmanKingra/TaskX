@@ -1,13 +1,11 @@
 .container {
   position: fixed;
   width: 99%;
-  background-color: #000000;
+  background-color: #100f0f;
   z-index: 1000;
   padding: 1.2rem 2rem;
   display: flex;
   justify-content: center;
-  border: 2px solid red;
-  border-radius: 20px;
 }
 
 
@@ -76,6 +74,17 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.navOptions{
+    display: flex;
+    gap: 1.2rem;
+  }
+
 
 .buttonJoin {
   padding: 0.55rem 1.4rem;
@@ -112,4 +121,40 @@
 .navBarOptionContainer p:last-child:hover {
   background: rgba(255, 80, 80, 0.12);
   color: #ff6b6b;
+}
+
+
+@media (max-width: 530px) {
+  .hamburger {
+    display: block;
+  }
+
+  .navBarOptionContainer {
+    position: absolute;
+    top: 64px;
+    right: 20px;
+    background-color: rgb(134, 59, 59);
+    flex-direction: column;
+    gap: 1rem;
+    /* padding: 1rem 1.5rem; */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+    display: none;
+  }
+
+  .navBarOptionContainer.open {
+    display: flex;
+  }
+
+  .navOptions{
+    flex-direction: column;
+    padding: 0;
+    width: 60px;
+  }
+
+  .navOptions p {
+    font-size: 10px;
+  }
+  
 }

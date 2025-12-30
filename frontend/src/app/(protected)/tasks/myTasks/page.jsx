@@ -29,24 +29,23 @@ function MyTasksContent() {
       <div className={styles.mainContainer}>
         <div className={styles.container}>
           <div className={styles.MyTasksheading}>
-            <div className={styles.myTasks}>
+            <div className={styles.MyTasks}>
               <h3>My Tasks</h3>
             </div>
             <div className={styles.noOfTasks}>
-              <h3>No of Tasks {tasks.length}</h3>
+              <h4>No of Tasks {tasks.length}</h4>
             </div>
           </div>
 
           <div className={styles.MyTasksDetails}>
             <div className={styles.myTaskName}>
-              <h3>Subject</h3>
+              <h4>Subject</h4>
             </div>
 
             <div className={styles.myTasksOptions}>
               <div className={styles.eachTasksOptions}></div>
 
               <div className={styles.eachTasksOptions}>Task Status</div>
-              {/* <div className={styles.eachTasksOptions}>Change Status</div> */}
             </div>
           </div>
 
@@ -58,7 +57,7 @@ function MyTasksContent() {
                 </div>
 
                 <div className={styles.myTasksOptions}>
-                  <div className={styles.eachTasksOption}>
+                  <div className={`${styles.eachTasksOption}`}>
                     <button
                       onClick={() => {
                         router.push(`/tasks/myTasksDetails/${task._id}`);
@@ -69,7 +68,7 @@ function MyTasksContent() {
                     </button>
                   </div>
 
-                  <div className={styles.eachTasksOption}>{task.status}</div>
+                  <div className={styles.eachTasksOptionStatus}>{task.status}</div>
 
                   {/* <div className={styles.eachTasksOptions}>Update Status</div> */}
                 </div>

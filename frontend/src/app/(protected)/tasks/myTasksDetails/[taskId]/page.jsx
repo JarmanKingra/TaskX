@@ -31,7 +31,7 @@ export default function TaskDetailsPage() {
       <h2 className={styles.taskTitle}>{currentTask.title}</h2>
 
       <p className={styles.taskText}>
-        <span>Description:</span> {currentTask.description}
+        <span>Description -</span> {currentTask.description}
       </p>
 
       <p className={styles.taskText}>

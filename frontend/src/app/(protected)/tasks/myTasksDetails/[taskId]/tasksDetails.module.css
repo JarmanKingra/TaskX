@@ -7,7 +7,6 @@
   padding: 3rem 1.5rem;
 }
 
-
 .taskCard {
   width: 100%;
   max-width: 800px;
@@ -19,14 +18,12 @@
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
 }
 
-
 .taskTitle {
   font-size: 1.8rem;
   font-weight: 500;
   color: #f9fafb;
   margin-bottom: 1.8rem;
 }
-
 
 .taskText {
   font-size: 0.95rem;
@@ -41,7 +38,6 @@
   margin-right: 6px;
 }
 
-
 .status {
   margin-left: 6px;
   padding: 0.2rem 0.7rem;
@@ -52,6 +48,11 @@
   text-transform: capitalize;
 }
 
+.taskText span {
+  background-color: #292f41;
+  border-radius: 1rem;
+  padding: 4px 6px;
+}
 
 .updateBtn {
   margin: 1.8rem 0;
@@ -72,7 +73,6 @@
   box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
 }
 
-
 .metaInfo {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 1.5rem;
@@ -90,7 +90,6 @@
   font-weight: 500;
 }
 
-
 .overlay {
   position: fixed;
   inset: 0;
@@ -101,7 +100,6 @@
   justify-content: center;
   z-index: 1000;
 }
-
 
 .modal {
   width: 100%;
@@ -119,7 +117,6 @@
   font-weight: 500;
   margin-bottom: 1.6rem;
 }
-
 
 .modalBtn {
   width: 100%;
@@ -139,7 +136,6 @@
   color: #bfdbfe;
 }
 
-
 .completed:hover {
   background: rgba(34, 197, 94, 0.2);
   color: #86efac;
@@ -150,4 +146,38 @@
   color: yellow;
 }
 
+@media (max-width: 450px) {
+  .taskTitle {
+    font-size: 1rem;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    font-weight: 400;
+  }
 
+  .taskText {
+  font-size: 0.75rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.taskText span {
+  background-color: #292f41;
+  border-radius: 1rem;
+  padding: 2px 3px;
+}
+
+.updateBtn {
+  margin: 1.8rem 0;
+  padding: 0.45rem .3rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1f2933, #111827);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f9fafb;
+  font-size: 0.6rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+}

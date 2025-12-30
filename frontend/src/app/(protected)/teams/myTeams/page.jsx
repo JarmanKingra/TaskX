@@ -5,7 +5,6 @@ import { useTeamStore } from "@/store/teamStore";
 import styles from "./style.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import NavBarComponent from "@/components/layouts/navbar";
 
 export default function MyTeams() {
   return <MyTeamsContent />;
@@ -31,8 +30,7 @@ function MyTeamsContent() {
         <div className={styles.container}>
           <div className={styles.mainHeading}>
             <div className={styles.mainHeadingOptions}>
-              <h3>No. of My Teams -- {teams.length}</h3>
-              <h3>Total number of Members --</h3>
+              <h3>Teams - {teams.length}</h3>
             </div>
             <div className={styles.mainHeadingOptions}>
               <button
@@ -41,7 +39,7 @@ function MyTeamsContent() {
                   router.push(`/teams/createTeam`);
                 }}
               >
-                Create a Team
+                Create Team
               </button>
             </div>
           </div>

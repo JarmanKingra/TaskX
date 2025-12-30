@@ -1,4 +1,3 @@
-
 .mainContainer {
   height: 100vh;
   background: radial-gradient(circle at top, #0b0b0b, #000);
@@ -19,12 +18,7 @@
 
 .greeting span {
   font-weight: 600;
-  background: linear-gradient(
-    90deg,
-    #60a5fa,
-    #38bdf8,
-    #22d3ee
-  );
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #22d3ee);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -32,7 +26,11 @@
   animation: gradientMove 6s ease infinite;
 }
 
-/* Very slow, calm motion */
+.mainHeading h2 {
+  font-size: 3rem;
+}
+
+
 @keyframes gradientMove {
   0% {
     background-position: 0% center;
@@ -43,14 +41,12 @@
 }
 
 
-/* ===== MAIN CONTENT ===== */
-
 .container {
   display: flex;
   align-items: center;
 }
 
-/* Left side (text) */
+
 .container1 {
   flex: 5;
   display: flex;
@@ -58,7 +54,7 @@
   gap: 1.6rem;
 }
 
-/* Right side (image) */
+
 .container2 {
   flex: 3;
   display: flex;
@@ -67,11 +63,10 @@
 }
 
 .container2 img {
-  /* max-width: 100%; */
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+  height: 350px;
 }
 
-/* ===== TEXT BLOCKS ===== */
 
 .tagLine p {
   color: #60a5fa;
@@ -93,7 +88,6 @@
   font-size: 1rem;
 }
 
-/* ===== BUTTON ===== */
 
 .button {
   margin-top: 1rem;
@@ -118,8 +112,6 @@
   transform: translateY(0);
 }
 
-/* ===== RESPONSIVE ===== */
-
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
@@ -132,5 +124,27 @@
 
   .paraLine p {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 530px) {
+  .paraLine {
+    display: none;
+  }
+
+  .mainHeading h2 {
+    font-size: 2.5rem;
+  }
+
+  .tagLine p {
+    font-size: 0.8rem;
+  }
+
+  .button{
+    padding: 0.3rem 0.5rem;
+  }
+
+  .container2 img {
+    height: 150px;
   }
 }

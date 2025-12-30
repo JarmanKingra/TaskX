@@ -18,9 +18,29 @@
 .mainHeading {
   border: 1px solid rgb(124, 0, 0);
   border-radius: 2rem;
-  width: fit-content;
-  padding: 1rem;
+  width: 80%;
+  padding: 0.5rem;
 }
+
+.mainHeadingOptions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.mainHeadingOptions button {
+  width: 6rem;
+  height: 35px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #ffffff;
+  color: black;
+}
+
 
 .membersContainer {
   border: 1px solid white;
@@ -31,15 +51,20 @@
   justify-content: space-between;
 }
 
+.membersContainer h3 {
+  text-transform: capitalize;
+}
+
 .memberOptions {
   width: 40%;
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 
 .memberOptions button {
-  width: 6rem;
-  height: 35px;
+  width: 4rem;
+  height: 30px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
@@ -47,3 +72,118 @@
   background-color: #ffffff;
   color: black;
 }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background: #111827;
+  border-radius: 18px;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85);
+}
+
+.modal h3 {
+  color: #f9fafb;
+  font-weight: 500;
+  margin-bottom: 1.6rem;
+}
+
+
+.modalBtn {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 0.8rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.modalBtn:hover {
+  background: rgba(0, 0, 0, 0.2);
+  color: #bfdbfe;
+}
+
+
+.addMember:hover {
+  background: rgba(124, 124, 124, 0.5);
+  color: #ffffff;
+}
+
+.modal input {
+  padding: 7px 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #aaaaaa;
+  outline: none;
+  transition: border 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+
+@media (max-width: 550px){
+  .mainHeadingOptions{
+    padding-left: .5rem;
+    padding-right: .5rem;
+  }
+
+  .mainHeadingOptions h3{ 
+    font-size: small;
+  }
+
+  .mainHeadingOptions button {
+    width: 59px;
+    border-radius: 20px;
+    font-size: .7rem;
+  }
+}
+
+@media (max-width: 600px){
+  .membersContainer{
+    width: 80%;
+    justify-content: space-evenly;
+    padding: 5px;
+  }
+
+  .membersContainer h3 {
+    font-size: medium;
+    letter-spacing: 1px;
+  }
+
+  .memberOptions{
+    width: 60%;
+    justify-content: space-evenly;
+  }
+
+  .memberOptions button {
+    height: 17px;
+    width: 45px;
+    font-size: smaller;
+  }
+
+  .memberOptions button p{
+    font-size: 10px;
+  }
+}
+
+
+
+
+

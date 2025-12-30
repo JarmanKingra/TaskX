@@ -36,8 +36,8 @@ function DashboardContent() {
               <p>Manage Tasks Effortlessly with TaskX</p>
             </div>
 
-            <div>
-              <h2 style={{ fontSize: "3rem" }}>
+            <div className={styles.mainHeading}>
+              <h2>
                 Simplify Your Workflow with TaskX
               </h2>
             </div>
@@ -60,7 +60,7 @@ function DashboardContent() {
           </div>
 
           <div className={styles.container2}>
-            <img style={{ height: "350px" }} src="image.png" alt="" />
+            <img src="image.png" alt="" />
           </div>
         </div>
       </div>

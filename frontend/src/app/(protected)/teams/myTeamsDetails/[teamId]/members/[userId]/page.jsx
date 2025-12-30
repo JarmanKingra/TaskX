@@ -37,7 +37,7 @@ export default function MemberTasksPage() {
       {memberInfo && (
         <div className={styles.headings}>
           <div>
-            <h2>Member name - {memberInfo.fullName}</h2>
+            <h2>{memberInfo.fullName}</h2>
             <p>{memberInfo.email}</p>
           </div>
           <div>

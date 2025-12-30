@@ -1,15 +1,32 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTeamStore } from "@/store/teamStore";
+import { Eye } from "lucide-react";
 import styles from "./style.module.css";
 
 export default function TaskDetailsPage() {
   const { teamId } = useParams();
   const router = useRouter();
+  const [openTeamId, setOpenTeamId] = useState(null);
+  const [email, setEmail] = useState("");
 
-  const { fetchTeamById, currTeam, loading, error } = useTeamStore();
+  const { fetchTeamById, currTeam, loading, error, removeMember, addMember } =
+    useTeamStore();
+
+  const handleRemoveMember = async (teamId, memberId) => {
+    try {
+      await removeMember(teamId, memberId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const addNewMember = async () => {
+    await addMember(openTeamId, email);
+    setOpenTeamId(null);
+  };
 
   useEffect(() => {
     if (teamId) fetchTeamById(teamId);
@@ -28,15 +45,23 @@ export default function TaskDetailsPage() {
     <div className={styles.mainContainer}>
       <div className={styles.container}>
         <div className={styles.mainHeading}>
-          <h3>OUR heading will be here || any other stuff</h3>
+          <div className={styles.mainHeadingOptions}>
+            <h3>Team Members </h3>
+            <button onClick={() => setOpenTeamId(currTeam._id)}>
+              Add Member
+            </button>
+          </div>
         </div>
 
         {currTeam.members.map((member) => (
           <div key={member._id} className={styles.membersContainer}>
-            <h3>Name - {member.fullName}</h3>
+            <h3>{member.fullName}</h3>
 
             <div className={styles.memberOptions}>
-              <button>Remove</button>
+              <button onClick={() => handleRemoveMember(teamId, member._id)}>
+                <p>Remove</p>
+              </button>
+              
               <button
                 onClick={() =>
                   router.push(
@@ -44,12 +69,30 @@ export default function TaskDetailsPage() {
                   )
                 }
               >
-                view
+                <p>view</p>
               </button>
             </div>
           </div>
         ))}
       </div>
+      {openTeamId && (
+        <div className={styles.overlay} onClick={() => setOpenTeamId(null)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h3>Enter the Email of Member</h3>
+            <input
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button
+              className={`${styles.modalBtn} ${styles.addMember}`}
+              onClick={addNewMember}
+            >
+              Add Member
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

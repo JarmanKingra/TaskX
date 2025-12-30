@@ -9,6 +9,6 @@ router.post('/', auth, isAdmin, createTeam);
 router.get('/:teamId', auth, isAdmin, getSingleTeam);
 router.get('/', auth, isAdmin, getAllTeams);
 router.delete('/:teamId/members/:memberId', auth, isAdmin, removeMember);
-router.post('/:teamId/members/:memberId', auth, isAdmin, addMember);
+router.post('/:teamId/members', auth, isAdmin, addMember);
 
 export default router;

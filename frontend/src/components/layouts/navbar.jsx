@@ -2,9 +2,11 @@
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import styles from "./navbar.module.css";
+import { useState } from "react";
 
 export default function NavBarComponent() {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   const token = useAuthStore((s) => s.token);
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
   const user = useAuthStore((s) => s.user);
@@ -21,10 +23,17 @@ export default function NavBarComponent() {
         >
           TaskX
         </h1>
-        <div className={styles.navBarOptionContainer}>
+        <div className={styles.hamburger} onClick={() => setOpen((p) => !p)}>
+          ☰
+        </div>
+        <div
+          className={`${styles.navBarOptionContainer} ${
+            open ? styles.open : ""
+          }`}
+        >
           {isLoggedIn && token ? (
-            <div>
-              <div style={{ display: "flex", gap: "1.2rem" }}>
+            
+              <div className={styles.navOptions}>
                 <p
                   onClick={() => router.replace("/dashboard")}
                   style={{ fontWeight: "bold", cursor: "pointer" }}
@@ -56,7 +65,7 @@ export default function NavBarComponent() {
                   Logout
                 </p>
               </div>
-            </div>
+            
           ) : (
             <div
               onClick={() => {
