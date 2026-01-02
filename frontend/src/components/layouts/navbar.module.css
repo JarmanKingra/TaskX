@@ -127,6 +127,7 @@
 @media (max-width: 530px) {
   .hamburger {
     display: block;
+    color: white;
   }
 
   .navBarOptionContainer {

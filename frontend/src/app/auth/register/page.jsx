@@ -5,12 +5,14 @@ import { clientServer } from "@/lib/index";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import styles from "../login/login.module.css";
+import { useNotificationStore } from "@/store/notificationStore";
 
 export default function RegisterPage() {
   const router = useRouter();
   const token = useAuthStore((s) => s.token);
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
   const loginStore = useAuthStore((s) => s.login);
+  const notify = useNotificationStore((s) => s.show);
 
   useEffect(() => {
     if (token && isLoggedIn) {
@@ -25,24 +27,28 @@ export default function RegisterPage() {
   const [adminCode, setAdminCode] = useState("");
 
   async function handleRegister() {
+    if (!email || !password || !fullName) {
+      notify("All fields are required", "error");
+      return;
+    }
     try {
       const res = await clientServer.post("/api/auth/signup", {
         email,
         password,
         fullName,
         adminCode,
-        requestedRole: isAdmin ? "admin" : "user"
+        requestedRole: isAdmin ? "admin" : "user",
       });
 
       const token = res.data.token;
       const user = res.data.user;
 
-      loginStore({ token, user });
+      loginStore(token, user);
 
-      alert("Registration successful!");
-      router.replace("/dashboard");
+      notify("Registration successful", "success");
+      router.replace("/auth/login");
     } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+      notify(err.response?.data?.message || "Registration failed", "error");
     }
   }
 
@@ -51,7 +57,13 @@ export default function RegisterPage() {
       <div className={styles.card}>
         <h1 className={styles.title}>Register</h1>
 
-        <div className={styles.form}>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleRegister();
+          }}
+        >
           <input
             className={styles.input}
             value={email}
@@ -59,12 +71,14 @@ export default function RegisterPage() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
+
           <input
             className={styles.input}
             value={fullName}
             onChange={(e) => setfullName(e.target.value)}
             placeholder="Name"
           />
+
           <input
             className={styles.input}
             value={password}
@@ -72,6 +86,7 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
+
           {isAdmin && (
             <input
               className={styles.input}
@@ -81,6 +96,7 @@ export default function RegisterPage() {
               onChange={(e) => setAdminCode(e.target.value)}
             />
           )}
+
           <label
             style={{ color: "black", fontSize: "16px", cursor: "pointer" }}
           >
@@ -98,10 +114,11 @@ export default function RegisterPage() {
             Register as Admin
           </label>
 
-          <button className={styles.button} onClick={handleRegister}>
+          <button className={styles.button} type="submit">
             Register
           </button>
-        </div>
+        </form>
+
         <div className={styles.footer}>
           Already have an account? <a href="/auth/login">Login</a>
         </div>

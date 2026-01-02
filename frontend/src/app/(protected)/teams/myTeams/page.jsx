@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function MyTeams() {
-  return <MyTeamsContent />;
+  return <MyTeamsContent />
 }
 
 function MyTeamsContent() {
@@ -43,6 +43,10 @@ function MyTeamsContent() {
               </button>
             </div>
           </div>
+
+          {teams.length == 0 && (
+            <p className={styles.empty}>No tasks assigned yet.</p>
+          )}
 
           <div className={styles.MyTeamDetails}>
             {teams.map((team) => (

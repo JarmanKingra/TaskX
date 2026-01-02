@@ -13,13 +13,9 @@ function DashboardContent() {
   const user = useAuthStore((s) => s.user);
   const router = useRouter();
 
-  useEffect(() => {
-    if (user) {
-      console.log("logged in user : ", user);
-    }
-  }, [user]);
 
   if (!user) return <div>Loading...</div>;
+  //  if (!token) return null;
 
   return (
     <>

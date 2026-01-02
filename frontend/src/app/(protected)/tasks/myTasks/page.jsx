@@ -37,6 +37,10 @@ function MyTasksContent() {
             </div>
           </div>
 
+          {tasks.length === 0 ? (
+            <p className={styles.empty}>No tasks assigned yet.</p>
+          ):
+
           <div className={styles.MyTasksDetails}>
             <div className={styles.myTaskName}>
               <h4>Subject</h4>
@@ -47,7 +51,7 @@ function MyTasksContent() {
 
               <div className={styles.eachTasksOptions}>Task Status</div>
             </div>
-          </div>
+          </div>}
 
           <div className={styles.tasksWrapper}>
             {tasks.map((task) => (
@@ -68,7 +72,9 @@ function MyTasksContent() {
                     </button>
                   </div>
 
-                  <div className={styles.eachTasksOptionStatus}>{task.status}</div>
+                  <div className={styles.eachTasksOptionStatus}>
+                    {task.status}
+                  </div>
 
                   {/* <div className={styles.eachTasksOptions}>Update Status</div> */}
                 </div>

@@ -67,7 +67,7 @@
 }
 
 .noOfTasks h3 {
-  color: #9ca3af;
+  color: #ffffff;
 }
 
 .MyTasksDetails {
@@ -88,6 +88,13 @@
 
 .myTasks {
   flex: 1.5;
+}
+
+.empty {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 16px;
+  color: #9ca3af;
 }
 
 .myTasks h3 {
@@ -180,16 +187,22 @@
   .myTasks h3 {
     font-size: 0.5rem;
     font-weight: 200;
-    color: #d1d5db;
+    color: #a6a6a6;
     text-transform: capitalize;
     letter-spacing: 1px;
   }
 
   .MyTasks h3 {
     font-size: 1rem;
+    color: white;
+  }
+
+  .noOfTasks h4{
+    color: white
   }
 
   .myTaskName h4 {
     font-size: 0.8rem;
+    color: white;
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 import { clientServer } from "@/lib";
 import { create } from "zustand";
+import { notify } from "./notificationStore";
 
 export const useTaskStore = create((set) => ({
   tasks: [],
@@ -26,13 +27,18 @@ export const useTaskStore = create((set) => ({
         tasks: [res.data, ...state.tasks],
         loading: false,
       }));
+      notify("Task assigned successfully", "success")
     } catch (error) {
-      console.error("ASSIGN TASK ERROR:", error);
+      const message = err.response?.data?.message || "Failed to assign task";
+
       set({
-        error: error.response?.data?.message || "Failed to assign task",
+        error: message,
         loading: false,
       });
-      throw error;
+
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
@@ -51,12 +57,18 @@ export const useTaskStore = create((set) => ({
       ),
       loading: false,
     }));
+    notify("Task deleted successfully", "success")
   } catch (err) {
-    set({
-      error: err.response?.data?.message || "Failed to delete task",
-      loading: false,
-    });
-    throw err;
+    const message = err.response?.data?.message || "Failed to delete Task";
+
+      set({
+        error: message,
+        loading: false,
+      });
+
+      notify(message, "error");
+
+      return { success: false };
   }
 },
 
@@ -74,10 +86,16 @@ export const useTaskStore = create((set) => ({
       loading: false,
     });
   } catch (error) {
-    set({
-      error: error.response?.data?.message || "Failed to fetch member tasks",
-      loading: false,
-    });
+    const message = err.response?.data?.message || "Failed to get member tasks";
+
+      set({
+        error: message,
+        loading: false,
+      });
+
+      notify(message, "error");
+
+      return { success: false };
   }
 },
 
@@ -93,10 +111,16 @@ export const useTaskStore = create((set) => ({
         loading: false,
       });
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to fetch tasks";
+
       set({
-        error: err.response?.data?.message || "Failed to fetch My tasks",
+        error: message,
         loading: false,
       });
+
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
@@ -106,10 +130,16 @@ export const useTaskStore = create((set) => ({
       const res = await clientServer.get(`api/tasks/getTask/${taskId}`);
       set({ currentTask: res.data, loading: false });
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to fetch task";
+
       set({
-        error: err.response?.data?.message || "Failed to fetch task",
+        error: message,
         loading: false,
       });
+
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
@@ -132,13 +162,19 @@ export const useTaskStore = create((set) => ({
         loading: false,
       }));
 
+      notify("Task updated successfully", "success")
       return updatedTask;
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to update task";
+
       set({
-        error: err.response?.data?.message || "Failed to update task status",
+        error: message,
         loading: false,
       });
-      throw err;
+
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 

@@ -5,12 +5,14 @@ import { clientServer } from "@/lib/index";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
+import { useNotificationStore } from "@/store/notificationStore";
 
 export default function LoginPage() {
   const router = useRouter();
   const loginStore = useAuthStore((s) => s.login);
   const token = useAuthStore((s) => s.token);
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const notify = useNotificationStore((s) => s.show);
 
   useEffect(() => {
     if (token && isLoggedIn) {
@@ -22,6 +24,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   async function handleLogin() {
+    if (!email || !password) {
+      notify("Email and password are required", "error");
+      return;
+    }
     try {
       const res = await clientServer.post("api/auth/login", {
         email,
@@ -32,16 +38,16 @@ export default function LoginPage() {
       const user = res.data.user;
 
       if (!token || !user) {
-        alert("Unexpected backend response");
+        notify("Unexpected server response", "error");
         return;
       }
 
       loginStore(token, user);
 
-      alert("Login success!");
+      notify("Login successful 🎉", "success");
       router.push("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      notify(err.response?.data?.message || "Login failed", "error");
     }
   }
 
@@ -50,7 +56,13 @@ export default function LoginPage() {
       <div className={styles.card}>
         <h1 className={styles.title}>Login</h1>
 
-        <div className={styles.form}>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
           <input
             className={styles.input}
             placeholder="Email"
@@ -66,10 +78,10 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className={styles.button} onClick={handleLogin}>
+          <button className={styles.button} type="submit">
             Login
           </button>
-        </div>
+        </form>
 
         <div className={styles.footer}>
           Don’t have an account? <a href="/auth/register">Register</a>

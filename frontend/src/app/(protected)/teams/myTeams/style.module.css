@@ -91,6 +91,13 @@
   background: transparent;
 }
 
+.empty {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 13px;
+  color: #ffffff;
+}
+
 .MyTeamDetailCard {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(14px);

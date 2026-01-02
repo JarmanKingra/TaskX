@@ -19,7 +19,7 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     if (ready) {
       if (!token || !isLoggedIn) {
-        router.replace("/auth/login");
+        router.replace("/");
       }
     }
   }, [ready, token, isLoggedIn, router]);

@@ -31,7 +31,7 @@ export default function NavBarComponent() {
             open ? styles.open : ""
           }`}
         >
-          {isLoggedIn && token ? (
+          {isLoggedIn && token && user? (
             
               <div className={styles.navOptions}>
                 <p
@@ -40,7 +40,7 @@ export default function NavBarComponent() {
                 >
                   Home
                 </p>
-                {user.role == "admin" ? (
+                {user?.role == "admin" ? (
                   <p
                     onClick={() => router.replace("/teams/myTeams")}
                     style={{ fontWeight: "bold", cursor: "pointer" }}

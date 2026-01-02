@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useTeamStore } from "@/store/teamStore";
 import styles from "./style.module.css";
+import { useRouter } from "next/navigation";
 
 export default function CreateTeamPage() {
   const [teamName, setTeamName] = useState("");
+  const router = useRouter();
 
   const { createTeam, loading, error } = useTeamStore();
 
@@ -16,6 +18,7 @@ export default function CreateTeamPage() {
 
     await createTeam(teamName);
     setTeamName("");
+    router.back();
   };
 
   return (

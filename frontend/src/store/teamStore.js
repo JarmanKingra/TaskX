@@ -1,6 +1,7 @@
 "use client";
 import { create } from "zustand";
 import { clientServer } from "@/lib";
+import { notify } from "./notificationStore";
 
 export const useTeamStore = create((set) => ({
   teams: [],
@@ -21,11 +22,14 @@ export const useTeamStore = create((set) => ({
         loading: false,
       });
     } catch (error) {
-      console.error("GET TEAMS ERROR:", error);
+      const message = err.response?.data?.message || "Failed get your teams";
       set({
-        error: error.response?.data?.message || "Failed to fetch team",
+        error: message,
         loading: false,
       });
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
@@ -41,12 +45,16 @@ export const useTeamStore = create((set) => ({
         teams: [res.data.team, ...state.teams],
         loading: false,
       }));
+      notify("Team created successfully", "success")
     } catch (error) {
-      console.error("CREATE TEAM ERROR:", error);
+      const message = err.response?.data?.message || "Failed to create team";
       set({
-        error: error.response?.data?.message || "Failed to create team",
+        error: message,
         loading: false,
       });
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
@@ -60,65 +68,77 @@ export const useTeamStore = create((set) => ({
         loading: false,
       });
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to load team";
       set({
-        error: err.response?.data?.message || "Failed to fetch team",
+        error: message,
         loading: false,
       });
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
-  removeMember: async(teamId, memberId) => {
+  removeMember: async (teamId, memberId) => {
     try {
-
       set({ loading: true, error: null });
-      const res = await clientServer.delete(`/api/teams/${teamId}/members/${memberId}`);
+      const res = await clientServer.delete(
+        `/api/teams/${teamId}/members/${memberId}`
+      );
 
       set((state) => ({
-      currTeam: {
-        ...state.currTeam,
-        members: state.currTeam.members.filter(
-          (member) => member._id !== memberId
-        ),
-      },
-      loading: false,
-    }));
-      
+        currTeam: {
+          ...state.currTeam,
+          members: state.currTeam.members.filter(
+            (member) => member._id !== memberId
+          ),
+        },
+        loading: false,
+      }));
+
+      notify("Member removed successfully", "success")
     } catch (err) {
+      const message = err.response?.data?.message || "Failed to remove member";
       set({
-        error: err.response?.data?.message || "Failed to Remove member",
+        error: message,
         loading: false,
       });
+      notify(message, "error");
+
+      return { success: false };
     }
   },
 
   addMember: async (teamId, email) => {
-  try {
-    set({ loading: true, error: null });
+    try {
+      set({ loading: true, error: null });
 
-    const res = await clientServer.post(
-      `/api/teams/${teamId}/members`,
-      { email }
-    );
+      const res = await clientServer.post(`/api/teams/${teamId}/members`, {
+        email,
+      });
 
-    set((state) => ({
-      currTeam: {
-        ...state.currTeam,
-        members: [...state.currTeam.members, res.data.member],
-      },
-      loading: false,
-    }));
+      set((state) => ({
+        currTeam: {
+          ...state.currTeam,
+          members: [...state.currTeam.members, res.data.member],
+        },
+        loading: false,
+      }));
 
-    return { success: true };
+      notify("Member added successfully", "success")
 
-  } catch (err) {
-    set({
-      error: err.response?.data?.message || "Failed to add member",
-      loading: false,
-    });
+      
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to add member";
 
-    return { success: false };
-  }
-},
+      set({
+        error: message,
+        loading: false,
+      });
 
+      notify(message, "error");
 
+      return { success: false };
+    }
+  },
 }));

@@ -52,7 +52,7 @@ const getSingleTeam = async (req, res) => {
     const teamId = req.params.teamId;
 
     const team = await Team.findById(teamId)
-      .populate("admin", "name email")
+      .populate("admin", "fullName email")
       .populate("members", "fullName email")
       .populate("tasks");
 

@@ -14,6 +14,8 @@ export default function TaskDetailsPage() {
 
   const { fetchTeamById, currTeam, loading, error, removeMember, addMember } =
     useTeamStore();
+  const admin = currTeam?.admin;
+  const members = currTeam?.members.filter((m) => m._id !== admin._id);
 
   const handleRemoveMember = async (teamId, memberId) => {
     try {
@@ -53,7 +55,17 @@ export default function TaskDetailsPage() {
           </div>
         </div>
 
-        {currTeam.members.map((member) => (
+        {admin && (
+          <div className={styles.adminContainer}>
+            <p className={styles.adminBadge}>Admin - {admin.fullName}</p>
+          </div>
+        )}
+
+        {members.length < 1 && (
+          <p className={styles.noMemberYet}>No members yet!</p>
+        )}
+
+        {members.map((member) => (
           <div key={member._id} className={styles.membersContainer}>
             <h3>{member.fullName}</h3>
 
@@ -61,7 +73,7 @@ export default function TaskDetailsPage() {
               <button onClick={() => handleRemoveMember(teamId, member._id)}>
                 <p>Remove</p>
               </button>
-              
+
               <button
                 onClick={() =>
                   router.push(

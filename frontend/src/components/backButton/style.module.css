@@ -1,0 +1,12 @@
+.button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 50;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  margin-right: 20px;
+  background: fff;
+  cursor: pointer;
+}
