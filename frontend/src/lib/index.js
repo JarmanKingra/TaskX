@@ -3,7 +3,7 @@ import { useAuthStore } from "@/store/authStore";
 
 // "export const BASE_URL = "https://taskx-iblg.onrender.com/""
 
-export const BASE_URL = "http://localhost:3001/"
+export const BASE_URL = "https://taskx-iblg.onrender.com/"
 
 export const clientServer = axios.create({
     baseURL: BASE_URL
