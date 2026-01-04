@@ -27,7 +27,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminCode, setAdminCode] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   async function handleRegister() {
     if (!email || !password || !fullName) {
@@ -120,12 +120,10 @@ export default function RegisterPage() {
             Register as Admin
           </label>
 
-          {/* <button className={styles.button} type="submit" disabled={loading}>
-            {loading ? <ButtonSpinner text="Registering..." /> : "Signup"}
-          </button> */}
           <button className={styles.button} type="submit" disabled={loading}>
-            {loading ? <SkeletonLoader/> : "Signup"}
+            {loading ? <ButtonSpinner text="Registering..." /> : "Signup"}
           </button>
+          
         </form>
 
         <div className={styles.footer}>
