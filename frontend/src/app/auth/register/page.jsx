@@ -7,7 +7,6 @@ import { useAuthStore } from "@/store/authStore";
 import styles from "../login/login.module.css";
 import { useNotificationStore } from "@/store/notificationStore";
 import ButtonSpinner from "@/components/loaders/longSpinnerLoader";
-import SkeletonLoader from "@/components/loaders/skeletonLoader";
 
 export default function RegisterPage() {
   const router = useRouter();
