@@ -6,6 +6,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
 import { useNotificationStore } from "@/store/notificationStore";
+import ButtonSpinner from "@/components/loaders/longSpinnerLoader";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin() {
     if (!email || !password) {
@@ -29,6 +31,7 @@ export default function LoginPage() {
       return;
     }
     try {
+      setLoading(true);
       const res = await clientServer.post("api/auth/login", {
         email,
         password,
@@ -48,6 +51,8 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (err) {
       notify(err.response?.data?.message || "Login failed", "error");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -78,8 +83,8 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className={styles.button} type="submit">
-            Login
+          <button className={styles.button} type="submit" disabled={loading}>
+            {loading ? <ButtonSpinner text="Logging in..." /> : "Login"}
           </button>
         </form>
 

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import styles from "../login/login.module.css";
 import { useNotificationStore } from "@/store/notificationStore";
+import ButtonSpinner from "@/components/loaders/longSpinnerLoader";
+import SkeletonLoader from "@/components/loaders/skeletonLoader";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -25,6 +27,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminCode, setAdminCode] = useState("");
+  const [loading, setLoading] = useState(true);
 
   async function handleRegister() {
     if (!email || !password || !fullName) {
@@ -32,6 +35,7 @@ export default function RegisterPage() {
       return;
     }
     try {
+      setLoading(true);
       const res = await clientServer.post("/api/auth/signup", {
         email,
         password,
@@ -49,6 +53,8 @@ export default function RegisterPage() {
       router.replace("/auth/login");
     } catch (err) {
       notify(err.response?.data?.message || "Registration failed", "error");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -114,8 +120,11 @@ export default function RegisterPage() {
             Register as Admin
           </label>
 
-          <button className={styles.button} type="submit">
-            Register
+          {/* <button className={styles.button} type="submit" disabled={loading}>
+            {loading ? <ButtonSpinner text="Registering..." /> : "Signup"}
+          </button> */}
+          <button className={styles.button} type="submit" disabled={loading}>
+            {loading ? <SkeletonLoader/> : "Signup"}
           </button>
         </form>
 
