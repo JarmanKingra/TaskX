@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTeamStore } from "@/store/teamStore";
-import { Eye } from "lucide-react";
 import styles from "./style.module.css";
 
 export default function TaskDetailsPage() {
