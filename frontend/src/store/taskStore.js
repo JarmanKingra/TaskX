@@ -28,8 +28,9 @@ export const useTaskStore = create((set) => ({
         loading: false,
       }));
       notify("Task assigned successfully", "success")
+      return true;
     } catch (error) {
-      const message = err.response?.data?.message || "Failed to assign task";
+      const message = error.response?.data?.message || "Failed to assign task";
 
       set({
         error: message,
@@ -86,7 +87,7 @@ export const useTaskStore = create((set) => ({
       loading: false,
     });
   } catch (error) {
-    const message = err.response?.data?.message || "Failed to get member tasks";
+    const message = error.response?.data?.message || "Failed to get member tasks";
 
       set({
         error: message,

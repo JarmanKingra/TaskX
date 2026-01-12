@@ -10,6 +10,7 @@ export default function TaskDetailsPage() {
   const router = useRouter();
   const [openTeamId, setOpenTeamId] = useState(null);
   const [email, setEmail] = useState("");
+  const [openRemoveMember, setOpenRemoveMember] = useState(null);
 
   const { fetchTeamById, currTeam, loading, error, removeMember, addMember } =
     useTeamStore();
@@ -69,7 +70,7 @@ export default function TaskDetailsPage() {
             <h3>{member.fullName}</h3>
 
             <div className={styles.memberOptions}>
-              <button onClick={() => handleRemoveMember(teamId, member._id)}>
+              <button onClick={() => setOpenRemoveMember(member._id)}>
                 <p>Remove</p>
               </button>
 
@@ -83,6 +84,25 @@ export default function TaskDetailsPage() {
                 <p>view</p>
               </button>
             </div>
+            {openRemoveMember && (
+              <div
+                className={styles.overlay}
+                onClick={() => setOpenRemoveMember(null)}
+              >
+                <div
+                  className={styles.modal}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h3>Are you sure to remove this {member.fullName} ?</h3>
+                  <button
+                    className={`${styles.modalBtn} ${styles.delete}`}
+                    onClick={() => handleRemoveMember(teamId, member._id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
