@@ -20,7 +20,14 @@ function MyTeamsContent() {
   }, []);
 
   if (!user) return <div>Loading user...</div>;
-  if (loading) return <div>Loading teams...</div>;
+  if (loading) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loader}></div>
+        <p className={styles.loadingText}>Loading Teams...</p>
+      </div>
+    );
+  }
   if (error) return <div>{error}</div>;
 
   return (
@@ -45,7 +52,7 @@ function MyTeamsContent() {
           </div>
 
           {teams.length == 0 && (
-            <p className={styles.empty}>No tasks assigned yet.</p>
+            <p className={styles.empty}>No teams created yet.</p>
           )}
 
           <div className={styles.MyTeamDetails}>

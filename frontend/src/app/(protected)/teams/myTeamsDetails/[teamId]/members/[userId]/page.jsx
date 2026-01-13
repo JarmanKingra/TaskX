@@ -29,7 +29,14 @@ export default function MemberTasksPage() {
     setOpenTaskId(null);
   };
 
-  if (loading) return <p>Loading tasks...</p>;
+   if (loading) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loader}></div>
+        <p className={styles.loadingText}>Loading Tasks...</p>
+      </div>
+    );
+  }
   if (error) return <p>{error}</p>;
 
   return (

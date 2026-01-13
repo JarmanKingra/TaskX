@@ -21,7 +21,14 @@ export default function TaskDetailsPage() {
     setOpenTaskId(null);
   }
 
-  if (loading) return <p>Loading task...</p>;
+    if (loading) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loader}></div>
+        <p className={styles.loadingText}>Loading Task...</p>
+      </div>
+    );
+  }
   if (error) return <p>{error}</p>;
   if (!currentTask) return null;
 
@@ -31,11 +38,11 @@ export default function TaskDetailsPage() {
       <h2 className={styles.taskTitle}>{currentTask.title}</h2>
 
       <p className={styles.taskText}>
-        <span>Description -</span> {currentTask.description}
+        <span>Description :</span> {currentTask.description}
       </p>
 
       <p className={styles.taskText}>
-        <span>Status:</span>
+        <span>Status :</span>
         <span className={styles.status}>{currentTask.status}</span>
       </p>
 

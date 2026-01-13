@@ -34,7 +34,15 @@ export default function TaskDetailsPage() {
     if (teamId) fetchTeamById(teamId);
   }, [teamId]);
 
-  if (loading) return <p>Loading Team...</p>;
+  if (loading) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loader}></div>
+        <p className={styles.loadingText}>Loading Team</p>
+      </div>
+    );
+  }
+
   if (error)
     return (
       <p>

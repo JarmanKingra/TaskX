@@ -21,7 +21,14 @@ function MyTasksContent() {
   }, []);
 
   if (!user) return <div>Loading user...</div>;
-  if (loading) return <div>Loading tasks...</div>;
+   if (loading) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loader}></div>
+        <p className={styles.loadingText}>Loading Tasks...</p>
+      </div>
+    );
+  }
   if (error) return <div>{error}</div>;
 
   return (
