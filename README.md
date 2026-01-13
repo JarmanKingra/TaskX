@@ -1,4 +1,13 @@
-🚀 TaskX – Team Task Management App
+🚀 TaskX – Team Task Management App  - Demo - https://drive.google.com/file/d/1VhMbw8oa5zaaTzFY_YbmvUl2BmvA4nk-/view?usp=drive_link
+
+🔑 Demo Credentials (feel free to try)
+Admin
+📧 aman.admin@taskx.dev
+🔑 Admin@123
+
+Member
+📧 priya.member@taskx.dev
+🔑 Member@123
 
 TaskX is a role-based team task management application where admins can create teams, manage members, and assign tasks, while members can view and update their assigned tasks.
 It is built to simulate real-world team workflows used in startups and companies.
