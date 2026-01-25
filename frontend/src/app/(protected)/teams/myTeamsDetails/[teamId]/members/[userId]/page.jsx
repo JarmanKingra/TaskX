@@ -22,6 +22,7 @@ export default function MemberTasksPage() {
     if (teamId && userId) {
       getMemberTasks(teamId, userId);
     }
+    
   }, [teamId, userId]);
 
   const handleDeleteTask = async () => {

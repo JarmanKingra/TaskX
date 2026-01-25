@@ -6,6 +6,7 @@ import { notify } from "./notificationStore";
 export const useTeamStore = create((set) => ({
   teams: [],
   currTeam: null,
+  currentRole: null,
   totalMembers: null,
   teamMembers: null,
   loading: false,
@@ -16,12 +17,14 @@ export const useTeamStore = create((set) => ({
       set({ loading: true, error: null });
 
       const res = await clientServer.get("/api/teams");
+      
 
       set({
         teams: res.data,
         loading: false,
       });
-    } catch (error) {
+    } catch (err) {
+      console.log(err);
       const message = err.response?.data?.message || "Failed get your teams";
       set({
         error: message,
@@ -46,7 +49,7 @@ export const useTeamStore = create((set) => ({
         loading: false,
       }));
       notify("Team created successfully", "success")
-    } catch (error) {
+    } catch (err) {
       const message = err.response?.data?.message || "Failed to create team";
       set({
         error: message,
@@ -63,8 +66,9 @@ export const useTeamStore = create((set) => ({
       set({ loading: true, error: null });
       const res = await clientServer.get(`/api/teams/${teamId}`);
       set({
-        currTeam: res.data,
-        teamMembers: res.data.members.length,
+        currTeam: res.data.team,
+        currentRole: res.data.role, 
+        teamMembers: res.data.team.members.length,
         loading: false,
       });
     } catch (err) {
@@ -90,7 +94,7 @@ export const useTeamStore = create((set) => ({
         currTeam: {
           ...state.currTeam,
           members: state.currTeam.members.filter(
-            (member) => member._id !== memberId
+            (member) => member.user._id !== memberId
           ),
         },
         loading: false,

@@ -18,7 +18,12 @@ const createTeam = async (req, res) => {
     const newTeam = await Team.create({
       name,
       admin: adminId,
-      members: [adminId],
+      members: [
+        {
+          user: adminId,
+          role: "admin",
+        },
+      ],
     });
 
     res.status(201).json({
@@ -31,16 +36,17 @@ const createTeam = async (req, res) => {
   }
 };
 
-const getAllTeams = async (req, res) => {
+const getMyTeams = async (req, res) => {
   try {
-    const adminId = req.user._id;
+    const userId = req.user._id;
 
-    const allTeams = await Team.find({ admin: adminId })
-      .populate("admin", "name email")
-      .populate("members", "name email")
-      .populate("tasks");
+    const allTeams = await Team.find({
+      $or: [{ admin: userId }, { "members.user": userId }],
+    })
+      .populate("admin", "fullName email")
+      .populate("members.user", "fullName email");
 
-    return res.json(allTeams);
+    return res.status(200).json(allTeams);
   } catch (error) {
     console.error("TEAM ERROR:", error);
     res.status(500).json({ message: "Server Error" });
@@ -53,14 +59,26 @@ const getSingleTeam = async (req, res) => {
 
     const team = await Team.findById(teamId)
       .populate("admin", "fullName email")
-      .populate("members", "fullName email")
+      .populate("members.user", "fullName email")
       .populate("tasks");
 
     if (!team) {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    return res.json(team);
+    let role = null;
+
+    if (team.admin._id.toString() === req.user._id.toString()) {
+      role = "admin";
+    } else {
+      const member = team.members.find(
+        (m) => m.user._id.toString() === req.user._id.toString()
+      );
+      if (member) role = member.role;
+    }
+
+
+    return res.json({team, role});
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
@@ -87,26 +105,25 @@ const removeMember = async (req, res) => {
       });
     }
 
-    const isMember = team.members.some(
-      id => id.toString() === memberId
-    );
+    const isMember = team.members.some((m) => m.user.toString() === memberId);
 
     if (!isMember) {
-      return res.status(400).json({ message: "User is not a member of this team" });
+      return res
+        .status(400)
+        .json({ message: "User is not a member of this team" });
     }
 
     await Task.updateMany(
       { team: teamId, assignedTo: memberId },
-      { assignedTo: null }
+      { assignedTo: null },
     );
-    
-    team.members.pull(memberId);
+
+    team.members = team.members.filter((m) => m.user.toString() !== memberId);
     await team.save();
 
     return res.status(200).json({
       message: "Member removed successfully",
     });
-
   } catch (error) {
     console.error("Remove Member Error:", error);
     res.status(500).json({ message: "Server Error" });
@@ -137,7 +154,7 @@ const addMember = async (req, res) => {
     }
 
     const isAlreadyMember = team.members.some(
-      (id) => id.toString() === user._id.toString()
+      (m) => m.user.toString() === user._id.toString(),
     );
 
     if (isAlreadyMember) {
@@ -145,21 +162,24 @@ const addMember = async (req, res) => {
         message: "User already a member of this team",
       });
     }
-
-    team.members.push(user._id);
+    
+    team.members.push({
+      user: user._id,
+      role: "user",
+    });
     await team.save();
+    await team.populate("members.user", "fullName email");
+
+    const newMember = team.members.at(-1);
 
     return res.status(200).json({
       message: "Member added successfully",
-      member: user,
+      member: newMember,
     });
-
   } catch (error) {
     console.error("Add Member Error:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
-
-
-export { createTeam, getAllTeams, getSingleTeam, addMember, removeMember };
+export { createTeam, getSingleTeam, addMember, removeMember, getMyTeams };

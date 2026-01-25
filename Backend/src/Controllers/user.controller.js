@@ -7,9 +7,7 @@ dotenv.config();
 
 const register = async (req, res) => {
   try {
-    const { fullName, email, password, requestedRole, adminCode } = req.body;
-
-    let finalRole = "user";
+    const { fullName, email, password } = req.body;
 
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -24,22 +22,14 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    if (requestedRole == "admin") {
-      if (Number(adminCode) == Number(process.env.CodeForAdmin)) {
-        finalRole = "admin";
-      }
-    }
-    console.log(adminCode);
-
     const user = await User.create({
       fullName,
       email,
-      password: passwordHash,
-      role: finalRole,
+      password: passwordHash
     });
 
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      { id: user._id, email: user.email},
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
@@ -50,7 +40,7 @@ const register = async (req, res) => {
     res.status(200).json({
       success: true,
       token,
-      user: { id: user._id, name: user.fullName, email: user.email, role: user.role, teams: user.teams },
+      user: { id: user._id, name: user.fullName, email: user.email, teams: user.teams },
     });
   } catch (error) {
     console.log("SignUp Error: ---- ", err);
@@ -75,7 +65,7 @@ const login = async (req, res) => {
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(400).json({ message: "Invalid Credentials" });
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role  },
+      { id: user._id, email: user.email  },
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
@@ -85,7 +75,7 @@ const login = async (req, res) => {
     res.status(200).json({
       success: true,
       token,
-      user: { id: user._id, name: user.fullName, email: user.email, role: user.role, teams: user.teams },
+      user: { id: user._id, name: user.fullName, email: user.email, teams: user.teams },
     });
   } catch (error) {
     console.log("login Error: ---- ", error);

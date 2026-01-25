@@ -15,12 +15,10 @@ function DashboardContent() {
 
 
   if (!user) return <div>Loading...</div>;
-  //  if (!token) return null;
 
   return (
     <>
       <div className={styles.mainContainer}>
-        {/* <h3 className={styles.glitchText}>Hi {user.name}</h3> */}
 
         <h3 className={styles.greeting}>
           Hi <span>{user.name}</span>
@@ -45,13 +43,8 @@ function DashboardContent() {
                 communication--so your team can focus on what truly matters.
               </p>
             </div>
-
             <div>
-              {user.role == "admin" ? (
                 <button onClick={() => router.replace("/teams/myTeams")} className={styles.button}>My Teams</button>
-              ) : (
-                <button onClick={() => router.replace("/tasks/myTasks")} className={styles.button}>My Tasks</button>
-              )}
             </div>
           </div>
 

@@ -1,44 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTeamStore } from "@/store/teamStore";
+import { useTaskStore } from "@/store/taskStore";
 import styles from "./style.module.css";
+import TeamAdminView from "./components/teamAdminView";
+import TeamMemberView from "./components/teamMemberView";
 
 export default function TaskDetailsPage() {
   const { teamId } = useParams();
   const router = useRouter();
-  const [openTeamId, setOpenTeamId] = useState(null);
-  const [email, setEmail] = useState("");
-  const [openRemoveMember, setOpenRemoveMember] = useState(null);
 
-  const { fetchTeamById, currTeam, loading, error, removeMember, addMember } =
+  const { fetchTeamById, currTeam, loading, error, currentRole } =
     useTeamStore();
-  const admin = currTeam?.admin;
-  const members = currTeam?.members.filter((m) => m._id !== admin._id);
 
-  const handleRemoveMember = async (teamId, memberId) => {
-    try {
-      await removeMember(teamId, memberId);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const addNewMember = async () => {
-    await addMember(openTeamId, email);
-    setOpenTeamId(null);
-  };
+  const { tasks, fetchMyTasksInTeam, loading: taskLoading } = useTaskStore();
 
   useEffect(() => {
-    if (teamId) fetchTeamById(teamId);
+    if (teamId) {
+      useTeamStore.setState({ currentRole: null });
+      fetchTeamById(teamId);
+    }
   }, [teamId]);
+
+  useEffect(() => {
+    if (currentRole === "user" && teamId) {
+      fetchMyTasksInTeam(teamId);
+    }
+  }, [currentRole, teamId]);
 
   if (loading) {
     return (
       <div className={styles.loadingWrapper}>
         <div className={styles.loader}></div>
-        <p className={styles.loadingText}>Loading Team</p>
+        <p className={styles.loadingText}>Loading...</p>
       </div>
     );
   }
@@ -51,87 +47,25 @@ export default function TaskDetailsPage() {
     );
   if (!currTeam) return null;
 
-  return (
-    <div className={styles.mainContainer}>
-      <div className={styles.container}>
-        <div className={styles.mainHeading}>
-          <div className={styles.mainHeadingOptions}>
-            <h3>Team Members </h3>
-            <button onClick={() => setOpenTeamId(currTeam._id)}>
-              Add Member
-            </button>
-          </div>
-        </div>
-
-        {admin && (
-          <div className={styles.adminContainer}>
-            <p className={styles.adminBadge}>Admin - {admin.fullName}</p>
-          </div>
-        )}
-
-        {members.length < 1 && (
-          <p className={styles.noMemberYet}>No members yet!</p>
-        )}
-
-        {members.map((member) => (
-          <div key={member._id} className={styles.membersContainer}>
-            <h3>{member.fullName}</h3>
-
-            <div className={styles.memberOptions}>
-              <button onClick={() => setOpenRemoveMember(member._id)}>
-                <p>Remove</p>
-              </button>
-
-              <button
-                onClick={() =>
-                  router.push(
-                    `/teams/myTeamsDetails/${teamId}/members/${member._id}`
-                  )
-                }
-              >
-                <p>view</p>
-              </button>
-            </div>
-            {openRemoveMember && (
-              <div
-                className={styles.overlay}
-                onClick={() => setOpenRemoveMember(null)}
-              >
-                <div
-                  className={styles.modal}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <h3>Are you sure to remove this {member.fullName} ?</h3>
-                  <button
-                    className={`${styles.modalBtn} ${styles.delete}`}
-                    onClick={() => handleRemoveMember(teamId, member._id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
+  if (!currentRole) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <div className={styles.loader}></div>
+        <p className={styles.loadingText}>Checking role...</p>
       </div>
-      {openTeamId && (
-        <div className={styles.overlay} onClick={() => setOpenTeamId(null)}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h3>Enter the Email of Member</h3>
-            <input
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button
-              className={`${styles.modalBtn} ${styles.addMember}`}
-              onClick={addNewMember}
-            >
-              Add Member
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    );
+  }
+
+  if (currentRole == "admin") {
+    return <TeamAdminView teamId={teamId} team={currTeam} />;
+  }
+  if (currentRole === "user") {
+    return (
+      <TeamMemberView
+        tasks={tasks}
+        onOpenTask={(taskId) => router.push(`/tasks/myTasksDetails/${taskId}`)}
+      />
+    );
+  }
+  return null;
 }

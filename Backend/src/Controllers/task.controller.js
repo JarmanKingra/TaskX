@@ -3,8 +3,17 @@ import Team from "../Models/teams.js";
 import User from "../Models/user.js";
 
 const createTask = async (req, res) => {
+  console.log("🔥 CREATE TASK CONTROLLER HIT");
   try {
     const { title, description, deadline, assignedTo, team } = req.body;
+
+    console.log("REQ BODY:", {
+      title,
+      description,
+      deadline,
+      assignedTo,
+      team,
+    });
 
     if (!title || !team || !description || !assignedTo) {
       return res
@@ -25,9 +34,9 @@ const createTask = async (req, res) => {
     }
 
     const isAdmin = existingTeam.admin.toString() === assignedTo;
-    const isMember = existingTeam.members
-      .map((id) => id.toString())
-      .includes(assignedTo);
+    const isMember = existingTeam.members.some(
+      (member) => member.user.toString() === assignedTo
+    )
 
     if (!isAdmin && !isMember) {
       return res.status(400).json({
@@ -90,8 +99,7 @@ const getTaskById = async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
-
-    // 🔐 Authorization check
+    
     const isAssignedUser = task.assignedTo._id.toString() === userId.toString();
     const isTeamAdmin = task.team.admin.toString() === userId.toString();
 
@@ -170,6 +178,25 @@ const getMyTasks = async (req, res) => {
     const userId = req.user._id;
 
     const tasks = await Task.find({ assignedTo: userId })
+      .populate("team", "title")
+      .populate("assignedBy", "name email");
+
+    return res.status(200).json(tasks);
+  } catch (error) {
+    console.error("GET MY TASKS ERROR:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const getMyTasksInTeam = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const teamId = req.params.teamId;
+
+    const tasks = await Task.find({
+      assignedTo: userId,
+      team: teamId,
+    })
       .populate("team", "title")
       .populate("assignedBy", "name email");
 
@@ -264,4 +291,5 @@ export {
   getTasksOfUser,
   getTaskById,
   getTasksOfUserInTeam,
+  getMyTasksInTeam,
 };

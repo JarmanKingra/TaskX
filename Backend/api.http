@@ -70,13 +70,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZ
 
 POST   http://localhost:3001/api/tasks HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5M2UyOWUxNzc5YWIyZGY1NDQ5ZTdjYyIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NjEyNDY3MywiZXhwIjoxNzY2MjExMDczfQ.gCHxDtSGb6SyCzmr4D3Sr_rkPH6ydUkOl1qlElR7Klg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzQ0NmUxNWUwZTE2MjAyOWY2MDU0MSIsImVtYWlsIjoiZGVtb3VzZXIzQGdtYWlsLmNvbSIsImlhdCI6MTc2OTIyODAwMSwiZXhwIjoxNzY5MzE0NDAxfQ.l-FDUdZjrHGncE53VY_GKZeS7EjWoWFAbMwVZPw6mkY
 
 {
-  "title": "assigned t0 admin 6 which user",
-  "team": "6944e49026c8f347c2442b58",
+  "title": "testinging Title",
+  "team": "697446f75e0e162029f60547",
   "description": "testinging Title",
-  "assignedTo": "693e2a19779ab2df5449e7d4"
+  "assignedTo": "697446bb5e0e162029f6053d"
 }
 
 ###

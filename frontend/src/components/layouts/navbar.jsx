@@ -40,21 +40,21 @@ export default function NavBarComponent() {
                 >
                   Home
                 </p>
-                {user?.role == "admin" ? (
+                {/* {user?.role == "admin" ? ( */}
                   <p
                     onClick={() => router.replace("/teams/myTeams")}
                     style={{ fontWeight: "bold", cursor: "pointer" }}
                   >
                     My Teams
                   </p>
-                ) : (
+                {/* // ) : ( */}
                   <p
                     onClick={() => router.replace("/tasks/myTasks")}
                     style={{ fontWeight: "bold", cursor: "pointer" }}
                   >
                     My Tasks
                   </p>
-                )}
+                {/* )} */}
                 <p
                   onClick={() => {
                     logout();

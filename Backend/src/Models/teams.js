@@ -16,8 +16,15 @@ const teamSchema = new mongoose.Schema(
 
     members: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        role: {
+          type: String,
+          enum: ["admin", "user"],
+          default: "user",
+        },
       },
     ],
 
@@ -28,9 +35,8 @@ const teamSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Team = mongoose.model("Team", teamSchema);
 export default Team;
-

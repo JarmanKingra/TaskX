@@ -24,8 +24,6 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [fullName, setfullName] = useState("");
   const [password, setPassword] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminCode, setAdminCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleRegister() {
@@ -38,9 +36,7 @@ export default function RegisterPage() {
       const res = await clientServer.post("/api/auth/signup", {
         email,
         password,
-        fullName,
-        adminCode,
-        requestedRole: isAdmin ? "admin" : "user",
+        fullName
       });
 
       const token = res.data.token;
@@ -91,33 +87,6 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
-
-          {isAdmin && (
-            <input
-              className={styles.input}
-              type="password"
-              placeholder="Admin Secret Code"
-              value={adminCode}
-              onChange={(e) => setAdminCode(e.target.value)}
-            />
-          )}
-
-          <label
-            style={{ color: "black", fontSize: "16px", cursor: "pointer" }}
-          >
-            <input
-              type="checkbox"
-              checked={isAdmin}
-              style={{
-                width: "18px",
-                height: "18px",
-                marginRight: "8px",
-                cursor: "pointer",
-              }}
-              onChange={(e) => setIsAdmin(e.target.checked)}
-            />
-            Register as Admin
-          </label>
 
           <button className={styles.button} type="submit" disabled={loading}>
             {loading ? <ButtonSpinner text="Registering..." /> : "Signup"}

@@ -1,19 +1,20 @@
 import express from "express"
 import auth from "../Middlewares/auth.js"
-import { isAdmin } from "../Middlewares/adminOnly.js";
+import { isTeamAdmin } from "../Middlewares/adminOnly.js";
 
-import { createTask, updateTask, getTaskByTeam, deleteTask, updateTaskStatus, getMyTasks, getTasksOfUser, getTaskById, getTasksOfUserInTeam } from "../Controllers/task.controller.js"
+import { createTask, updateTask, getTaskByTeam, deleteTask, updateTaskStatus, getMyTasks, getTasksOfUser, getTaskById, getTasksOfUserInTeam, getMyTasksInTeam } from "../Controllers/task.controller.js"
 
 const router = express.Router();
 
-router.post('/', auth, isAdmin, createTask);
-router.patch('/:taskId', auth, isAdmin, updateTask);
-router.get('/:teamId', auth, isAdmin, getTaskByTeam);
-router.delete('/:taskId', auth, isAdmin, deleteTask);
+router.post('/', auth, createTask);
+router.patch('/:taskId', auth, isTeamAdmin, updateTask);
+router.get('/:teamId', auth, isTeamAdmin, getTaskByTeam);
+router.delete('/:taskId', auth, deleteTask);
 router.patch('/:taskId/status', auth, updateTaskStatus);
 router.get('/my/tasks', auth, getMyTasks);
-router.get('/user/:userId/tasks', auth, isAdmin, getTasksOfUser);
+router.get('/:teamId/my-tasks', auth, getMyTasksInTeam);
+router.get('/user/:userId/tasks', auth, isTeamAdmin, getTasksOfUser);
 router.get('/getTask/:taskId', auth, getTaskById);
-router.get('/team/:teamId/user/:userId/tasks', auth, isAdmin, getTasksOfUserInTeam);
+router.get('/team/:teamId/user/:userId/tasks', auth, isTeamAdmin, getTasksOfUserInTeam);
 
 export default router;

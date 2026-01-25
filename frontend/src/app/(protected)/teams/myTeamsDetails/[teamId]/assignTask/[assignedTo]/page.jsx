@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTaskStore } from "@/store/taskStore";
 import styles from "./style.module.css";
 
@@ -16,15 +16,17 @@ export default function AssignTaskPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await assignTask(title, description, deadline, assignedTo, teamId);
-    if(success){
+    const success = await assignTask(
+      title,
+      description,
+      deadline,
+      assignedTo,
+      teamId,
+    );
+    if (success) {
       router.push(`/teams/myTeamsDetails/${teamId}/members/${assignedTo}`);
     }
   };
-
-  // router.back();
-  // e.preventDefault();
-  //router.push(`/teams/myTeamsDetails/${teamId}/members/${assignedTo}`);
 
   return (
     <div className={styles.page}>

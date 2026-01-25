@@ -125,6 +125,31 @@ export const useTaskStore = create((set) => ({
     }
   },
 
+  fetchMyTasksInTeam: async (teamId) => {
+  try {
+    set({ loading: true, error: null });
+
+    const res = await clientServer.get(
+      `/api/tasks/${teamId}/my-tasks`
+    );
+
+    set({
+      tasks: res.data,
+      loading: false,
+    });
+  } catch (err) {
+    const message =
+      err.response?.data?.message || "Failed to load team tasks";
+
+    set({
+      error: message,
+      loading: false,
+    });
+
+    notify(message, "error");
+  }
+},
+
   fetchTaskById: async (taskId) => {
     try {
       set({ loading: true, error: null });

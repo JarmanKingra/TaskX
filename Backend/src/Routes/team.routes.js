@@ -1,14 +1,13 @@
 import express from "express"
 import auth from "../Middlewares/auth.js"
-import { isAdmin } from "../Middlewares/adminOnly.js";
-import {createTeam, getSingleTeam, getAllTeams, removeMember, addMember} from "../Controllers/team.controller.js"
+import { isTeamAdmin } from "../Middlewares/adminOnly.js";
+import {createTeam, getSingleTeam, removeMember, addMember, getMyTeams} from "../Controllers/team.controller.js"
 
 const router = express.Router();
 
-router.post('/', auth, isAdmin, createTeam);
-router.get('/:teamId', auth, isAdmin, getSingleTeam);
-router.get('/', auth, isAdmin, getAllTeams);
-router.delete('/:teamId/members/:memberId', auth, isAdmin, removeMember);
-router.post('/:teamId/members', auth, isAdmin, addMember);
-
+router.post('/', auth, createTeam);
+router.get('/:teamId', auth, getSingleTeam);
+router.delete('/:teamId/members/:memberId', auth, isTeamAdmin, removeMember);
+router.post('/:teamId/members', auth, isTeamAdmin, addMember);
+router.get('/', auth, getMyTeams);
 export default router;
