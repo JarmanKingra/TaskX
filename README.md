@@ -2,15 +2,10 @@
 
 🔑 Demo Credentials (feel free to try)
 
-Admin
-📧 aman.admin@taskx.dev
-🔑 Admin@123
+📧 Nirmal@taskx.dev
+🔑 Nirmal
 
-Member
-📧 priya.member@taskx.dev
-🔑 Member@123
-
-TaskX is a role-based team task management application where admins can create teams, manage members, and assign tasks, while members can view and update their assigned tasks.
+TaskX is a role-based team task management application where user can create teams and becomes its admin, manage members, and assign tasks, while members can view and update their assigned tasks.
 It is built to simulate real-world team workflows used in startups and companies.
 
 🧠 Core Idea
@@ -23,7 +18,7 @@ This ensures data integrity, accountability, and realistic task tracking.
 ✨ Features
 👑 Admin Features
 
-Create and manage teams
+Manage teams
 Add members to a team using email
 Remove members from a team
 Assign tasks to team members
@@ -49,8 +44,8 @@ JWT-based authentication
 Role-based access control
 
 Protected routes for:
-Admin dashboard
-Member dashboard
+AdminTeamView
+MemberTeamView
 
 🏗 Tech Stack
 Frontend -- 
