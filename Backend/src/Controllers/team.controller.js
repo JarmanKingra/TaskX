@@ -182,4 +182,51 @@ const addMember = async (req, res) => {
   }
 };
 
-export { createTeam, getSingleTeam, addMember, removeMember, getMyTeams };
+const updateTeamMemberRole = async (req, res) => {
+  try {
+    const { teamId, memberId } = req.params;
+    const { requestedRole } = req.body;
+
+    if (!["admin", "user"].includes(requestedRole)) {
+      return res.status(400).json({
+        message: "Invalid role",
+      });
+    }
+
+    const team = await Team.findById(teamId);
+
+    if (!team) {
+      return res.status(404).json({ message: "Team not found" });
+    }
+
+    if (team.admin.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        message: "You are not the owner of this team",
+      });
+    }
+
+    const member = team.members.find(
+      (m) => m.user.toString() === memberId
+    );
+
+    if (!member) {
+      return res
+        .status(400)
+        .json({ message: "User is not a member of this team" });
+    }
+
+    member.role = requestedRole;
+
+    await team.save();
+
+    return res.status(200).json({
+      message: "Member role updated successfully",
+    });
+
+  } catch (error) {
+    console.error("Member Role Update Error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export { createTeam, getSingleTeam, addMember, removeMember, getMyTeams, updateTeamMemberRole };

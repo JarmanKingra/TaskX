@@ -17,7 +17,6 @@ export const useTeamStore = create((set) => ({
       set({ loading: true, error: null });
 
       const res = await clientServer.get("/api/teams");
-      
 
       set({
         teams: res.data,
@@ -48,7 +47,7 @@ export const useTeamStore = create((set) => ({
         teams: [res.data.team, ...state.teams],
         loading: false,
       }));
-      notify("Team created successfully", "success")
+      notify("Team created successfully", "success");
     } catch (err) {
       const message = err.response?.data?.message || "Failed to create team";
       set({
@@ -67,7 +66,7 @@ export const useTeamStore = create((set) => ({
       const res = await clientServer.get(`/api/teams/${teamId}`);
       set({
         currTeam: res.data.team,
-        currentRole: res.data.role, 
+        currentRole: res.data.role,
         teamMembers: res.data.team.members.length,
         loading: false,
       });
@@ -87,20 +86,20 @@ export const useTeamStore = create((set) => ({
     try {
       set({ loading: true, error: null });
       const res = await clientServer.delete(
-        `/api/teams/${teamId}/members/${memberId}`
+        `/api/teams/${teamId}/members/${memberId}`,
       );
 
       set((state) => ({
         currTeam: {
           ...state.currTeam,
           members: state.currTeam.members.filter(
-            (member) => member.user._id !== memberId
+            (member) => member.user._id !== memberId,
           ),
         },
         loading: false,
       }));
 
-      notify("Member removed successfully", "success")
+      notify("Member removed successfully", "success");
     } catch (err) {
       const message = err.response?.data?.message || "Failed to remove member";
       set({
@@ -129,9 +128,7 @@ export const useTeamStore = create((set) => ({
         loading: false,
       }));
 
-      notify("Member added successfully", "success")
-
-      
+      notify("Member added successfully", "success");
     } catch (err) {
       const message = err.response?.data?.message || "Failed to add member";
 
@@ -140,6 +137,41 @@ export const useTeamStore = create((set) => ({
         loading: false,
       });
 
+      notify(message, "error");
+
+      return { success: false };
+    }
+  },
+
+  updateTeamMemberRole: async (teamId, memberId, requestedRole) => {
+    try {
+      set({ loading: true, error: null });
+      const res = await clientServer.post(
+        `/api/teams/${teamId}/members/${memberId}`,
+        {
+          requestedRole,
+        },
+      );
+
+      set((state) => ({
+      currTeam: {
+        ...state.currTeam,
+        members: state.currTeam.members.map((member) =>
+          member.user._id === memberId
+            ? { ...member, role: requestedRole }
+            : member
+        ),
+      },
+      loading: false,
+    }));
+
+      notify("Member role updated successfully", "success");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to remove member";
+      set({
+        error: message,
+        loading: false,
+      });
       notify(message, "error");
 
       return { success: false };

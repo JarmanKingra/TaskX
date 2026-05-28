@@ -6,7 +6,7 @@ import { createTask, updateTask, getTaskByTeam, deleteTask, updateTaskStatus, ge
 
 const router = express.Router();
 
-router.post('/', auth, createTask);
+router.post('/', auth, isTeamAdmin, createTask);
 router.patch('/:taskId', auth, isTeamAdmin, updateTask);
 router.get('/:teamId', auth, isTeamAdmin, getTaskByTeam);
 router.delete('/:taskId', auth, deleteTask);

@@ -3,18 +3,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTeamStore } from "@/store/teamStore";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import styles from "../style.module.css";
+import RoleOptionsOverlay from "@/components/OverLayOptions/roleOptionsOverlay";
 
 export default function TeamAdminView({ teamId, team }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [openRemoveMember, setOpenRemoveMember] = useState(null);
   const [openTeamId, setOpenTeamId] = useState(null);
-
+  const [optionDots, setOptionDots] = useState(false);
+  const [memberId, setMemberId] = useState(null);
   const { removeMember, addMember } = useTeamStore();
 
   const admin = team.admin;
-  const members = team.members.filter((m) => m.role !== "admin");
+  const ownerId = team.admin._id.toString();
+
+  const members = team.members.filter((m) => m.user._id.toString() !== ownerId);
+  console.log(members);
 
   const handleRemoveMember = async (memberId) => {
     await removeMember(teamId, memberId);
@@ -61,11 +67,23 @@ export default function TeamAdminView({ teamId, team }) {
               >
                 <p>view</p>
               </button>
+              <BsThreeDotsVertical
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  (setOptionDots(true), setMemberId(member.user._id));
+                }}
+              />
             </div>
 
             {openRemoveMember === member.user._id && (
-              <div className={styles.overlay} onClick={() => setOpenRemoveMember(null)}>
-                <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div
+                className={styles.overlay}
+                onClick={() => setOpenRemoveMember(null)}
+              >
+                <div
+                  className={styles.modal}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <h3>Remove {member.user.fullName}?</h3>
                   <button
                     className={`${styles.modalBtn} ${styles.delete}`}
@@ -97,6 +115,13 @@ export default function TeamAdminView({ teamId, team }) {
             </button>
           </div>
         </div>
+      )}
+      {optionDots && (
+        <RoleOptionsOverlay
+          onClose={() => setOptionDots(false)}
+          memberId={memberId}
+          teamId={teamId}
+        />
       )}
     </div>
   );
