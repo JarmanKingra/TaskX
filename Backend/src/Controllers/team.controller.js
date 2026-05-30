@@ -1,6 +1,7 @@
 import Task from "../Models/tasks.js";
 import Team from "../Models/teams.js";
 import User from "../Models/user.js";
+import {ASSIGNABLE_ROLES} from "../Constants/teamRoles.js"
 
 const createTeam = async (req, res) => {
   try {
@@ -187,7 +188,7 @@ const updateTeamMemberRole = async (req, res) => {
     const { teamId, memberId } = req.params;
     const { requestedRole } = req.body;
 
-    if (!["admin", "member"].includes(requestedRole)) {
+    if (!ASSIGNABLE_ROLES.includes(requestedRole)) {
       return res.status(400).json({
         message: "Invalid role",
       });
