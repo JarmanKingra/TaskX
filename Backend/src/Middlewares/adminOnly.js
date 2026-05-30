@@ -16,12 +16,6 @@ export const isTeamAdmin = async (req, res, next) => {
       return res.status(400).json({ message: "Team ID is required" });
     }
 
-    // const team = await Team.findOne({
-    //   _id: teamId,
-    //   "members.user": userId,
-    //   "members.role": "admin",
-    // });
-
     const team = await Team.findOne({
       _id: teamId,
       members: {

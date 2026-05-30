@@ -8,7 +8,7 @@ const teamSchema = new mongoose.Schema(
       trim: true,
     },
 
-    admin: {
+    owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -22,8 +22,8 @@ const teamSchema = new mongoose.Schema(
         },
         role: {
           type: String,
-          enum: ["admin", "user"],
-          default: "user",
+          enum: ["admin", "member"],
+          default: "member",
         },
       },
     ],

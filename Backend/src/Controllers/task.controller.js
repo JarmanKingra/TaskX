@@ -27,13 +27,13 @@ const createTask = async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    if (existingTeam.admin.toString() !== req.user._id) {
+    if (existingTeam.owner.toString() !== req.user._id) {
       return res
         .status(403)
         .json({ message: "You are not allowed to create task for this team" });
     }
 
-    const isAdmin = existingTeam.admin.toString() === assignedTo;
+    const isAdmin = existingTeam.owner.toString() === assignedTo;
     const isMember = existingTeam.members.some(
       (member) => member.user.toString() === assignedTo
     )
@@ -94,14 +94,14 @@ const getTaskById = async (req, res) => {
     const task = await Task.findById(taskId)
       .populate("assignedBy", "fullName email")
       .populate("assignedTo", "fullName email")
-      .populate("team", "name admin");
+      .populate("team", "name owner");
 
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
     
     const isAssignedUser = task.assignedTo._id.toString() === userId.toString();
-    const isTeamAdmin = task.team.admin.toString() === userId.toString();
+    const isTeamAdmin = task.team.owner.toString() === userId.toString();
 
     if (!isAssignedUser && !isTeamAdmin) {
       return res.status(403).json({
@@ -131,7 +131,7 @@ const getTasksOfUserInTeam = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (team.admin.toString() !== req.user._id.toString()) {
+    if (team.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         message: "Not allowed to view member tasks",
       });
@@ -231,7 +231,7 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (task.team.admin.toString() !== req.user._id.toString()) {
+    if (task.team.owner.toString() !== req.user._id.toString()) {
       return res
         .status(403)
         .json({ message: "You are not the admin of this team" });
