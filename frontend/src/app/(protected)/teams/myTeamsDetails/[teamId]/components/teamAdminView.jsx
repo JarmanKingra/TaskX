@@ -6,6 +6,7 @@ import { useTeamStore } from "@/store/teamStore";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import styles from "../style.module.css";
 import RoleOptionsOverlay from "@/components/OverLayOptions/roleOptionsOverlay";
+import { notify } from "@/store/notificationStore";
 
 export default function TeamAdminView({ teamId, team }) {
   const router = useRouter();
@@ -16,11 +17,11 @@ export default function TeamAdminView({ teamId, team }) {
   const [memberId, setMemberId] = useState(null);
   const { removeMember, addMember } = useTeamStore();
 
-  const admin = team.admin;
-  const ownerId = team.admin._id.toString();
+  const owner = team.owner;
+  const ownerId = team.owner._id.toString();
+  console.log("Curr team = ", team);
 
   const members = team.members.filter((m) => m.user._id.toString() !== ownerId);
-  console.log(members);
 
   const handleRemoveMember = async (memberId) => {
     await removeMember(teamId, memberId);
@@ -28,9 +29,18 @@ export default function TeamAdminView({ teamId, team }) {
   };
 
   const addNewMember = async () => {
-    await addMember(teamId, email);
-    setEmail("");
-    setOpenTeamId(null);
+    try {
+      const res = await addMember(teamId, email);
+      if (!res?.success) {
+        setEmail("");
+        setOpenTeamId(null);
+        return;
+      }
+      setEmail("");
+      setOpenTeamId(null);
+    } catch (error) {
+      notify("Error in adding member", "error");
+    }
   };
 
   return (
@@ -43,7 +53,7 @@ export default function TeamAdminView({ teamId, team }) {
           </div>
         </div>
 
-        <p className={styles.adminBadge}>Admin - {admin.fullName}</p>
+        <p className={styles.adminBadge}>Owner - {owner.fullName}</p>
 
         {members.length === 0 && (
           <p className={styles.noMemberYet}>No members yet!</p>

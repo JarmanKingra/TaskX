@@ -38,13 +38,7 @@ export default function TaskDetailsPage() {
       </div>
     );
   }
-
-  if (error)
-    return (
-      <p>
-        {error} {console.log(error)}
-      </p>
-    );
+  
   if (!currTeam) return null;
 
   if (!currentRole) {
@@ -59,7 +53,7 @@ export default function TaskDetailsPage() {
   if (currentRole == "admin") {
     return <TeamAdminView teamId={teamId} team={currTeam} />;
   }
-  if (currentRole === "user") {
+  if (currentRole === "member") {
     return (
       <TeamMemberView
         tasks={tasks}

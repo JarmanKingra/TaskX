@@ -5,22 +5,22 @@ import User from "../Models/user.js";
 const createTeam = async (req, res) => {
   try {
     const { name } = req.body;
-    const adminId = req.user._id;
+    const ownerId = req.user._id;
 
     if (!name) {
       return res.status(400).json({ message: "Team name is required" });
     }
-    const existing = await Team.findOne({ name });
-    if (existing) {
-      return res.status(400).json({ message: "Team name already exists" });
-    }
+    // const existing = await Team.findOne({ name });
+    // if (existing) {
+    //   return res.status(400).json({ message: "Team name already exists" });
+    // }
 
     const newTeam = await Team.create({
       name,
-      admin: adminId,
+      owner: ownerId,
       members: [
         {
-          user: adminId,
+          user: ownerId,
           role: "admin",
         },
       ],
@@ -41,9 +41,9 @@ const getMyTeams = async (req, res) => {
     const userId = req.user._id;
 
     const allTeams = await Team.find({
-      $or: [{ admin: userId }, { "members.user": userId }],
+      $or: [{ owner: userId }, { "members.user": userId }],
     })
-      .populate("admin", "fullName email")
+      .populate("owner", "fullName email")
       .populate("members.user", "fullName email");
 
     return res.status(200).json(allTeams);
@@ -58,7 +58,7 @@ const getSingleTeam = async (req, res) => {
     const teamId = req.params.teamId;
 
     const team = await Team.findById(teamId)
-      .populate("admin", "fullName email")
+      .populate("owner", "fullName email")
       .populate("members.user", "fullName email")
       .populate("tasks");
 
@@ -68,7 +68,7 @@ const getSingleTeam = async (req, res) => {
 
     let role = null;
 
-    if (team.admin._id.toString() === req.user._id.toString()) {
+    if (team.owner._id.toString() === req.user._id.toString()) {
       role = "admin";
     } else {
       const member = team.members.find(
@@ -93,13 +93,13 @@ const removeMember = async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    if (team.admin.toString() !== req.user._id.toString()) {
+    if (team.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         message: "You are not the admin of this team",
       });
     }
 
-    if (team.admin.toString() === memberId) {
+    if (team.owner.toString() === memberId) {
       return res.status(400).json({
         message: "Admin cannot remove himself from the team",
       });
@@ -140,7 +140,7 @@ const addMember = async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    if (team.admin.toString() !== req.user._id.toString()) {
+    if (team.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         message: "Only admin can add members",
       });
@@ -165,7 +165,7 @@ const addMember = async (req, res) => {
     
     team.members.push({
       user: user._id,
-      role: "user",
+      role: "member",
     });
     await team.save();
     await team.populate("members.user", "fullName email");
@@ -187,7 +187,7 @@ const updateTeamMemberRole = async (req, res) => {
     const { teamId, memberId } = req.params;
     const { requestedRole } = req.body;
 
-    if (!["admin", "user"].includes(requestedRole)) {
+    if (!["admin", "member"].includes(requestedRole)) {
       return res.status(400).json({
         message: "Invalid role",
       });
@@ -199,7 +199,7 @@ const updateTeamMemberRole = async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    if (team.admin.toString() !== req.user._id.toString()) {
+    if (team.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         message: "You are not the owner of this team",
       });

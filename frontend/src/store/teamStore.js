@@ -121,14 +121,17 @@ export const useTeamStore = create((set) => ({
       });
 
       set((state) => ({
-        currTeam: {
-          ...state.currTeam,
-          members: [...state.currTeam.members, res.data.member],
-        },
+        currTeam: state.currTeam
+          ? {
+              ...state.currTeam,
+              members: [...state.currTeam.members, res.data.member],
+            }
+          : state.currTeam,
         loading: false,
       }));
 
       notify("Member added successfully", "success");
+      return { success: true };
     } catch (err) {
       const message = err.response?.data?.message || "Failed to add member";
 
@@ -154,16 +157,16 @@ export const useTeamStore = create((set) => ({
       );
 
       set((state) => ({
-      currTeam: {
-        ...state.currTeam,
-        members: state.currTeam.members.map((member) =>
-          member.user._id === memberId
-            ? { ...member, role: requestedRole }
-            : member
-        ),
-      },
-      loading: false,
-    }));
+        currTeam: {
+          ...state.currTeam,
+          members: state.currTeam.members.map((member) =>
+            member.user._id === memberId
+              ? { ...member, role: requestedRole }
+              : member,
+          ),
+        },
+        loading: false,
+      }));
 
       notify("Member role updated successfully", "success");
     } catch (err) {
