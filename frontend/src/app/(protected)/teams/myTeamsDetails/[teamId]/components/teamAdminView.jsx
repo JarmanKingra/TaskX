@@ -7,6 +7,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import styles from "../style.module.css";
 import RoleOptionsOverlay from "@/components/OverLayOptions/roleOptionsOverlay";
 import { notify } from "@/store/notificationStore";
+import MemberOptions from "@/components/memberOptions/memberOptions";
 
 export default function TeamAdminView({ teamId, team }) {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function TeamAdminView({ teamId, team }) {
   const [openRemoveMember, setOpenRemoveMember] = useState(null);
   const [openTeamId, setOpenTeamId] = useState(null);
   const [optionDots, setOptionDots] = useState(false);
+  const [roleChangeModal, setRoleChangeModal] = useState(false);
   const [memberId, setMemberId] = useState(null);
   const { removeMember, addMember } = useTeamStore();
 
@@ -60,23 +62,18 @@ export default function TeamAdminView({ teamId, team }) {
         )}
 
         {members.map((member) => (
-          <div key={member._id} className={styles.membersContainer}>
+          <div
+            key={member._id}
+            className={styles.membersContainer}
+            onClick={() =>
+              router.push(
+                `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
+              )
+            }
+          >
             <h3>{member?.user?.fullName}</h3>
 
             <div className={styles.memberOptions}>
-              <button onClick={() => setOpenRemoveMember(member.user._id)}>
-                <p>Remove</p>
-              </button>
-
-              <button
-                onClick={() =>
-                  router.push(
-                    `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
-                  )
-                }
-              >
-                <p>view</p>
-              </button>
               <BsThreeDotsVertical
                 style={{ cursor: "pointer" }}
                 onClick={() => {
@@ -126,11 +123,19 @@ export default function TeamAdminView({ teamId, team }) {
           </div>
         </div>
       )}
-      {optionDots && (
+      {roleChangeModal && (
         <RoleOptionsOverlay
-          onClose={() => setOptionDots(false)}
+          onClose={() => setRoleChangeModal(false)}
           memberId={memberId}
           teamId={teamId}
+        />
+      )}
+      {optionDots && (
+        <MemberOptions
+          onClose={() => setOptionDots(false)}
+          setRoleChangeModal={setRoleChangeModal}
+          setOpenRemoveMember={setOpenRemoveMember}
+          memberId={memberId}
         />
       )}
     </div>
