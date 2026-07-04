@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./roleOptions.module.css";
 import { cssHelper } from "@/utils/cssHelper";
 import { useTeamStore } from "@/store/teamStore";
+import { RxCross2 } from "react-icons/rx";
 
 const css = cssHelper(styles);
 
@@ -14,8 +15,9 @@ export default function RoleOptionsOverlay({ onClose, memberId, teamId }) {
   };
 
   return (
-    <div className={css("overlay")} onClick={onClose}>
+    <div className={css("overlay")}>
       <div className={css("overlayBox")} onClick={(e) => e.stopPropagation()}>
+        <div className={css("close-icon")} onClick={onClose}><RxCross2 /></div>
         <div
           className={css("option", {
             selected: requestedRole === "admin",
