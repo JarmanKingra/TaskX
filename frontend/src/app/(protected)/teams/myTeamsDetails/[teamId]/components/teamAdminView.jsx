@@ -21,7 +21,6 @@ export default function TeamAdminView({ teamId, team }) {
 
   const owner = team.owner;
   const ownerId = team.owner._id.toString();
-  console.log("Curr team = ", team);
 
   const members = team.members.filter((m) => m.user._id.toString() !== ownerId);
 
@@ -65,13 +64,12 @@ export default function TeamAdminView({ teamId, team }) {
           <div
             key={member._id}
             className={styles.membersContainer}
-            onClick={() =>
+          >
+            <h3 className={styles.memberName} onClick={() =>
               router.push(
                 `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
               )
-            }
-          >
-            <h3>{member?.user?.fullName}</h3>
+            }>{member?.user?.fullName}</h3>
 
             <div className={styles.memberOptions}>
               <BsThreeDotsVertical

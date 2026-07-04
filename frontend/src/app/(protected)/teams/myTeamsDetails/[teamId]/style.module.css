@@ -56,6 +56,16 @@
   cursor: pointer;
 }
 
+.memberName{
+  padding-inline: 5px;
+  padding-block: 2px;
+  border-radius: 10px;
+}
+
+.memberName:hover{
+  background-color: #aaaaaa;
+}
+
 .membersContainer :hover{
   background-color: gray;
 }
@@ -67,10 +77,11 @@
 }
 
 .memberOptions {
-  width: 40%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .memberOptions button {
