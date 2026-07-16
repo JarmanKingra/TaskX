@@ -9,11 +9,14 @@ import Team from "../Models/teams.js";
 
 export const isTeamAdmin = async (req, res, next) => {
   try {
+    console.log("entered in middleware backend")
     const userId = req.user._id;
     const teamId = req.params.teamId;
+    console.log("userId", userId);
+    console.log("teamId", teamId);
 
     if (!teamId) {
-      return res.status(400).json({ message: "Team ID is required" });
+      return res.status(400).json({ message: "Team ID is required in backend" });
     }
 
     const team = await Team.findOne({

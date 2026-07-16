@@ -70,6 +70,7 @@ export const useTeamStore = create((set) => ({
         teamMembers: res.data.team.members.length,
         loading: false,
       });
+      console.log(res);
     } catch (err) {
       const message = err.response?.data?.message || "Failed to load team";
       set({
