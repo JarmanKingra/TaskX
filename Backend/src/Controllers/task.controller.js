@@ -3,7 +3,6 @@ import Team from "../Models/teams.js";
 import User from "../Models/user.js";
 
 const createTask = async (req, res) => {
-  console.log("🔥 CREATE TASK CONTROLLER HIT");
   try {
     const { title, description, deadline, assignedTo, team } = req.body;
 
@@ -27,16 +26,26 @@ const createTask = async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    if (existingTeam.owner.toString() !== req.user._id) {
-      return res
-        .status(403)
-        .json({ message: "You are not allowed to create task for this team" });
+    const reqUser = existingTeam.members.find(
+      (member) => member.user.toString() === req.user._id.toString(),
+    );
+
+    if (!reqUser) {
+      return res.status(403).json({
+        message: "You are not a member of this team.",
+      });
+    }
+
+    if (reqUser.role !== "admin") {
+      return res.status(403).json({
+        message: "Only admins can perform this action.",
+      });
     }
 
     const isAdmin = existingTeam.owner.toString() === assignedTo;
     const isMember = existingTeam.members.some(
-      (member) => member.user.toString() === assignedTo
-    )
+      (member) => member.user.toString() === assignedTo,
+    );
 
     if (!isAdmin && !isMember) {
       return res.status(400).json({
@@ -99,7 +108,7 @@ const getTaskById = async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
-    
+
     const isAssignedUser = task.assignedTo._id.toString() === userId.toString();
     const isTeamAdmin = task.team.owner.toString() === userId.toString();
 
@@ -131,9 +140,19 @@ const getTasksOfUserInTeam = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (team.owner.toString() !== req.user._id.toString()) {
+    const reqUser = team.members.find(
+      (member) => member.user.toString() === req.user._id.toString(),
+    );
+
+    if (!reqUser) {
       return res.status(403).json({
-        message: "Not allowed to view member tasks",
+        message: "You are not a member of this team.",
+      });
+    }
+
+    if (reqUser.role !== "admin") {
+      return res.status(403).json({
+        message: "Only admins can perform this action.",
       });
     }
 
@@ -231,16 +250,31 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (task.team.owner.toString() !== req.user._id.toString()) {
-      return res
-        .status(403)
-        .json({ message: "You are not the admin of this team" });
+    // if (task.team.owner.toString() !== req.user._id.toString()) {
+    //   return res
+    //     .status(403)
+    //     .json({ message: "You are not the admin of this team" });
+    // }
+
+    const reqUser = task.team.members.find(
+      (member) => member.user.toString() === req.user._id.toString(),
+    );
+
+    if (!reqUser) {
+      return res.status(403).json({
+        message: "You are not a member of this team.",
+      });
+    }
+
+    if (reqUser.role !== "admin") {
+      return res.status(403).json({
+        message: "Only admins can perform this action.",
+      });
     }
 
     const deletedTask = await task.deleteOne();
     return res.status(200).json(deletedTask);
   } catch (error) {
-    console.error("TASK ERROR:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
