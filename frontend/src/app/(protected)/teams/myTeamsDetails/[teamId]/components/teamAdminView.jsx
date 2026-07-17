@@ -61,15 +61,21 @@ export default function TeamAdminView({ teamId, team }) {
         )}
 
         {members.map((member) => (
-          <div
-            key={member._id}
-            className={styles.membersContainer}
-          >
-            <h3 className={styles.memberName} onClick={() =>
-              router.push(
-                `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
-              )
-            }>{member?.user?.fullName}</h3>
+          <div key={member._id} className={styles.membersContainer}>
+            <div className={styles.nameAndRoleContainer}>
+              <h3
+                className={styles.memberName}
+                onClick={() =>
+                  router.push(
+                    `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
+                  )
+                }
+              >
+                {member?.user?.fullName}
+              </h3>
+
+              <div className={styles.memberRole}>{member.role}</div>
+            </div>
 
             <div className={styles.memberOptions}>
               <BsThreeDotsVertical
