@@ -51,7 +51,7 @@ export default function TaskDetailsPage() {
   }
 
   if (currentRole == "admin") {
-    return <TeamAdminView teamId={teamId} team={currTeam} />;
+    return <TeamAdminView teamId={teamId} team={currTeam}/>;
   }
   if (currentRole === "member") {
     return (

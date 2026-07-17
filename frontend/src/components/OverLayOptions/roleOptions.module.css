@@ -51,6 +51,10 @@
 }
 
 .selected {
-  background: #f0f0f0;
+  background: #52a65c;
   color: black;
+}
+
+.selectedRole {
+  background: #52a65c;
 }

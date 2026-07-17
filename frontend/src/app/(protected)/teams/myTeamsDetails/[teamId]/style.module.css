@@ -22,7 +22,7 @@
   padding: 0.5rem;
 }
 
-.mainHeadingOptions{
+.mainHeadingOptions {
   display: flex;
   color: white;
   justify-content: space-between;
@@ -43,7 +43,6 @@
   color: black;
 }
 
-
 .membersContainer {
   border: 1px solid white;
   color: white;
@@ -56,17 +55,17 @@
   cursor: pointer;
 }
 
-.memberName{
+.memberName {
   padding-inline: 5px;
   padding-block: 2px;
   border-radius: 10px;
 }
 
-.memberName:hover{
+.memberName:hover {
   background-color: #aaaaaa;
 }
 
-.membersContainer :hover{
+.membersContainer :hover {
   background-color: gray;
 }
 
@@ -107,7 +106,6 @@
   z-index: 1000;
 }
 
-
 .modal {
   width: 100%;
   max-width: 420px;
@@ -124,7 +122,6 @@
   font-weight: 500;
   margin-bottom: 1.6rem;
 }
-
 
 .modalBtn {
   width: 100%;
@@ -143,7 +140,6 @@
   background: rgba(0, 0, 0, 0.2);
   color: #bfdbfe;
 }
-
 
 .addMember:hover {
   background: rgba(124, 124, 124, 0.5);
@@ -185,8 +181,7 @@
   color: #ffffff;
 }
 
-
-.loadingWrapper{
+.loadingWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -218,7 +213,7 @@
 .loader::after {
   position: absolute;
   top: 0;
-  content: '';
+  content: "";
 }
 .loader::before {
   left: -1.5em;
@@ -228,6 +223,21 @@
 .loader::after {
   left: 1.5em;
 }
+
+.nameAndRoleContainer {
+  display: flex;
+  align-items: center;
+}
+
+.memberRole {
+  border: 1px solid grey;
+  background-color: #383838;
+  padding-inline: 4px;
+  border-radius: 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
 @-webkit-keyframes load1 {
   0%,
   80%,
@@ -253,29 +263,28 @@
   }
 }
 
-
-
-
-@media (max-width: 550px){
-  .mainHeadingOptions{
-    padding-left: .5rem;
-    padding-right: .5rem;
+@media (max-width: 550px) {
+  .mainHeadingOptions {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
-  .mainHeadingOptions h3{ 
+  .mainHeadingOptions h3 {
     font-size: small;
   }
 
   .mainHeadingOptions button {
     width: 59px;
     border-radius: 20px;
-    font-size: .7rem;
+    font-size: 0.7rem;
+  }
+  .memberRole {
+    display: none;
   }
 }
 
-
-@media (max-width: 600px){
-  .membersContainer{
+@media (max-width: 600px) {
+  .membersContainer {
     width: 80%;
     justify-content: space-evenly;
     align-items: center;
@@ -283,11 +292,11 @@
   }
 
   .membersContainer h3 {
-    font-size: .5rem;
+    font-size: 0.5rem;
     letter-spacing: 1px;
   }
 
-  .memberOptions{
+  .memberOptions {
     width: 60%;
     justify-content: space-evenly;
   }
@@ -297,12 +306,7 @@
     width: 35px;
   }
 
-  .memberOptions button p{
+  .memberOptions button p {
     font-size: 8px;
   }
 }
-
-
-
-
-

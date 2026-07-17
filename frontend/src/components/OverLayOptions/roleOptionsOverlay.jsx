@@ -6,7 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 
 const css = cssHelper(styles);
 
-export default function RoleOptionsOverlay({ onClose, memberId, teamId }) {
+export default function RoleOptionsOverlay({ onClose, memberId, teamId}) {
   const [requestedRole, setRequestedRole] = useState(null);
   const { updateTeamMemberRole } = useTeamStore();
 
