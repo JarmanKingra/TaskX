@@ -21,9 +21,9 @@ const teamSchema = new mongoose.Schema(
           ref: "User",
         },
         role: {
-          type: String,
-          enum: ["admin", "member"],
-          default: "member",
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Role",
+          required: true,
         },
       },
     ],
