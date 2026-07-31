@@ -6,6 +6,7 @@ import userRoutes from "./Routes/user.routes.js"
 import teamRoutes from "./Routes/team.routes.js"
 import taskRoutes from "./Routes/task.routes.js"
 import messageRoutes from "./Routes/message.routes.js";
+import rbaRoutes from "./Routes/rba.routes.js";
 
 dotenv.config();
 const MONGO_URI = process.env.MONGO_URI;
@@ -20,6 +21,7 @@ app.use("/api/auth",userRoutes);
 app.use("/api/teams", teamRoutes);    
 app.use("/api/tasks", taskRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/rba", rbaRoutes);
 
   
 app.get("/", (req, res) => { 
