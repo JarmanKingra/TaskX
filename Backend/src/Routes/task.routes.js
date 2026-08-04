@@ -1,20 +1,72 @@
-import express from "express"
-import auth from "../Middlewares/auth.js"
-import { isTeamAdmin } from "../Middlewares/adminOnly.js";
+import express from "express";
+import auth from "../Middlewares/auth.js";
+import loadMembership, {
+  loadMembershipFromTask,
+} from "../Middlewares/loadMembership.js";
+import authorize from "../Middlewares/authorize.js";
 
-import { createTask, updateTask, getTaskByTeam, deleteTask, updateTaskStatus, getMyTasks, getTasksOfUser, getTaskById, getTasksOfUserInTeam, getMyTasksInTeam } from "../Controllers/task.controller.js"
+import {
+  createTask,
+  updateTask,
+  getTaskByTeam,
+  deleteTask,
+  updateTaskStatus,
+  getMyTasks,
+  getTasksOfUser,
+  getTaskById,
+  getTasksOfUserInTeam,
+  getMyTasksInTeam,
+} from "../Controllers/task.controller.js";
 
 const router = express.Router();
 
-router.post('/', auth, createTask);
-router.patch('/:taskId', auth, isTeamAdmin, updateTask);
-router.get('/:teamId', auth, isTeamAdmin, getTaskByTeam);
-router.delete('/:taskId', auth, deleteTask);
-router.patch('/:taskId/status', auth, updateTaskStatus);
-router.get('/my/tasks', auth, getMyTasks);
-router.get('/:teamId/my-tasks', auth, getMyTasksInTeam);
-router.get('/user/:userId/tasks', auth, isTeamAdmin, getTasksOfUser);
-router.get('/getTask/:taskId', auth, getTaskById);
-router.get('/team/:teamId/user/:userId/tasks', auth, isTeamAdmin, getTasksOfUserInTeam);
+router.post("/", auth, loadMembership, authorize("task:create"), createTask);
+
+// Static / multi-segment paths before /:teamId
+router.get("/my/tasks", auth, getMyTasks);
+router.get("/getTask/:taskId", auth, loadMembershipFromTask, getTaskById);
+router.get("/user/:userId/tasks", auth, getTasksOfUser);
+router.get(
+  "/team/:teamId/user/:userId/tasks",
+  auth,
+  loadMembership,
+  authorize("task:view:all"),
+  getTasksOfUserInTeam,
+);
+router.get(
+  "/:teamId/my-tasks",
+  auth,
+  loadMembership,
+  authorize("task:view:own"),
+  getMyTasksInTeam,
+);
+router.get(
+  "/:teamId",
+  auth,
+  loadMembership,
+  authorize("task:view:all"),
+  getTaskByTeam,
+);
+
+router.patch(
+  "/:taskId/status",
+  auth,
+  loadMembershipFromTask,
+  updateTaskStatus,
+);
+router.patch(
+  "/:taskId",
+  auth,
+  loadMembershipFromTask,
+  authorize("task:update"),
+  updateTask,
+);
+router.delete(
+  "/:taskId",
+  auth,
+  loadMembershipFromTask,
+  authorize("task:delete"),
+  deleteTask,
+);
 
 export default router;

@@ -1,7 +1,7 @@
 import express from "express";
 import auth from "../Middlewares/auth.js";
 import loadMembership from "../Middlewares/loadMembership.js";
-import authorize from "../Middlewares/authoroze.js";
+import authorize from "../Middlewares/authorize.js";
 import {
   getAllPermissions,
   getTeamRoles,
