@@ -1,132 +1,405 @@
-// owner id 690b07682769c649b2a65e22
-POST http://localhost:3001/api/auth/login HTTP/1.1
-content-type: application/json
+###############################################################################
+# TaskX Backend — route checklist (run top → bottom)
+#
+# How to use:
+# 1. Start backend on http://localhost:3001
+# 2. Run each request with REST Client
+# 3. After each response, copy IDs/tokens into the variables below
+# 4. Skip signup if users already exist — use login instead
+
+
+###############################################################################
+@baseUrl = http://localhost:3001
+
+# Fill these as you go (from login / create responses)
+@ownerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
+@memberToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNzEzZWU4OWViNjgyNjIwMTRjMyIsImVtYWlsIjoibWVtYmVyamFybWFuQGdtYWlsLmNvbSIsImlhdCI6MTc4NTk5NzE0OCwiZXhwIjoxNzg2MDgzNTQ4fQ.lxRS79ucreFh88Mm47fuUFdGQwNB2ORHgFa-rWTvv5s
+@ownerId = 6a7426bfee89eb68262014bf
+@memberId = 6a742713ee89eb68262014c3
+@memberEmail = member1@gmail.com
+@teamId = 6a742e6fee89eb68262014c9
+@ownerRoleId = 6a742e70ee89eb68262014cc
+@memberRoleId = 6a742e70ee89eb68262014cd
+@customRoleId = 6a743617ee89eb682620152e
+@taskId = 6a7438b4ee89eb6826201573
+@permissionName = task:view:all
+
+
+###############################################################################
+# 1) AUTH
+
+
+###############################################################################
+
+
+### 1.1 Signup — Owner
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
 
 {
-  "password": "admin4",
-  "email": "admin4@gmail.com"
+  "fullName": "OwnerJarman",
+  "email": "OwnerJarman@gmail.com",
+  "password": "OwnerJarman"
 }
 
-###
 
-POST http://localhost:3001/api/auth/login HTTP/1.1
-content-type: application/json
+### 1.2 Signup — Member
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
 
 {
-  "password": "demo1",
-  "email": "demo1@gmail.com"
+  "fullName": "MemberJarman",
+  "email": "MemberJarman@gmail.com",
+  "password": "MemberJarman"
 }
 
-###
 
-POST http://localhost:3001/api/auth/signUp HTTP/1.1
-content-type: application/json
-
+### 1.3 Login — Owner  (copy token → @ownerToken, user.id → @ownerId)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
 
 {
-  "fullName": "admin4",
-  "password": "admin4",
-  "email": "admin4@gmail.com",
-  "requestedRole": "admin",
-  "adminCode": "0001"
+  "email": "OwnerJarman@gmail.com",
+  "password": "OwnerJarman"
 }
 
-###
 
-POST http://localhost:3001/api/teams HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5M2UyOWUxNzc5YWIyZGY1NDQ5ZTdjYyIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTc5MzE1NCwiZXhwIjoxNzY1ODc5NTU0fQ.pc6t0A7CuUCwOyAw5Tlw49-kncsBG4wEP7DBO7b6IZY
+### 1.4 Login — Member  (copy token → @memberToken, user.id → @memberId)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
 
 {
-  "name": "sample team",
-  "admin": "692fd400fc9b7ac541cd1e32"
+  "email": "MemberJarman@gmail.com",
+  "password": "MemberJarman"
 }
 
-### 
 
-GET http://localhost:3001/api/teams HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+###############################################################################
+# 2) TEAMS
 
-###
 
-GET http://localhost:3001/api/teams/69315fdcca40c1824a7a8a7e HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
+###############################################################################
 
-###
 
-POST http://localhost:3001/api/teams/6944e49026c8f347c2442b58/members/693e2a19779ab2df5449e7d4 HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5M2UyOWUxNzc5YWIyZGY1NDQ5ZTdjYyIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NjEyNDY3MywiZXhwIjoxNzY2MjExMDczfQ.gCHxDtSGb6SyCzmr4D3Sr_rkPH6ydUkOl1qlElR7Klg
-
-### 
-
-DELETE  http://localhost:3001/api/teams/69315fdcca40c1824a7a8a7e/members/692fcde94be44f28d8894642 HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NDkxNTc3NSwiZXhwIjoxNzY1MDAyMTc1fQ.biMDMczH5xM1pi4RAwf2iXu-5u-4yVNEurullmITJoI
-
-###
-
-POST   http://localhost:3001/api/tasks HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzQ0NmUxNWUwZTE2MjAyOWY2MDU0MSIsImVtYWlsIjoiZGVtb3VzZXIzQGdtYWlsLmNvbSIsImlhdCI6MTc2OTIyODAwMSwiZXhwIjoxNzY5MzE0NDAxfQ.l-FDUdZjrHGncE53VY_GKZeS7EjWoWFAbMwVZPw6mkY
+### 2.1 Create team (as owner)
+# Expect: team.owner = you, default Owner + Member roles created
+# Copy: team._id → @teamId
+# Copy: members[0].role → @ownerRoleId (or get from RBA list below)
+POST {{baseUrl}}/api/teams
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
 
 {
-  "title": "testinging Title",
-  "team": "697446f75e0e162029f60547",
-  "description": "testinging Title",
-  "assignedTo": "697446bb5e0e162029f6053d"
+  "name": "RBA Test Team By Jarman"
 }
 
-###
-PATCH    http://localhost:3001/api/tasks/6936698ec82249f989f473c9 HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3MzMyOCwiZXhwIjoxNzY1MjU5NzI4fQ.Tc7r2Wy4MFQY-wT2fSk-2YJusC4sLSevFvYK1W2BCKs
+
+### 2.2 Get my teams (as owner)
+GET {{baseUrl}}/api/teams
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
+
+
+### 2.3 Get single team (as owner)
+# Expect: membership.isOwner true, full permissions
+GET {{baseUrl}}/api/teams/{{teamId}}
+Authorization: Bearer {{ownerToken}}
+
+
+### 2.4 Add member to team (as owner) — needs member:add (owner has all)
+# Body email must be an existing user
+POST {{baseUrl}}/api/teams/6a742e6fee89eb68262014c9/members
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
 
 {
-  "title": "testinging Title edited",
-  "team": "69315fdcca40c1824a7a8a7e",
-  "description": "testinging Title edited",
-  "assignedTo": "692fcc78bd3bcff4fbee7d3c"
+  "email": "MemberJarman@gmail.com"
 }
 
-###
 
-GET    http://localhost:3001/api/tasks/69315fdcca40c1824a7a8a7e HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3MzMyOCwiZXhwIjoxNzY1MjU5NzI4fQ.Tc7r2Wy4MFQY-wT2fSk-2YJusC4sLSevFvYK1W2BCKs
+### 2.5 Get single team again (confirm member listed)
+GET {{baseUrl}}/api/teams/{{teamId}}
+Authorization: Bearer {{ownerToken}}
 
-###
-PATCH      http://localhost:3001/api/tasks/6936698ec82249f989f473c9/status HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZjYzc4YmQzYmNmZjRmYmVlN2QzYyIsImVtYWlsIjoiZGVtbzFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjUxNzQ0MDgsImV4cCI6MTc2NTI2MDgwOH0.qWj12Q4ciVt5HECwyEETv3PT9DGUEGMULOrkynPxptQ
+
+### 2.6 Get single team (as member)
+# Expect: membership.isOwner false, Member role permissions
+GET {{baseUrl}}/api/teams/6a742e6fee89eb68262014c9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
+
+
+###############################################################################
+# 3) RBA — permissions & roles
+
+
+###############################################################################
+
+
+### 3.1 Get global permission catalog
+GET {{baseUrl}}/api/rba/permissions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
+
+
+### 3.2 List team roles (Owner + Member defaults)
+# Copy Member role _id → @memberRoleId
+# Copy Owner role _id → @ownerRoleId
+GET {{baseUrl}}/api/rba/teams/6a742e6fee89eb68262014c9/roles
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNzEzZWU4OWViNjgyNjIwMTRjMyIsImVtYWlsIjoibWVtYmVyamFybWFuQGdtYWlsLmNvbSIsImlhdCI6MTc4NTk5NzE0OCwiZXhwIjoxNzg2MDgzNTQ4fQ.lxRS79ucreFh88Mm47fuUFdGQwNB2ORHgFa-rWTvv5s
+
+
+### 3.3 Get one role by id
+GET {{baseUrl}}/api/rba/teams/6a742e6fee89eb68262014c9/roles/6a742e70ee89eb68262014cd
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNzEzZWU4OWViNjgyNjIwMTRjMyIsImVtYWlsIjoibWVtYmVyamFybWFuQGdtYWlsLmNvbSIsImlhdCI6MTc4NTk5NzE0OCwiZXhwIjoxNzg2MDgzNTQ4fQ.lxRS79ucreFh88Mm47fuUFdGQwNB2ORHgFa-rWTvv5s
+
+
+### 3.4 Create custom role (needs role:manage)
+# Copy role._id → @customRoleId
+POST {{baseUrl}}/api/rba/teams/6a742e6fee89eb68262014c9/roles
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "name": "Task Manager",
+  "description": "Can create/update/view tasks",
+  "permissions": [
+    "task:create",
+    "task:update",
+    "task:view:all",
+    "task:view:own",
+    "task:assign"
+  ]
+}
+
+
+### 3.5 Update custom role
+PUT {{baseUrl}}/api/rba/teams/6a742e6fee89eb68262014c9/roles/6a743617ee89eb682620152e
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "description": "Task Manager — updated",
+  "permissions": [
+    "task:create",
+    "task:update",
+    "task:delete",
+    "task:view:all",
+    "task:view:own",
+    "task:assign"
+  ]
+}
+
+
+### 3.6 Assign custom role to member (needs member:role:update)
+PUT {{baseUrl}}/api/rba/teams/{{teamId}}/members/{{memberId}}/role
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "roleId": "{{customRoleId}}"
+}
+
+
+### 3.7 Try assign role as member (expect 403 unless they have member:role:update)
+PUT {{baseUrl}}/api/rba/teams/{{teamId}}/members/{{memberId}}/role
+Content-Type: application/json
+Authorization: Bearer {{memberToken}}
+
+{
+  "roleId": "{{memberRoleId}}"
+}
+
+
+### 3.8 Re-assign Member role back (optional — for later permission tests)
+PUT {{baseUrl}}/api/rba/teams/{{teamId}}/members/{{memberId}}/role
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "roleId": "{{memberRoleId}}"
+}
+
+
+###############################################################################
+# 4) TASKS
+
+
+###############################################################################
+
+
+### 4.1 Create task (as owner — has task:create)
+# Copy _id → @taskId
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "title": "First test task",
+  "description": "Created by owner",
+  "team": "{{teamId}}",
+  "assignedTo": "{{memberId}}",
+  "deadline": "2026-12-31"
+}
+
+
+### 4.2 Create task as member with only Member role (expect 403 — no task:create)
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer {{memberToken}}
+
+{
+  "title": "Member should fail",
+  "description": "Should be forbidden",
+  "team": "{{teamId}}",
+  "assignedTo": "{{memberId}}"
+}
+
+
+### 4.3 Get all team tasks (needs task:view:all — owner ok, Member role should 403)
+GET {{baseUrl}}/api/tasks/{{teamId}}
+Authorization: Bearer {{ownerToken}}
+
+
+### 4.4 Get all team tasks as member (expect 403 with default Member role)
+GET {{baseUrl}}/api/tasks/{{teamId}}
+Authorization: Bearer {{memberToken}}
+
+
+### 4.5 Get my tasks in this team (needs task:view:own)
+GET {{baseUrl}}/api/tasks/{{teamId}}/my-tasks
+Authorization: Bearer {{memberToken}}
+
+
+### 4.6 Get my tasks across all teams
+GET {{baseUrl}}/api/tasks/my/tasks
+Authorization: Bearer {{memberToken}}
+
+
+### 4.7 Get one task by id
+GET {{baseUrl}}/api/tasks/getTask/{{taskId}}
+Authorization: Bearer {{memberToken}}
+
+
+### 4.8 Get tasks of a user in a team (needs task:view:all)
+GET {{baseUrl}}/api/tasks/team/{{teamId}}/user/{{memberId}}/tasks
+Authorization: Bearer {{ownerToken}}
+
+
+### 4.9 Get all tasks of a user (any team — auth only)
+GET {{baseUrl}}/api/tasks/user/{{memberId}}/tasks
+Authorization: Bearer {{ownerToken}}
+
+
+### 4.10 Update task (needs task:update)
+PATCH {{baseUrl}}/api/tasks/{{taskId}}
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "title": "First test task — edited",
+  "description": "Updated by owner"
+}
+
+
+### 4.11 Update task status (assignee only — use memberToken)
+PATCH {{baseUrl}}/api/tasks/{{taskId}}/status
+Content-Type: application/json
+Authorization: Bearer {{memberToken}}
+
+{
+  "status": "in-progress"
+}
+
+
+### 4.12 Update task status as owner who is NOT assignee (expect 403)
+PATCH {{baseUrl}}/api/tasks/{{taskId}}/status
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
 
 {
   "status": "completed"
 }
 
-###
-GET      http://localhost:3001/api/tasks/my/tasks HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZjYzc4YmQzYmNmZjRmYmVlN2QzYyIsImVtYWlsIjoiZGVtbzFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjUxNzQ0MDgsImV4cCI6MTc2NTI2MDgwOH0.qWj12Q4ciVt5HECwyEETv3PT9DGUEGMULOrkynPxptQ
 
-###
-GET      http://localhost:3001/api/tasks/user/692fcc78bd3bcff4fbee7d3c/tasks HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3NDgyOSwiZXhwIjoxNzY1MjYxMjI5fQ.K2V1awfEVw6KaIiVWbmi8Y-nGpt3-5-waIlf25ait9k
-
-###
-
-DELETE       http://localhost:3001/api/tasks/6936698ec82249f989f473c9 HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZkNDAwZmM5YjdhYzU0MWNkMWUzMiIsImVtYWlsIjoiYWRtaW40QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2NTE3NDgyOSwiZXhwIjoxNzY1MjYxMjI5fQ.K2V1awfEVw6KaIiVWbmi8Y-nGpt3-5-waIlf25ait9k
-
-###
-POST       http://localhost:3001/api/messages/69367ac4ce52d56d57d8a02c HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmZjYzc4YmQzYmNmZjRmYmVlN2QzYyIsImVtYWlsIjoiZGVtbzFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjUxNzk0NzEsImV4cCI6MTc2NTI2NTg3MX0.S_9Hnph-P5AcsfQdwMVtJhNatRQh7m-AqBvSqZExjvU
+### 4.13 Update task status to completed (as assignee)
+PATCH {{baseUrl}}/api/tasks/{{taskId}}/status
+Content-Type: application/json
+Authorization: Bearer {{memberToken}}
 
 {
-  "message": "added a message"
+  "status": "completed"
+}
+
+
+###############################################################################
+# 5) MESSAGES
+
+
+###############################################################################
+
+
+### 5.1 Create message on task
+POST {{baseUrl}}/api/messages/{{taskId}}
+Content-Type: application/json
+Authorization: Bearer {{memberToken}}
+
+{
+  "message": "Status updated to completed"
+}
+
+
+###############################################################################
+# 6) CLEANUP / DESTRUCTIVE (run last)
+
+
+###############################################################################
+
+
+### 6.1 Delete task (needs task:delete)
+DELETE {{baseUrl}}/api/tasks/{{taskId}}
+Authorization: Bearer {{ownerToken}}
+
+
+### 6.2 Delete custom role
+# Fail if still assigned to members — unassign first (see 3.8)
+DELETE {{baseUrl}}/api/rba/teams/{{teamId}}/roles/{{customRoleId}}
+Authorization: Bearer {{ownerToken}}
+
+
+### 6.3 Remove member from team (needs member:remove)
+DELETE {{baseUrl}}/api/teams/{{teamId}}/members/{{memberId}}
+Authorization: Bearer {{ownerToken}}
+
+
+### 6.4 Try remove owner from team (expect 400)
+DELETE {{baseUrl}}/api/teams/{{teamId}}/members/{{ownerId}}
+Authorization: Bearer {{ownerToken}}
+
+
+###############################################################################
+# 7) OPTIONAL — permission upgrade check
+# After 3.6 (member has Task Manager), re-run 4.2 — should succeed (201)
+
+
+###############################################################################
+
+
+### 7.1 Assign Task Manager role to member again
+PUT {{baseUrl}}/api/rba/teams/{{teamId}}/members/{{memberId}}/role
+Content-Type: application/json
+Authorization: Bearer {{ownerToken}}
+
+{
+  "roleId": "{{customRoleId}}"
+}
+
+
+### 7.2 Member creates task (should work with Task Manager role)
+POST {{baseUrl}}/api/tasks
+Content-Type: application/json
+Authorization: Bearer {{memberToken}}
+
+{
+  "title": "Created by Task Manager member",
+  "description": "Permission check",
+  "team": "{{teamId}}",
+  "assignedTo": "{{ownerId}}"
 }
