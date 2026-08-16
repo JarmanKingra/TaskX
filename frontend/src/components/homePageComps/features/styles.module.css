@@ -1,0 +1,117 @@
+.section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-top: 1px solid rgba(39, 39, 42, 0.5);
+  }
+  
+  @media (min-width: 768px) {
+    .section {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+  }
+  
+  .container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  
+  .subtitle {
+    color: #a78bfa;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    color: #ffffff;
+  }
+  
+  @media (min-width: 1024px) {
+    .title {
+      font-size: 3rem;
+      line-height: 1;
+    }
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  
+  .card {
+    padding: 2rem;
+    background-image: linear-gradient(
+      to bottom,
+      #18181b,
+      rgba(24, 24, 27, 0.5)
+    );
+    border-radius: 1rem;
+    border: 1px solid #27272a;
+    transition: all 300ms ease;
+  }
+  
+  .card:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+  
+  .iconBox {
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: rgba(124, 58, 237, 0.1);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: background-color 300ms ease;
+  }
+  
+  .card:hover .iconBox {
+    background-color: rgba(124, 58, 237, 0.2);
+  }
+  
+  .icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #a78bfa;
+  }
+  
+  .cardTitle {
+    color: #ffffff;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  
+  .cardDescription {
+    color: #a1a1aa;
+    line-height: 1.625;
+  }

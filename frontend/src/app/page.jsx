@@ -4,6 +4,11 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useEffect } from "react";
+import Navbar from "@/components/homePageComps/Navbar/page";
+import Hero1 from "@/components/homePageComps/homepage/page";
+import Features from "@/components/homePageComps/features/page";
+import Cta from "@/components/homePageComps/cta/page";
+import Footer from "@/components/homePageComps/footer/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,33 +33,12 @@ export default function Home() {
 
   return (
     <main className={`${styles.main}}`}>
-      <nav className={styles.navbar}>
-        <div className={styles.logo}>TaskX</div>
-        <div className={styles.navLinks}>
-          <button  onClick={() => {router.push("/auth/login")}} className={styles.navBtn}>Sign In</button>
-        </div>
-      </nav>
 
-      <section className={styles.hero}>
-        <h1>
-          Manage Tasks <br />
-          <span>Effortlessly with TaskX</span>
-        </h1>
-
-        <p>
-          A powerful task management platform built for teams who want clarity,
-          speed, and collaboration.
-        </p>
-
-        <div className={styles.cta}>
-          <input type="email" placeholder="Your work email" />
-          <button onClick={() => {router.push("/auth/register")}}>Start for free</button>
-        </div>
-
-        <p className={styles.subText}>
-          No credit card required · Free forever for individuals
-        </p>
-      </section>
+      <Navbar />
+      <Hero1/>
+      <Features/>
+      <Cta/>
+      <Footer/>
     </main>
   );
 }

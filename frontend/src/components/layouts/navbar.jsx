@@ -27,45 +27,41 @@ export default function NavBarComponent() {
           ☰
         </div>
         <div
-          className={`${styles.navBarOptionContainer} ${
-            open ? styles.open : ""
-          }`}
+          className={`${styles.navBarOptionContainer} ${open ? styles.open : ""
+            }`}
         >
-          {isLoggedIn && token && user? (
-            
-              <div className={styles.navOptions}>
-                <p
-                  onClick={() => router.replace("/dashboard")}
-                  style={{ fontWeight: "bold", cursor: "pointer" }}
-                >
-                  Home
-                </p>
-                {/* {user?.role == "admin" ? ( */}
-                  <p
-                    onClick={() => router.replace("/teams/myTeams")}
-                    style={{ fontWeight: "bold", cursor: "pointer" }}
-                  >
-                    My Teams
-                  </p>
-                {/* // ) : ( */}
-                  <p
-                    onClick={() => router.replace("/tasks/myTasks")}
-                    style={{ fontWeight: "bold", cursor: "pointer" }}
-                  >
-                    My Tasks
-                  </p>
-                {/* )} */}
-                <p
-                  onClick={() => {
-                    logout();
-                    router.replace("/auth/login");
-                  }}
-                  style={{ fontWeight: "bold", cursor: "pointer" }}
-                >
-                  Logout
-                </p>
-              </div>
-            
+          {isLoggedIn && token && user ? (
+
+            <div className={styles.navOptions}>
+              <p
+                onClick={() => router.replace("/dashboard")}
+                style={{ fontWeight: "bold", cursor: "pointer" }}
+              >
+                Home
+              </p>
+              <p
+                onClick={() => router.replace("/teams/myTeams")}
+                style={{ fontWeight: "bold", cursor: "pointer" }}
+              >
+                My Teams
+              </p>
+              <p
+                onClick={() => router.replace("/tasks/myTasks")}
+                style={{ fontWeight: "bold", cursor: "pointer" }}
+              >
+                My Tasks
+              </p>
+              <p
+                onClick={() => {
+                  logout();
+                  router.replace("/auth/login");
+                }}
+                style={{ fontWeight: "bold", cursor: "pointer" }}
+              >
+                Logout
+              </p>
+            </div>
+
           ) : (
             <div
               onClick={() => {
@@ -73,7 +69,7 @@ export default function NavBarComponent() {
               }}
               className={styles.buttonJoin}
             >
-              Be a part
+              Login
             </div>
           )}
         </div>
