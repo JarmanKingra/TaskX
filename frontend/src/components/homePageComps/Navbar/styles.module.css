@@ -30,29 +30,30 @@
   .icon {
     width: 2rem;
     height: 2rem;
-    color: #a78bfa; /* text-violet-400 */
+    color: var(--color-primary-soft);
   }
   
   .title {
     font-size: 1.25rem;
     line-height: 1.75rem;
-    font-family: inherit; /* replace with custom heading font if defined */
-    color: #ffffff;
+    font-family: inherit;
+    color: var(--color-text-primary);
     letter-spacing: -0.025em;
   }
   
   .signInBtn {
     padding: 0.625rem 1.25rem;
-    background-color: #ffffff;
-    color: #18181b; /* text-zinc-900 */
+    background-color: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
     font-size: 0.875rem;
     line-height: 1.25rem;
     font-weight: 500;
     border-radius: 9999px;
     text-decoration: none;
     transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
   }
   
   .signInBtn:hover {
-    background-color: #e4e4e7; /* hover:bg-zinc-200 */
+    background-color: var(--color-surface-hover);
   }

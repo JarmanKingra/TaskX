@@ -1,14 +1,14 @@
 .section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
   
   @media (min-width: 1024px) {
     .section {
-      padding-top: 8rem;
-      padding-bottom: 8rem;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
       padding-left: 4rem;
       padding-right: 4rem;
     }
@@ -22,7 +22,7 @@
   
   .banner {
     position: relative;
-    background-image: linear-gradient(to bottom right, #7c3aed, #c026d3);
+    background-image: linear-gradient(to bottom right, var(--color-primary), var(--color-accent));
     border-radius: 1.5rem;
     padding: 3rem;
     overflow: hidden;
@@ -41,7 +41,7 @@
     right: 0;
     width: 24rem;
     height: 24rem;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--color-on-primary-soft);
     border-radius: 9999px;
     filter: blur(64px);
     transform: translateY(-50%) translateX(50%);
@@ -53,7 +53,7 @@
     left: 0;
     width: 16rem;
     height: 16rem;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(0 0 0 / 0.1);
     border-radius: 9999px;
     filter: blur(40px);
     transform: translateY(50%) translateX(-50%);
@@ -67,7 +67,7 @@
   .title {
     font-size: 2.25rem;
     line-height: 2.5rem;
-    color: #ffffff;
+    color: var(--color-text-on-primary);
     margin-bottom: 1.5rem;
   }
   
@@ -79,7 +79,7 @@
   }
   
   .description {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-on-primary-muted);
     font-size: 1.125rem;
     line-height: 1.75rem;
     max-width: 42rem;
@@ -110,8 +110,8 @@
   
   .primaryBtn {
     padding: 1rem 2rem;
-    background-color: #ffffff;
-    color: #7c3aed;
+    background-color: var(--color-surface-inverse);
+    color: var(--color-primary);
     font-weight: 600;
     border-radius: 0.75rem;
     text-decoration: none;
@@ -119,20 +119,20 @@
   }
   
   .primaryBtn:hover {
-    background-color: #f4f4f5;
+    background-color: var(--color-surface-inverse-hover);
   }
   
   .secondaryBtn {
     padding: 1rem 2rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    background-color: var(--color-on-primary-soft);
+    color: var(--color-text-on-primary);
     font-weight: 600;
     border-radius: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--color-on-primary-soft-strong);
     text-decoration: none;
     transition: background-color 200ms ease;
   }
   
   .secondaryBtn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--color-on-primary-soft-strong);
   }
