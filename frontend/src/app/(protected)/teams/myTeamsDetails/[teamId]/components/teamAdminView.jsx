@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTeamStore } from "@/store/teamStore";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import styles from "../style.module.css";
+import styles from "./adminStyles.module.css";
 import RoleOptionsOverlay from "@/components/OverLayOptions/roleOptionsOverlay";
 import { notify } from "@/store/notificationStore";
 import MemberOptions from "@/components/memberOptions/memberOptions";

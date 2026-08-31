@@ -6,7 +6,7 @@ import { useTeamStore } from "@/store/teamStore";
 import { useTaskStore } from "@/store/taskStore";
 import styles from "./style.module.css";
 import TeamAdminView from "./components/teamAdminView";
-import TeamMemberView from "./components/teamMemberView";
+import MyTasksComponent from "@/components/tasks/myTasks/MyTasks";
 
 export default function TaskDetailsPage() {
   const { teamId } = useParams();
@@ -38,7 +38,7 @@ export default function TaskDetailsPage() {
       </div>
     );
   }
-  
+
   if (!currTeam) return null;
 
   if (!currentRole) {
@@ -51,11 +51,11 @@ export default function TaskDetailsPage() {
   }
 
   if (currentRole == "admin") {
-    return <TeamAdminView teamId={teamId} team={currTeam}/>;
+    return <TeamAdminView teamId={teamId} team={currTeam} />;
   }
   if (currentRole === "member") {
     return (
-      <TeamMemberView
+      <MyTasksComponent
         tasks={tasks}
         onOpenTask={(taskId) => router.push(`/tasks/myTasksDetails/${taskId}`)}
       />
