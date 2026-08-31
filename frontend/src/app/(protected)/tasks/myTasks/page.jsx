@@ -5,6 +5,7 @@ import { useTaskStore } from "@/store/taskStore";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MyTasksComponent from "@/components/tasks/myTasks/MyTasks";
+import styles from "./tasks.module.css";
 
 export default function MyTasks() {
   return <MyTasksContent />;

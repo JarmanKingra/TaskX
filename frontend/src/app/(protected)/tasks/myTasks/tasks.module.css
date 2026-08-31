@@ -161,6 +161,69 @@
 }
 
 
+
+
+@media (max-width: 490px) {
+  .eachTasksOptions {
+    display: none;
+  }
+}
+
+@media (max-width: 530px) {
+  .eachTasksOptionStatus {
+    display: none;
+  }
+
+  .taskDetailBtn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.4rem;
+  }
+
+  .MyTasksDetails {
+    padding: 1.2rem 0.5rem;
+  }
+
+  .eachTasksOption {
+    width: 60px;
+  }
+
+  .myTasks h3 {
+    font-size: 0.5rem;
+    font-weight: 200;
+    color: #a6a6a6;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+  }
+
+  .MyTasks h3 {
+    font-size: 1rem;
+    color: white;
+  }
+
+  .noOfTasks h4{
+    color: white
+  }
+
+  .myTaskName h4 {
+    font-size: 0.8rem;
+    color: white;
+  }
+} */
+
+
+/* Layout & Page Container */
+.mainContainer {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(circle at 15% 20%, var(--color-glow-primary-strong) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, var(--color-glow-accent) 0%, transparent 45%);
+  color: var(--color-text-primary);
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
 .loadingWrapper{
   display: flex;
   flex-direction: column;
@@ -225,70 +288,6 @@
     box-shadow: 0 -2em;
     height: 5em;
   }
-}
-
-
-
-
-@media (max-width: 490px) {
-  .eachTasksOptions {
-    display: none;
-  }
-}
-
-@media (max-width: 530px) {
-  .eachTasksOptionStatus {
-    display: none;
-  }
-
-  .taskDetailBtn {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.4rem;
-  }
-
-  .MyTasksDetails {
-    padding: 1.2rem 0.5rem;
-  }
-
-  .eachTasksOption {
-    width: 60px;
-  }
-
-  .myTasks h3 {
-    font-size: 0.5rem;
-    font-weight: 200;
-    color: #a6a6a6;
-    text-transform: capitalize;
-    letter-spacing: 1px;
-  }
-
-  .MyTasks h3 {
-    font-size: 1rem;
-    color: white;
-  }
-
-  .noOfTasks h4{
-    color: white
-  }
-
-  .myTaskName h4 {
-    font-size: 0.8rem;
-    color: white;
-  }
-} */
-
-
-/* Layout & Page Container */
-.mainContainer {
-  min-height: 100vh;
-  background-color: var(--color-bg);
-  background-image: 
-    radial-gradient(circle at 15% 20%, var(--color-glow-primary-strong) 0%, transparent 45%),
-    radial-gradient(circle at 85% 80%, var(--color-glow-accent) 0%, transparent 45%);
-  color: var(--color-text-primary);
-  padding: 3rem 1.5rem;
-  display: flex;
-  justify-content: center;
 }
 
 .container {

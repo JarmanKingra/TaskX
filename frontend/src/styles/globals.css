@@ -49,12 +49,17 @@
   --color-warning: #fbbf24;
   --color-warning-rgb: 251 191 36;
 
+  /* Alert */
+  --color-alert: #f70707;
+  --color-alert-rgb: 173 18 18;
+
   /* Overlays / glows (same hues, different alpha) */
   --color-overlay-primary: rgb(var(--color-primary-deep-rgb) / 0.2);
   --color-glow-primary: rgb(var(--color-primary-rgb) / 0.1);
   --color-glow-primary-strong: rgb(var(--color-primary-rgb) / 0.2);
   --color-glow-accent: rgb(var(--color-accent-rgb) / 0.2);
   --color-warning-soft: rgb(var(--color-warning-rgb) / 0.1);
+  --color-alert-soft: rgb(var(--color-alert-rgb) / 0.1);
   --color-on-primary-muted: rgb(255 255 255 / 0.8);
   --color-on-primary-soft: rgb(255 255 255 / 0.1);
   --color-on-primary-soft-strong: rgb(255 255 255 / 0.2);

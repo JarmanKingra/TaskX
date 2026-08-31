@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTaskStore } from "@/store/taskStore";
+import { FaTrash } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 import styles from "./style.module.css";
 
 export default function MemberTasksPage() {
   const router = useRouter();
   const [openTaskId, setOpenTaskId] = useState(null);
   const { teamId, userId } = useParams();
+  const [selectedTaskDesc, setSelectedTaskDesc] = useState(null);
   const {
     getMemberTasks,
     memberTasks,
@@ -73,6 +76,15 @@ export default function MemberTasksPage() {
             <h4 className={styles.taskTitle}>{task.title}</h4>
             <p className={styles.taskDesc}> {task.description}</p>
 
+            {task.description && task.description.length > 80 && (
+                <button
+                  className={styles.readMoreBtn}
+                  onClick={() => setSelectedTaskDesc(task)}
+                >
+                  Read Description
+                </button>
+              )}
+
             <div className={styles.taskOptions}>
               <span
                 className={`${styles.status} ${
@@ -89,12 +101,36 @@ export default function MemberTasksPage() {
                 onClick={() => setOpenTaskId(task._id)}
                 className={styles.deleteTaskBtn}
               >
-                Delete
+                <FaTrash />
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {selectedTaskDesc && (
+        <div
+          className={styles.overlay}
+          onClick={() => setSelectedTaskDesc(null)}
+        >
+          <div
+            className={styles.descModal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className={styles.closeIcon}
+              onClick={() => setSelectedTaskDesc(null)}
+            >
+              <RxCross2 />
+            </div>
+            <h3 className={styles.modalTitle}>{selectedTaskDesc.title}</h3>
+            <div className={styles.modalDescContent}>
+              <h4>Description</h4>
+              <p>{selectedTaskDesc.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {openTaskId && (
         <div className={styles.overlay} onClick={() => setOpenTaskId(null)}>
