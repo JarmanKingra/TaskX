@@ -8,8 +8,10 @@ import styles from "./adminStyles.module.css";
 import RoleOptionsOverlay from "@/components/OverLayOptions/roleOptionsOverlay";
 import { notify } from "@/store/notificationStore";
 import MemberOptions from "@/components/memberOptions/memberOptions";
+import { can } from "@/utils/can";
+import { useAuthStore } from "@/store/authStore";
 
-export default function TeamAdminView({ teamId, team }) {
+export default function TeamView({ setSubComponent, teamId, team }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [openRemoveMember, setOpenRemoveMember] = useState(null);
@@ -17,12 +19,18 @@ export default function TeamAdminView({ teamId, team }) {
   const [optionDots, setOptionDots] = useState(false);
   const [roleChangeModal, setRoleChangeModal] = useState(false);
   const [memberId, setMemberId] = useState(null);
-  const { removeMember, addMember } = useTeamStore();
+  const { removeMember, addMember, fetchMyTasksInTeam } = useTeamStore();
 
   const owner = team.owner;
   const ownerId = team.owner._id.toString();
+  const user = useAuthStore((s) => s.user);
+  const userId = user.id;
 
   const members = team.members.filter((m) => m.user._id.toString() !== ownerId);
+
+  const isMe = (memberId) => {
+    return userId.toString() === memberId.toString();
+  }
 
   const handleRemoveMember = async (memberId) => {
     await removeMember(teamId, memberId);
@@ -50,12 +58,14 @@ export default function TeamAdminView({ teamId, team }) {
         <div className={styles.mainHeading}>
           <div className={styles.mainHeadingOptions}>
             <h3>Team Members</h3>
-            <button onClick={() => setOpenTeamId(teamId)}>Add Member</button>
+            {can("member:add") && (<button onClick={() => setOpenTeamId(teamId)}>Add Member</button>)}
           </div>
         </div>
 
-        <p className={styles.adminBadge}>Owner - {owner.fullName}</p>
-
+        <div className={styles.adminBadges}>
+          <p className={styles.adminBadge}>Owner - {owner.fullName}</p>
+          <p className={styles.myTasksButton} onClick={() => setSubComponent("myTasks")}>My Tasks</p>
+        </div>
         {members.length === 0 && (
           <p className={styles.noMemberYet}>No members yet!</p>
         )}
@@ -65,16 +75,24 @@ export default function TeamAdminView({ teamId, team }) {
             <div className={styles.nameAndRoleContainer}>
               <h3
                 className={styles.memberName}
-                onClick={() =>
-                  router.push(
-                    `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
-                  )
+
+                onClick={() => {
+                  if (can("task:view:all")) {
+                    router.push(
+                      `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
+                    )
+                  }
+                }
                 }
               >
-                {member?.user?.fullName}
+                {isMe(member.user._id) ?
+                  <span className={styles.meBadgeYou}>You</span>
+                  :
+                  member?.user?.fullName
+                }
               </h3>
 
-              <div className={styles.memberRole}>{member.role}</div>
+              <div className={styles.memberRole}>{member?.role?.name}</div>
             </div>
 
             <div className={styles.memberOptions}>
@@ -86,7 +104,8 @@ export default function TeamAdminView({ teamId, team }) {
               />
             </div>
 
-            {openRemoveMember === member.user._id && (
+            {openRemoveMember === member.user._id && can("member:remove") && (
+
               <div
                 className={styles.overlay}
                 onClick={() => setOpenRemoveMember(null)}
@@ -134,7 +153,7 @@ export default function TeamAdminView({ teamId, team }) {
           teamId={teamId}
         />
       )}
-      {optionDots && (
+      {optionDots && (can("member:remove") || can("member:role:update")) && (
         <MemberOptions
           onClose={() => setOptionDots(false)}
           setRoleChangeModal={setRoleChangeModal}

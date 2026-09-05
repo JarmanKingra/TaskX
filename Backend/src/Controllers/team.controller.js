@@ -9,15 +9,20 @@ import {
 
 const createTeam = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, description } = req.body;
     const ownerId = req.user._id;
 
     if (!name) {
       return res.status(400).json({ message: "Team name is required" });
     }
 
+    if (!description) {
+      return res.status(400).json({ message: "Team Description is required" });
+    }
+
     const newTeam = await Team.create({
       name,
+      description,
       owner: ownerId,
       members: [],
     });

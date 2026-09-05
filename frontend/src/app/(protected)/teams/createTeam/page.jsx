@@ -18,7 +18,7 @@ export default function CreateTeamPage() {
     if (!teamName.trim()) return;
 
     // Passing description along with teamName if your store supports object/multi-arg payload
-    await createTeam(teamName);
+    await createTeam(teamName, description);
     setTeamName("");
     setDescription("");
     router.back();
@@ -62,6 +62,7 @@ export default function CreateTeamPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={loading}
+              required
               rows={3}
             />
           </div>

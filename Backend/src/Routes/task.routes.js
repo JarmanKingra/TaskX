@@ -20,10 +20,10 @@ import {
 
 const router = express.Router();
 
-router.post("/", auth, loadMembership, authorize("task:create"), createTask);
+router.post("/", auth, loadMembership, authorize("task:create"), createTask); // Done
 
 // Static / multi-segment paths before /:teamId
-router.get("/my/tasks", auth, getMyTasks);
+router.get("/my/tasks", auth, getMyTasks); // done
 router.get("/getTask/:taskId", auth, loadMembershipFromTask, getTaskById);
 router.get("/user/:userId/tasks", auth, getTasksOfUser);
 router.get(
@@ -32,12 +32,12 @@ router.get(
   loadMembership,
   authorize("task:view:all"),
   getTasksOfUserInTeam,
-);
+); //done
 router.get(
   "/:teamId/my-tasks",
   auth,
   loadMembership,
-  authorize("task:view:own"),
+  // authorize("task:view:own"),
   getMyTasksInTeam,
 );
 router.get(

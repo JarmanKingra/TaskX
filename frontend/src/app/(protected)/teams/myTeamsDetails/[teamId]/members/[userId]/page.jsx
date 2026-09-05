@@ -6,6 +6,8 @@ import { useTaskStore } from "@/store/taskStore";
 import { FaTrash } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import styles from "./style.module.css";
+import { can } from "@/utils/can";
+import NoPermission from "@/components/noPermission/NoPermission";
 
 export default function MemberTasksPage() {
   const router = useRouter();
@@ -25,7 +27,7 @@ export default function MemberTasksPage() {
     if (teamId && userId) {
       getMemberTasks(teamId, userId);
     }
-    
+
   }, [teamId, userId]);
 
   const handleDeleteTask = async () => {
@@ -33,7 +35,7 @@ export default function MemberTasksPage() {
     setOpenTaskId(null);
   };
 
-   if (loading) {
+  if (loading) {
     return (
       <div className={styles.loadingWrapper}>
         <div className={styles.loader}></div>
@@ -51,18 +53,20 @@ export default function MemberTasksPage() {
             <h2>{memberInfo.fullName}</h2>
             <p>{memberInfo.email}</p>
           </div>
-          <div>
-            <button
-              className={styles.button}
-              onClick={() =>
-                router.push(
-                  `/teams/myTeamsDetails/${teamId}/assignTask/${memberInfo._id}`
-                )
-              }
-            >
-              Assign Task
-            </button>
-          </div>
+
+          {can("task:create") && (
+            <div>
+              <button
+                className={styles.button}
+                onClick={() =>
+                  router.push(
+                    `/teams/myTeamsDetails/${teamId}/assignTask/${memberInfo._id}`
+                  )
+                }
+              >
+                Assign Task
+              </button>
+            </div>)}
         </div>
       )}
 
@@ -70,13 +74,14 @@ export default function MemberTasksPage() {
         <p className={styles.empty}>No tasks assigned</p>
       )}
 
-      <div className={styles.tasksGrid}>
-        {memberTasks.map((task) => (
-          <div key={task._id} className={styles.taskCard}>
-            <h4 className={styles.taskTitle}>{task.title}</h4>
-            <p className={styles.taskDesc}> {task.description}</p>
+      {can("task:view:all") ? (
+        <div className={styles.tasksGrid}>
+          {memberTasks.map((task) => (
+            <div key={task._id} className={styles.taskCard}>
+              <h4 className={styles.taskTitle}>{task.title}</h4>
+              <p className={styles.taskDesc}> {task.description}</p>
 
-            {task.description && task.description.length > 80 && (
+              {task.description && task.description.length > 80 && (
                 <button
                   className={styles.readMoreBtn}
                   onClick={() => setSelectedTaskDesc(task)}
@@ -85,28 +90,34 @@ export default function MemberTasksPage() {
                 </button>
               )}
 
-            <div className={styles.taskOptions}>
-              <span
-                className={`${styles.status} ${
-                  task.status === "pending"
+              <div className={styles.taskOptions}>
+                <span
+                  className={`${styles.status} ${task.status === "pending"
                     ? styles.pending
                     : task.status === "in-progress"
-                    ? styles.inProgress
-                    : styles.completed
-                }`}
-              >
-                {task.status}
-              </span>
-              <button
-                onClick={() => setOpenTaskId(task._id)}
-                className={styles.deleteTaskBtn}
-              >
-                <FaTrash />
-              </button>
+                      ? styles.inProgress
+                      : styles.completed
+                    }`}
+                >
+                  {task.status}
+                </span>
+                {can("task:delete") && (
+                  <button
+                    onClick={() => setOpenTaskId(task._id)}
+                    className={styles.deleteTaskBtn}
+                  >
+                    <FaTrash />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <NoPermission
+          message="You don't have permission to view this team member's tasks."
+        />
+      )}
 
       {selectedTaskDesc && (
         <div

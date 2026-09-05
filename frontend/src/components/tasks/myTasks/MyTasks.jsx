@@ -1,10 +1,14 @@
 "use client";
 
 import styles from "./MyTasks.module.css";
+import { usePathname } from "next/navigation";
 
 
-export default function MyTasksComponent({ tasks, onOpenTask }) {
+export default function MyTasksComponent({ setSubComponent, tasks, onOpenTask }) {
+    const pathname = usePathname();
+
     if (!tasks) return null;
+
 
 
     return (
@@ -16,9 +20,15 @@ export default function MyTasksComponent({ tasks, onOpenTask }) {
                             <h3>My Tasks</h3>
                         </div>
                         <div className={styles.noOfTasks}>
-                            <h4>No of Tasks {tasks.length}</h4>
+                            <h4>No of Tasks - {tasks?.length}</h4>
                         </div>
                     </div>
+
+                    {!pathname.includes("/tasks/myTasks") &&
+                        (<p
+                            className={styles.goToTeamButton} onClick={() => setSubComponent("teamView")}>
+                            Go to Team
+                        </p>)}
 
                     {tasks.length === 0 ? (
                         <p className={styles.empty}>No tasks assigned yet.</p>

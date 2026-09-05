@@ -79,6 +79,37 @@
     border-radius: 10px;
     width: fit-content;
   }
+
+  .meBadgeYou {
+    font-weight: 600;
+    color: var(--color-primary-soft);
+  }
+
+  .adminBadges{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .myTasksButton {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary-deep));
+    color: var(--color-text-on-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-primary-hover);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px var(--color-glow-primary);
+  }
+  
+  .myTasksButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--color-glow-primary-strong);
+    background: linear-gradient(135deg, var(--color-primary-deep), var(--color-primary));
+  }
   
   /* Empty State */
   .noMemberYet {

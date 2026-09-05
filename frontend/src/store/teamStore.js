@@ -11,6 +11,7 @@ export const useTeamStore = create((set) => ({
   teamMembers: null,
   loading: false,
   error: null,
+  memberShip: null,
 
   getMyTeams: async () => {
     try {
@@ -35,12 +36,13 @@ export const useTeamStore = create((set) => ({
     }
   },
 
-  createTeam: async (name) => {
+  createTeam: async (name, description) => {
     try {
       set({ loading: true, error: null });
 
       const res = await clientServer.post("/api/teams", {
         name,
+        description
       });
 
       set((state) => ({
@@ -68,9 +70,9 @@ export const useTeamStore = create((set) => ({
         currTeam: res.data.team,
         currentRole: res.data.role,
         teamMembers: res.data.team.members.length,
-        loading: false,
+        memberShip: res.data.membership,
+        loading: false, 
       });
-      console.log(res);
     } catch (err) {
       const message = err.response?.data?.message || "Failed to load team";
       set({
@@ -81,6 +83,12 @@ export const useTeamStore = create((set) => ({
 
       return { success: false };
     }
+  },
+
+  // what can curr user can do based on permission
+  can: (name) => {
+    const {memberShip} = useTeamStore.getState();
+    return (memberShip?.permissions || []).some((p) => p.name === name);
   },
 
   removeMember: async (teamId, memberId) => {
