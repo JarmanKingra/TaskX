@@ -7,7 +7,6 @@ import { useTaskStore } from "@/store/taskStore";
 import styles from "./style.module.css";
 import TeamView from "./components/teamView";
 import MyTasksComponent from "@/components/tasks/myTasks/MyTasks";
-
 export default function TaskDetailsPage() {
   const { teamId } = useParams();
   const router = useRouter();
@@ -16,6 +15,8 @@ export default function TaskDetailsPage() {
 
   const { fetchTeamById, currTeam, loading, currentRole } =
     useTeamStore();
+
+  
 
   const { tasks, fetchMyTasksInTeam, loading: taskLoading } = useTaskStore();
 
