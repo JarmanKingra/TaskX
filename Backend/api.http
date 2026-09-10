@@ -12,9 +12,9 @@
 @baseUrl = http://localhost:3001
 
 # Fill these as you go (from login / create responses)
-@ownerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNmJmZWU4OWViNjgyNjIwMTRiZiIsImVtYWlsIjoib3duZXJqYXJtYW5AZ21haWwuY29tIiwiaWF0IjoxNzg1OTk3MTI1LCJleHAiOjE3ODYwODM1MjV9.C1IsZ4fducQcbk7K8glLVdkO431fmxsmyLQD4Dyihh8
+@ownerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhOTY4ODBkZjkxOTg3ODY0NjhlMDAxNCIsImVtYWlsIjoiamFybWFubmV3QGdtYWlsLmNvbSIsImlhdCI6MTc4OTAzNzgxMSwiZXhwIjoxNzg5MTI0MjExfQ.sfQTnMOd83xifEaneGoFGSOQYjlgNCPQDn1ogEmR_TA
 @memberToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzQyNzEzZWU4OWViNjgyNjIwMTRjMyIsImVtYWlsIjoibWVtYmVyamFybWFuQGdtYWlsLmNvbSIsImlhdCI6MTc4NTk5NzE0OCwiZXhwIjoxNzg2MDgzNTQ4fQ.lxRS79ucreFh88Mm47fuUFdGQwNB2ORHgFa-rWTvv5s
-@ownerId = 6a7426bfee89eb68262014bf
+@ownerId = 6a96880df9198786468e0014
 @memberId = 6a742713ee89eb68262014c3
 @memberEmail = member1@gmail.com
 @teamId = 6a742e6fee89eb68262014c9
@@ -59,8 +59,8 @@ POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "OwnerJarman@gmail.com",
-  "password": "OwnerJarman"
+  "email": "JarmanNew@gmail.com",
+  "password": "JarmanNew"
 }
 
 

@@ -32,7 +32,7 @@
 
 //   return (
 //     <>
-    
+
 //       <div className={styles.mainContainer}>
 //         <div className={styles.container}>
 //           <div className={styles.mainHeading}>
@@ -93,6 +93,7 @@ import { useTeamStore } from "@/store/teamStore";
 import styles from "./style.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { can } from "@/utils/can";
 
 export default function MyTeams() {
   return <MyTeamsContent />;
@@ -171,14 +172,23 @@ function MyTeamsContent() {
                 </div>
 
                 <div className={styles.cardFooter}>
+
                   <div className={styles.membersWrapper}>
-                    <div className={styles.avatarGroup}>
-                      {team.members.slice(0, 3).map((_, idx) => (
-                        <div key={idx} className={styles.avatar}>
-                          U{idx + 1}
-                        </div>
-                      ))}
-                    </div>
+                    {can("role:manage") ?
+                      <button
+                        onClick={() => router.push(`/teams/myTeamsDetails/${team._id}`)}
+                        className={styles.detailsButton}
+                      >
+                        Manage Roles
+                      </button>
+                      : <div className={styles.avatarGroup}>
+                        {team.members.slice(0, 3).map((_, idx) => (
+                          <div key={idx} className={styles.avatar}>
+                            U{idx + 1}
+                          </div>
+                        ))}
+                      </div>}
+
                     <span className={styles.memberCount}>
                       {team.members.length} {team.members.length === 1 ? "member" : "members"}
                     </span>

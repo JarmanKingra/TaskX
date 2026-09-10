@@ -18,7 +18,7 @@ const router = express.Router();
 router.get("/permissions", auth, getAllPermissions);
 
 // Team roles
-router.get("/teams/:teamId/roles", auth, loadMembership, getTeamRoles);
+router.get("/teams/:teamId/roles", auth, loadMembership, getTeamRoles); // done
 router.get(
   "/teams/:teamId/roles/:roleId",
   auth,
@@ -31,7 +31,8 @@ router.post(
   loadMembership,
   authorize("role:manage"),
   createRole,
-);
+); //done
+
 router.put(
   "/teams/:teamId/roles/:roleId",
   auth,
@@ -54,6 +55,6 @@ router.put(
   loadMembership,
   authorize("member:role:update"),
   updateMemberRole,
-);
+); //done
 
 export default router;

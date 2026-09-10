@@ -1,45 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./roleOptions.module.css";
 import { cssHelper } from "@/utils/cssHelper";
-import { useTeamStore } from "@/store/teamStore";
+import { useRoleStore } from "@/store/roleStore";
 import { RxCross2 } from "react-icons/rx";
 
 const css = cssHelper(styles);
 
-export default function RoleOptionsOverlay({ onClose, memberId, teamId}) {
-  const [requestedRole, setRequestedRole] = useState(null);
-  const { updateTeamMemberRole } = useTeamStore();
+export default function RoleOptionsOverlay({ onClose, memberId, teamId }) {
+  const [requestedRoleId, setRequestedRoleId] = useState(null);
+  const { getRolesForTeam, teamRoles, assignRole } = useRoleStore();
 
-  const handleUpdateUserRole = async (teamId, memberId, requestedRole) => {
-    await updateTeamMemberRole(teamId, memberId, requestedRole);
+
+  const handleAssignRole = async () => {
+    await assignRole(teamId, memberId, requestedRoleId);
   };
+
+
+  useEffect(() => {
+    getRolesForTeam(teamId);
+  }, [teamId]);
 
   return (
     <div className={css("overlay")}>
       <div className={css("overlayBox")} onClick={(e) => e.stopPropagation()}>
         <div className={css("close-icon")} onClick={onClose}><RxCross2 /></div>
-        <div
-          className={css("option", {
-            selected: requestedRole === "admin",
-          })}
-          onClick={() => setRequestedRole("admin")}
-        >
-          Set as Admin
-        </div>
 
-        <div
-          className={css("option", {
-            selected: requestedRole === "member",
-          })}
-          onClick={() => setRequestedRole("member")}
-        >
-          Set as Member
+        <h3 className={css("title")}>Select a Role</h3>
+
+        <div className={css("roleList")}>
+          {teamRoles && teamRoles.map((role) => (
+            <div
+              key={role._id}
+              className={css("option", {
+                selected: requestedRoleId === role._id,
+              })}
+              onClick={() => setRequestedRoleId(role._id)}
+            >
+              <span className={css("roleName")}>{role.name}</span>
+            </div>
+          ))}
         </div>
 
         <div
           className={css("option", "done")}
           onClick={async () => {
-            await handleUpdateUserRole(teamId, memberId, requestedRole);
+            await handleAssignRole();
             onClose();
           }}
         >

@@ -154,39 +154,4 @@ export const useTeamStore = create((set) => ({
       return { success: false };
     }
   },
-
-  updateTeamMemberRole: async (teamId, memberId, requestedRole) => {
-    try {
-      set({ loading: true, error: null });
-      const res = await clientServer.post(
-        `/api/teams/${teamId}/members/${memberId}`,
-        {
-          requestedRole,
-        },
-      );
-
-      set((state) => ({
-        currTeam: {
-          ...state.currTeam,
-          members: state.currTeam.members.map((member) =>
-            member.user._id === memberId
-              ? { ...member, role: requestedRole }
-              : member,
-          ),
-        },
-        loading: false,
-      }));
-
-      notify("Member role updated successfully", "success");
-    } catch (err) {
-      const message = err.response?.data?.message || "Failed to remove member";
-      set({
-        error: message,
-        loading: false,
-      });
-      notify(message, "error");
-
-      return { success: false };
-    }
-  },
 }));

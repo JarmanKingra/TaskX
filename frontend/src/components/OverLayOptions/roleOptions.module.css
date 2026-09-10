@@ -25,18 +25,39 @@
   position: relative;
   width: 100%;
   max-width: 380px;
+  max-height: min(80vh, 560px);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-strong);
   border-radius: 18px;
   padding: 2.25rem 1.5rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.5rem;
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.8),
     0 0 30px var(--color-glow-primary);
   animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
+}
+
+.roleList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+  max-height: min(48vh, 340px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.25rem;
+}
+
+.roleList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.roleList::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
 }
 
 .overlayBox::before {
@@ -66,8 +87,8 @@
 
 .close-icon {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.25rem;
+  right: 0.25rem;
   color: var(--color-text-muted);
   font-size: 1.2rem;
   display: flex;
@@ -77,6 +98,10 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.title{
+  text-align: center;
 }
 
 .close-icon:hover {
@@ -97,7 +122,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
   user-select: none;
+}
+
+.roleName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .option:hover {
