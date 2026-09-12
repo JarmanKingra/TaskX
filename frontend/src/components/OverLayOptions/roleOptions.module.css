@@ -110,6 +110,7 @@
 }
 
 .option {
+  margin-top: 1px;
   padding: 0.9rem 1.25rem;
   background-color: var(--color-surface-muted);
   border: 1px solid var(--color-border);

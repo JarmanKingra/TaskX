@@ -176,7 +176,7 @@ function MyTeamsContent() {
                   <div className={styles.membersWrapper}>
                     {can("role:manage") ?
                       <button
-                        onClick={() => router.push(`/teams/myTeamsDetails/${team._id}`)}
+                        onClick={() => router.push(`/roles/manage/${team._id}`)}
                         className={styles.detailsButton}
                       >
                         Manage Roles

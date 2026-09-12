@@ -9,7 +9,8 @@ export const useRoleStore = create((set) => ({
     permissions: [],
     loading: false,
     error: null,
-    teamRoles: null,
+    teamRoles: [],
+    currRole: null,
     // currTeam: null,
     // currentRole: null,
     // totalMembers: null,
@@ -55,12 +56,15 @@ export const useRoleStore = create((set) => ({
             });
 
             if (!res.data.success) {
-                throw new Error("Failed to get permissions");
+                throw new Error("Failed to create new Role");
             }
 
-            set({
+            set((state) => ({
                 loading: false,
-            });
+                teamRoles: res.data.role
+                    ? [res.data.role, ...(state.teamRoles || []).filter((r) => r._id !== res.data.role._id)]
+                    : state.teamRoles,
+            }));
 
             notify("Role created successfully for this team", "success");
 
@@ -83,7 +87,7 @@ export const useRoleStore = create((set) => ({
             const res = await clientServer.get(`/api/rba/teams/${teamId}/roles`);
 
             if (!res.data.success) {
-                throw new Error("Failed to get permissions");
+                throw new Error("Failed to get roles");
             }
 
             set({
@@ -91,7 +95,7 @@ export const useRoleStore = create((set) => ({
                 loading: false,
             });
 
-        } catch (error) {
+        } catch (err) {
             const message = err.response?.data?.message || "Failed to assign role";
             set({
                 error: message,
@@ -113,7 +117,7 @@ export const useRoleStore = create((set) => ({
             });
 
             if (!res.data.success) {
-                throw new Error("Failed to get permissions");
+                throw new Error("Failed to assign role");
             }
 
             set({
@@ -122,7 +126,7 @@ export const useRoleStore = create((set) => ({
 
             notify("Role Assigned successfully for this member", "success");
 
-        } catch (error) {
+        } catch (err) {
             const message = err.response?.data?.message || "Failed to assign role";
             set({
                 error: message,
@@ -132,6 +136,91 @@ export const useRoleStore = create((set) => ({
 
             return { success: false };
         }
+    },
+
+    getRoleById: async (teamId, roleId) => {
+        try {
+
+            set({ loading: true, error: null });
+            const res = await clientServer.get(`/api/rba/teams/${teamId}/roles/${roleId}`);
+
+            if (!res.data.success) {
+                throw new Error("Failed to get this role");
+            }
+
+            set({
+                loading: false,
+                currRole: res.data.role,
+            });
+
+        } catch (err) {
+            const message = err.response?.data?.message || "Failed to get role";
+            set({
+                error: message,
+                loading: false,
+            });
+            notify(message, "error");
+
+            return { success: false };
+        }
+    },
+
+    deleteRoleById: async (teamId, roleId) => {
+        try {
+
+            set({ loading: true, error: null });
+            const res = await clientServer.delete(`/api/rba/teams/${teamId}/roles/${roleId}`);
+
+            if (!res.data.success) {
+                throw new Error("Failed to delete this role");
+            }
+
+            const deletedRoleId = res.data.role._id;
+
+            set((state) => ({
+                loading: false,
+                teamRoles: (state.teamRoles || []).filter((role) => role._id !== deletedRoleId),
+            }));
+
+            notify("Role Deleted successfully from this team", "success");
+
+        } catch (err) {
+            const message = err.response?.data?.message || "Failed to delete this role";
+            set({
+                error: message,
+                loading: false,
+            });
+            notify(message, "error");
+
+            return { success: false };
+        }
+    },
+
+    updateById: async (teamId, roleId) => {
+        try {
+
+            set({ loading: true, error: null });
+            const res = await clientServer.put(`/api/rba/teams/${teamId}/roles/${roleId}`);
+
+            if (!res.data.success) {
+                throw new Error("Failed to edit this role");
+            }
+
+            set({
+                loading: false,
+            });
+
+        } catch (error) {
+            const message = err.response?.data?.message || "Failed to edit this role";
+            set({
+                error: message,
+                loading: false,
+            });
+            notify(message, "error");
+
+            return { success: false };
+        }
     }
+
 
 }))

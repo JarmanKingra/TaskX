@@ -24,7 +24,7 @@ router.get(
   auth,
   loadMembership,
   getRoleById,
-);
+); //done
 router.post(
   "/teams/:teamId/roles",
   auth,
@@ -39,14 +39,14 @@ router.put(
   loadMembership,
   authorize("role:manage"),
   updateRole,
-);
+); //done
 router.delete(
   "/teams/:teamId/roles/:roleId",
   auth,
   loadMembership,
   authorize("role:manage"),
   deleteRole,
-);
+); // done
 
 // Assign a role to a team member
 router.put(
