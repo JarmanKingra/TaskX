@@ -1,161 +1,208 @@
-.container {
+.header {
   position: fixed;
-  width: 99%;
-  background-color: #100f0f;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
-  padding: 1.2rem 2rem;
-  display: flex;
-  justify-content: center;
+  background-color: rgb(var(--color-surface-rgb) / 0.85);
+  border-bottom: 1px solid var(--color-border-subtle);
+  backdrop-filter: blur(16px);
 }
 
-
-.navBar {
-  width: 100%;
-  max-width: 1200px;
-  height: 64px;
-
+.nav {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 4.5rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 0 1.8rem;
-
-  background: rgba(20, 20, 30, 0.55);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.4),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-
-  transition: all 0.3s ease;
+  gap: 1rem;
+  position: relative;
 }
 
-
-.navBar h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-
-  background: linear-gradient(
-    90deg,
-    #7aa2ff,
-    #9b7cff,
-    #ff7ad9
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  cursor: pointer;
-}
-
-
-.navBarOptionContainer {
+.brand {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  min-width: 0;
 }
 
-.navBarOptionContainer p {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.95rem;
+.brand:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.brandIcon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-primary-soft);
+  flex-shrink: 0;
+}
+
+.brandTitle {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--color-text-primary);
+  letter-spacing: -0.025em;
   font-weight: 500;
-
-  padding: 0.5rem 0.9rem;
-  border-radius: 999px;
-
-  transition: all 0.25s ease;
-}
-
-.navBarOptionContainer p:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
 }
 
 .hamburger {
   display: none;
-  font-size: 1.8rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.55rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
   cursor: pointer;
 }
 
-.navOptions{
-    display: flex;
-    gap: 1.2rem;
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-text-primary);
+  border-radius: 9999px;
+}
+
+.hamburger:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navLink,
+.logoutBtn,
+.loginBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.navLink {
+  background: none;
+  color: var(--color-text-secondary);
+  padding: 0.625rem 1rem;
+  border-radius: 0.75rem;
+}
+
+.navLink:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  background-color: var(--color-glow-primary);
+}
+
+.navLink.active {
+  color: var(--color-text-primary);
+  background-color: var(--color-glow-primary-strong);
+}
+
+.logoutBtn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.logoutBtn:hover:not(:disabled) {
+  border-color: var(--color-border-accent);
+  background-color: var(--color-glow-primary);
+}
+
+.loginBtn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  background-color: var(--color-surface-inverse);
+  color: var(--color-text-inverse);
+}
+
+.loginBtn:hover:not(:disabled) {
+  background-color: var(--color-surface-hover);
+}
+
+.navLink:disabled,
+.logoutBtn:disabled,
+.loginBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgb(var(--color-primary-hover-rgb) / 0.3);
+  border-top-color: var(--color-primary-soft);
+  border-radius: 50%;
+  animation: navSpin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes navSpin {
+  to {
+    transform: rotate(360deg);
   }
-
-
-.buttonJoin {
-  padding: 0.55rem 1.4rem;
-  border-radius: 999px;
-
-  font-size: 0.95rem;
-  font-weight: 600;
-
-  color: white;
-  cursor: pointer;
-
-  background: linear-gradient(
-    90deg,
-    #00d4ff,
-    #7a7cff,
-    #ff7ad9
-  );
-
-  box-shadow:
-    0 0 0 rgba(255, 255, 255, 0),
-    0 8px 30px rgba(122, 124, 255, 0.35);
-
-  transition: all 0.3s ease;
 }
 
-.buttonJoin:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 0 12px rgba(255, 255, 255, 0.25),
-    0 12px 40px rgba(122, 124, 255, 0.55);
+@media (min-width: 1024px) {
+  .nav {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
 }
 
-
-.navBarOptionContainer p:last-child:hover {
-  background: rgba(255, 80, 80, 0.12);
-  color: #ff6b6b;
-}
-
-
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .hamburger {
-    display: block;
-    color: white;
-  }
-
-  .navBarOptionContainer {
-    position: absolute;
-    top: 64px;
-    right: 20px;
-    background-color: rgb(134, 59, 59);
-    flex-direction: column;
-    gap: 1rem;
-    /* padding: 1rem 1.5rem; */
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-
-    display: none;
-  }
-
-  .navBarOptionContainer.open {
     display: flex;
   }
 
-  .navOptions{
+  .menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 1.5rem;
+    left: 1.5rem;
     flex-direction: column;
-    padding: 0;
-    width: 60px;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: rgb(var(--color-surface-rgb) / 0.96);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
   }
 
-  .navOptions p {
-    font-size: 10px;
+  .menu.open {
+    display: flex;
   }
-  
+
+  .navLink,
+  .logoutBtn,
+  .loginBtn {
+    width: 100%;
+    text-align: center;
+  }
 }

@@ -1,49 +1,103 @@
-
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 999;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 .overlayBox {
-  border: 1px solid white;
-  background-color: rgb(123, 108, 108);
-  width: 250px;
-  padding: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 18px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  gap: 0.75rem;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    0 0 30px var(--color-glow-primary);
+  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.overlayBox::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-accent)
+  );
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .option {
-  padding: 10px;
-  /* margin-bottom: 10px; */
+  padding: 0.9rem 1.25rem;
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  color: var(--color-text-subtle);
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-  background-color: rgb(33, 31, 31);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
 }
 
 .option:hover {
-  background: #f0f0f0;
-  color: black;
+  background-color: var(--color-surface);
+  border-color: var(--color-primary-soft);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
 }
 
-.done {
-  font-weight: bold;
-  text-align: center;
-  background: #1c2128;
+.option:first-child:hover {
+  background-color: var(--color-warning-soft);
+  border-color: var(--color-warning-soft);
+  color: var(--color-warning);
 }
 
-.selected {
-  background: #f0f0f0;
-  color: black;
+.option:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .overlayBox {
+    padding: 1.25rem;
+  }
 }

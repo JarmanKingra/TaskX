@@ -1,15 +1,33 @@
-import express from "express"
-import auth from "../Middlewares/auth.js"
-import { isTeamAdmin } from "../Middlewares/adminOnly.js";
-import {createTeam, getSingleTeam, removeMember, addMember, getMyTeams, updateTeamMemberRole} from "../Controllers/team.controller.js"
+import express from "express";
+import auth from "../Middlewares/auth.js";
+import loadMembership from "../Middlewares/loadMembership.js";
+import authorize from "../Middlewares/authorize.js";
+import {
+  createTeam,
+  getSingleTeam,
+  removeMember,
+  addMember,
+  getMyTeams,
+} from "../Controllers/team.controller.js";
 
 const router = express.Router();
 
-router.post('/', auth, createTeam);
-router.get('/:teamId', auth, getSingleTeam);
-router.delete('/:teamId/members/:memberId', auth, isTeamAdmin, removeMember);
-router.post('/:teamId/members', auth, isTeamAdmin, addMember);
-router.get('/', auth, getMyTeams);
-router.post('/:teamId/members/:memberId', auth, isTeamAdmin, updateTeamMemberRole);
+router.post("/", auth, createTeam); // done
+router.get("/", auth, getMyTeams);   // done
+router.get("/:teamId", auth, loadMembership, getSingleTeam); //done
+router.post(
+  "/:teamId/members",
+  auth,
+  loadMembership,
+  authorize("member:add"),
+  addMember,
+); //done
+router.delete(
+  "/:teamId/members/:memberId",
+  auth,
+  loadMembership,
+  authorize("member:remove"),
+  removeMember,
+); // done
 
 export default router;

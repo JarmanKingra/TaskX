@@ -21,7 +21,7 @@ export default function TaskDetailsPage() {
     setOpenTaskId(null);
   }
 
-    if (loading) {
+  if (loading) {
     return (
       <div className={styles.loadingWrapper}>
         <div className={styles.loader}></div>
@@ -33,68 +33,73 @@ export default function TaskDetailsPage() {
   if (!currentTask) return null;
 
   return (
-  <div className={styles.taskPage}>
-    <div className={styles.taskCard}>
-      <h2 className={styles.taskTitle}>{currentTask.title}</h2>
+    <div className={styles.taskPage}>
+      <div className={styles.taskCard}>
+        <div className={styles.taskCardContent}>
+          <div className={styles.taskCardContentTop}>
+            <h2 className={styles.taskTitle}>{currentTask.title}</h2>
 
-      <p className={styles.taskText}>
-        <span>Description :</span> {currentTask.description}
-      </p>
+            <p className={styles.taskText}>
+              <span>Description :</span> {currentTask.description}
+            </p>
 
-      <p className={styles.taskText}>
-        <span>Status :</span>
-        <span className={styles.status}>{currentTask.status}</span>
-      </p>
+            <p className={styles.taskText}>
+              <span>Status :</span>
+              <span className={styles.status}>{currentTask.status}</span>
+            </p>
+          </div>
+          <div className={styles.taskCardContentBottom}>
+            <button
+              className={styles.updateBtn}
+              onClick={() => setOpenTaskId(currentTask._id)}
+            >
+              Update Status
+            </button>
+          </div>
+        </div>
 
-      <button
-        className={styles.updateBtn}
-        onClick={() => setOpenTaskId(currentTask._id)}
-      >
-        Update Status
-      </button>
-
-      <div className={styles.metaInfo}>
-        <p>
-          <span>Assigned By:</span> {currentTask.assignedBy?.fullName}
-        </p>
-        <p>
-          <span>Team:</span> {currentTask.team?.name}
-        </p>
-      </div>
-    </div>
-
-    {openTaskId && (
-      <div className={styles.overlay} onClick={() => setOpenTaskId(null)}>
-        <div
-          className={styles.modal}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <h3>Update Task Status</h3>
-
-          <button
-            className={styles.modalBtn}
-            onClick={() => handleStatusChange("pending")}
-          >
-            Pending
-          </button>
-
-          <button
-            className={`${styles.modalBtn} ${styles.inProgress}`}
-            onClick={() => handleStatusChange("in-progress")}
-          >
-            In Progress
-          </button>
-
-          <button
-            className={`${styles.modalBtn} ${styles.completed}`}
-            onClick={() => handleStatusChange("completed")}
-          >
-            Completed
-          </button>
+        <div className={styles.metaInfo}>
+          <p>
+            <span>Assigned By:</span> {currentTask.assignedBy?.fullName}
+          </p>
+          <p>
+            <span>Team:</span> {currentTask.team?.name}
+          </p>
         </div>
       </div>
-    )}
-  </div>
-);
+
+      {openTaskId && (
+        <div className={styles.overlay} onClick={() => setOpenTaskId(null)}>
+          <div
+            className={styles.modal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>Update Task Status</h3>
+
+            <button
+              className={styles.modalBtn}
+              onClick={() => handleStatusChange("pending")}
+            >
+              Pending
+            </button>
+
+            <button
+              className={`${styles.modalBtn} ${styles.inProgress}`}
+              onClick={() => handleStatusChange("in-progress")}
+            >
+              In Progress
+            </button>
+
+            <button
+              className={`${styles.modalBtn} ${styles.completed}`}
+              onClick={() => handleStatusChange("completed")}
+            >
+              Completed
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 
 }

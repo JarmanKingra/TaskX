@@ -4,7 +4,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useTaskStore } from "@/store/taskStore";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import MyTasksComponent from "@/components/tasks/myTasks/MyTasks";
 import styles from "./tasks.module.css";
 
 export default function MyTasks() {
@@ -21,7 +21,7 @@ function MyTasksContent() {
   }, []);
 
   if (!user) return <div>Loading user...</div>;
-   if (loading) {
+  if (loading) {
     return (
       <div className={styles.loadingWrapper}>
         <div className={styles.loader}></div>
@@ -32,64 +32,8 @@ function MyTasksContent() {
   if (error) return <div>{error}</div>;
 
   return (
-    <>
-      <div className={styles.mainContainer}>
-        <div className={styles.container}>
-          <div className={styles.MyTasksheading}>
-            <div className={styles.MyTasks}>
-              <h3>My Tasks</h3>
-            </div>
-            <div className={styles.noOfTasks}>
-              <h4>No of Tasks {tasks.length}</h4>
-            </div>
-          </div>
-
-          {tasks.length === 0 ? (
-            <p className={styles.empty}>No tasks assigned yet.</p>
-          ):
-
-          <div className={styles.MyTasksDetails}>
-            <div className={styles.myTaskName}>
-              <h4>Subject</h4>
-            </div>
-
-            <div className={styles.myTasksOptions}>
-              <div className={styles.eachTasksOptions}></div>
-
-              <div className={styles.eachTasksOptions}>Task Status</div>
-            </div>
-          </div>}
-
-          <div className={styles.tasksWrapper}>
-            {tasks.map((task) => (
-              <div key={task._id} className={styles.MyTasksDetails}>
-                <div className={styles.myTasks}>
-                  <h3>{task.title}</h3>
-                </div>
-
-                <div className={styles.myTasksOptions}>
-                  <div className={`${styles.eachTasksOption}`}>
-                    <button
-                      onClick={() => {
-                        router.push(`/tasks/myTasksDetails/${task._id}`);
-                      }}
-                      className={styles.taskDetailBtn}
-                    >
-                      Go to Task
-                    </button>
-                  </div>
-
-                  <div className={styles.eachTasksOptionStatus}>
-                    {task.status}
-                  </div>
-
-                  {/* <div className={styles.eachTasksOptions}>Update Status</div> */}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </>
-  );
+    <MyTasksComponent
+      tasks={tasks}
+      onOpenTask={(taskId) => router.push(`/tasks/myTasksDetails/${taskId}`)}
+    />)
 }

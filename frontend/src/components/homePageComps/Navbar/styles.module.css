@@ -1,0 +1,59 @@
+.nav {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .nav {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+  }
+  
+  .container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .brandGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-primary-soft);
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    letter-spacing: -0.025em;
+  }
+  
+  .signInBtn {
+    padding: 0.625rem 1.25rem;
+    background-color: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+  
+  .signInBtn:hover {
+    background-color: var(--color-surface-hover);
+  }

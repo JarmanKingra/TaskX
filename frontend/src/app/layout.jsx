@@ -1,5 +1,5 @@
 import "../styles/Home.module.css";
-import NavBarComponent from "@/components/layouts/navbar";
+// import NavBarComponent from "@/components/layouts/navbar";
 
 import { Exo_2 } from "next/font/google";
 import "@/styles/globals.css";

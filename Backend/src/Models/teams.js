@@ -8,6 +8,12 @@ const teamSchema = new mongoose.Schema(
       trim: true,
     },
 
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -21,9 +27,9 @@ const teamSchema = new mongoose.Schema(
           ref: "User",
         },
         role: {
-          type: String,
-          enum: ["admin", "member"],
-          default: "member",
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Role",
+          required: true,
         },
       },
     ],

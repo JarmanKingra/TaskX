@@ -1,18 +1,15 @@
 import Task from "../Models/tasks.js";
-import Team from "../Models/teams.js";
 import User from "../Models/user.js";
+
+const hasPermission = (membership, permissionName) => {
+  if (membership?.isOwner) return true;
+  return (membership?.permissions || []).some((p) => p.name === permissionName);
+};
 
 const createTask = async (req, res) => {
   try {
     const { title, description, deadline, assignedTo, team } = req.body;
-
-    console.log("REQ BODY:", {
-      title,
-      description,
-      deadline,
-      assignedTo,
-      team,
-    });
+    const existingTeam = req.team;
 
     if (!title || !team || !description || !assignedTo) {
       return res
@@ -20,34 +17,16 @@ const createTask = async (req, res) => {
         .json({ message: "Please provide all required fields" });
     }
 
-    const existingTeam = await Team.findById(team);
-
     if (!existingTeam) {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    const reqUser = existingTeam.members.find(
-      (member) => member.user.toString() === req.user._id.toString(),
-    );
-
-    if (!reqUser) {
-      return res.status(403).json({
-        message: "You are not a member of this team.",
-      });
-    }
-
-    if (reqUser.role !== "admin") {
-      return res.status(403).json({
-        message: "Only admins can perform this action.",
-      });
-    }
-
-    const isAdmin = existingTeam.owner.toString() === assignedTo;
+    const isOwner = existingTeam.owner.toString() === assignedTo;
     const isMember = existingTeam.members.some(
       (member) => member.user.toString() === assignedTo,
     );
 
-    if (!isAdmin && !isMember) {
+    if (!isOwner && !isMember) {
       return res.status(400).json({
         message: "Assigned user is not part of this team",
       });
@@ -71,10 +50,8 @@ const createTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   try {
-    const { taskId } = req.params;
+    const task = req.task;
     const newTaskData = req.body;
-
-    const task = await Task.findById(taskId);
 
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
@@ -97,10 +74,8 @@ const updateTask = async (req, res) => {
 
 const getTaskById = async (req, res) => {
   try {
-    const { taskId } = req.params;
     const userId = req.user._id;
-
-    const task = await Task.findById(taskId)
+    const task = await Task.findById(req.params.taskId)
       .populate("assignedBy", "fullName email")
       .populate("assignedTo", "fullName email")
       .populate("team", "name owner");
@@ -109,10 +84,13 @@ const getTaskById = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    const isAssignedUser = task.assignedTo._id.toString() === userId.toString();
-    const isTeamAdmin = task.team.owner.toString() === userId.toString();
+    const isAssignedUser =
+      task.assignedTo._id.toString() === userId.toString();
+    const canViewAll = hasPermission(req.membership, "task:view:all");
+    const canViewOwn =
+      hasPermission(req.membership, "task:view:own") && isAssignedUser;
 
-    if (!isAssignedUser && !isTeamAdmin) {
+    if (!canViewAll && !canViewOwn) {
       return res.status(403).json({
         message: "You are not allowed to view this task",
       });
@@ -129,31 +107,10 @@ const getTasksOfUserInTeam = async (req, res) => {
   try {
     const { teamId, userId } = req.params;
 
-    const team = await Team.findById(teamId);
-    if (!team) {
-      return res.status(404).json({ message: "Team not found" });
-    }
-
     const user = await User.findById(userId).select("fullName email");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
-    }
-
-    const reqUser = team.members.find(
-      (member) => member.user.toString() === req.user._id.toString(),
-    );
-
-    if (!reqUser) {
-      return res.status(403).json({
-        message: "You are not a member of this team.",
-      });
-    }
-
-    if (reqUser.role !== "admin") {
-      return res.status(403).json({
-        message: "Only admins can perform this action.",
-      });
     }
 
     const tasks = await Task.find({
@@ -174,11 +131,6 @@ const getTasksOfUserInTeam = async (req, res) => {
 const getTaskByTeam = async (req, res) => {
   try {
     const { teamId } = req.params;
-
-    const isTeam = await Team.findById(teamId);
-    if (!isTeam) {
-      return res.status(404).json({ message: "Team not found" });
-    }
 
     const allTasks = await Task.find({ team: teamId })
       .populate("assignedBy", "fullName email")
@@ -243,33 +195,10 @@ const getTasksOfUser = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    const { taskId } = req.params;
+    const task = req.task;
 
-    const task = await Task.findById(taskId).populate("team");
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
-    }
-
-    // if (task.team.owner.toString() !== req.user._id.toString()) {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "You are not the admin of this team" });
-    // }
-
-    const reqUser = task.team.members.find(
-      (member) => member.user.toString() === req.user._id.toString(),
-    );
-
-    if (!reqUser) {
-      return res.status(403).json({
-        message: "You are not a member of this team.",
-      });
-    }
-
-    if (reqUser.role !== "admin") {
-      return res.status(403).json({
-        message: "Only admins can perform this action.",
-      });
     }
 
     const deletedTask = await task.deleteOne();
@@ -284,24 +213,27 @@ const updateTaskStatus = async (req, res) => {
     const { taskId } = req.params;
     const { status } = req.body;
     const userId = req.user._id;
+    const task = req.task;
 
-    const task = await Task.findById(taskId);
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
+
     if (task.assignedTo.toString() !== userId.toString()) {
       return res.status(403).json({
         message: "Only the assigned user can update the task status",
       });
     }
+
     const allowed = ["pending", "in-progress", "completed"];
     if (!allowed.includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
+
     task.status = status;
     await task.save();
 
-    const updatedTask = await Task.findByIdAndUpdate(taskId)
+    const updatedTask = await Task.findById(taskId)
       .populate("assignedBy", "fullName")
       .populate("team", "name");
 

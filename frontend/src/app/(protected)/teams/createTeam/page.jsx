@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function CreateTeamPage() {
   const [teamName, setTeamName] = useState("");
+  const [description, setDescription] = useState("");
   const router = useRouter();
 
   const { createTeam, loading, error } = useTeamStore();
@@ -16,30 +17,87 @@ export default function CreateTeamPage() {
 
     if (!teamName.trim()) return;
 
-    await createTeam(teamName);
+    // Passing description along with teamName if your store supports object/multi-arg payload
+    await createTeam(teamName, description);
     setTeamName("");
+    setDescription("");
     router.back();
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
-        <h2>Create New Team</h2>
+        <div className={styles.cardHeader}>
+          <h2>Create New Team</h2>
+          <p className={styles.subtitle}>
+            Set up a collaborative workspace for your teammates and project members.
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Enter team name"
-            value={teamName}
-            onChange={(e) => setTeamName(e.target.value)}
-            disabled={loading}
-          />
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="teamName" className={styles.label}>
+              Team Name *
+            </label>
+            <input
+              id="teamName"
+              type="text"
+              className={styles.input}
+              placeholder="e.g. Engineering Lead, Design Studio"
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              disabled={loading}
+              required
+            />
+          </div>
 
-          {error && <p className={styles.error}>{error}</p>}
+          <div className={styles.inputGroup}>
+            <label htmlFor="description" className={styles.label}>
+              Description (Optional)
+            </label>
+            <textarea
+              id="description"
+              className={styles.textarea}
+              placeholder="What is this team working on?"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              disabled={loading}
+              required
+              rows={3}
+            />
+          </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Creating..." : "Create Team"}
-          </button>
+          {error && (
+            <div className={styles.error}>
+              <span>⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
+
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.cancelButton}
+              onClick={() => router.back()}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={loading || !teamName.trim()}
+            >
+              {loading ? (
+                <>
+                  <div className={styles.spinner} />
+                  <span>Creating...</span>
+                </>
+              ) : (
+                "Create Team"
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>

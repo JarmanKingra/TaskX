@@ -1,0 +1,117 @@
+.section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  
+  @media (min-width: 768px) {
+    .section {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  
+  .container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  
+  .subtitle {
+    color: var(--color-primary-soft);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    color: var(--color-text-primary);
+  }
+  
+  @media (min-width: 1024px) {
+    .title {
+      font-size: 3rem;
+      line-height: 1;
+    }
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  
+  .card {
+    padding: 2rem;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-surface),
+      rgb(var(--color-surface-rgb) / 0.5)
+    );
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    transition: all 300ms ease;
+  }
+  
+  .card:hover {
+    border-color: var(--color-border-accent);
+  }
+  
+  .iconBox {
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: var(--color-glow-primary);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: background-color 300ms ease;
+  }
+  
+  .card:hover .iconBox {
+    background-color: var(--color-glow-primary-strong);
+  }
+  
+  .icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-primary-soft);
+  }
+  
+  .cardTitle {
+    color: var(--color-text-primary);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  
+  .cardDescription {
+    color: var(--color-text-secondary);
+    line-height: 1.625;
+  }

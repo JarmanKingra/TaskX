@@ -11,6 +11,7 @@ export const useTeamStore = create((set) => ({
   teamMembers: null,
   loading: false,
   error: null,
+  memberShip: null,
 
   getMyTeams: async () => {
     try {
@@ -35,12 +36,13 @@ export const useTeamStore = create((set) => ({
     }
   },
 
-  createTeam: async (name) => {
+  createTeam: async (name, description) => {
     try {
       set({ loading: true, error: null });
 
       const res = await clientServer.post("/api/teams", {
         name,
+        description
       });
 
       set((state) => ({
@@ -68,9 +70,9 @@ export const useTeamStore = create((set) => ({
         currTeam: res.data.team,
         currentRole: res.data.role,
         teamMembers: res.data.team.members.length,
-        loading: false,
+        memberShip: res.data.membership,
+        loading: false, 
       });
-      console.log(res);
     } catch (err) {
       const message = err.response?.data?.message || "Failed to load team";
       set({
@@ -81,6 +83,12 @@ export const useTeamStore = create((set) => ({
 
       return { success: false };
     }
+  },
+
+  // what can curr user can do based on permission
+  can: (name) => {
+    const {memberShip} = useTeamStore.getState();
+    return (memberShip?.permissions || []).some((p) => p.name === name);
   },
 
   removeMember: async (teamId, memberId) => {
@@ -141,41 +149,6 @@ export const useTeamStore = create((set) => ({
         loading: false,
       });
 
-      notify(message, "error");
-
-      return { success: false };
-    }
-  },
-
-  updateTeamMemberRole: async (teamId, memberId, requestedRole) => {
-    try {
-      set({ loading: true, error: null });
-      const res = await clientServer.post(
-        `/api/teams/${teamId}/members/${memberId}`,
-        {
-          requestedRole,
-        },
-      );
-
-      set((state) => ({
-        currTeam: {
-          ...state.currTeam,
-          members: state.currTeam.members.map((member) =>
-            member.user._id === memberId
-              ? { ...member, role: requestedRole }
-              : member,
-          ),
-        },
-        loading: false,
-      }));
-
-      notify("Member role updated successfully", "success");
-    } catch (err) {
-      const message = err.response?.data?.message || "Failed to remove member";
-      set({
-        error: message,
-        loading: false,
-      });
       notify(message, "error");
 
       return { success: false };

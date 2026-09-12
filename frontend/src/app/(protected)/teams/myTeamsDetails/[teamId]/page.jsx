@@ -1,34 +1,36 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTeamStore } from "@/store/teamStore";
 import { useTaskStore } from "@/store/taskStore";
 import styles from "./style.module.css";
-import TeamAdminView from "./components/teamAdminView";
-import TeamMemberView from "./components/teamMemberView";
-
+import TeamView from "./components/teamView";
+import MyTasksComponent from "@/components/tasks/myTasks/MyTasks";
 export default function TaskDetailsPage() {
   const { teamId } = useParams();
   const router = useRouter();
 
-  const { fetchTeamById, currTeam, loading, error, currentRole } =
+  const [subComponent, setSubComponent] = useState("teamView");
+
+  const { fetchTeamById, currTeam, loading, currentRole } =
     useTeamStore();
+
+  
 
   const { tasks, fetchMyTasksInTeam, loading: taskLoading } = useTaskStore();
 
   useEffect(() => {
     if (teamId) {
-      useTeamStore.setState({ currentRole: null });
       fetchTeamById(teamId);
     }
   }, [teamId]);
 
   useEffect(() => {
-    if (currentRole === "user" && teamId) {
-      fetchMyTasksInTeam(teamId);
+    if (currTeam) {
+      fetchMyTasksInTeam(currTeam._id);
     }
-  }, [currentRole, teamId]);
+  }, [currTeam]);
 
   if (loading) {
     return (
@@ -38,8 +40,8 @@ export default function TaskDetailsPage() {
       </div>
     );
   }
-  
-  if (!currTeam) return null;
+
+  if (!currTeam) return <h1>No team found</h1>;
 
   if (!currentRole) {
     return (
@@ -50,16 +52,11 @@ export default function TaskDetailsPage() {
     );
   }
 
-  if (currentRole == "admin") {
-    return <TeamAdminView teamId={teamId} team={currTeam}/>;
+  if (subComponent === "teamView") {
+    return <TeamView setSubComponent={setSubComponent} teamId={teamId} team={currTeam} />;
   }
-  if (currentRole === "member") {
-    return (
-      <TeamMemberView
-        tasks={tasks}
-        onOpenTask={(taskId) => router.push(`/tasks/myTasksDetails/${taskId}`)}
-      />
-    );
+  if (subComponent === "myTasks") {
+    return <MyTasksComponent setSubComponent={setSubComponent} tasks={tasks} onOpenTask={(taskId) => router.push(`/tasks/myTasksDetails/${taskId}`)} />;
   }
   return null;
 }
