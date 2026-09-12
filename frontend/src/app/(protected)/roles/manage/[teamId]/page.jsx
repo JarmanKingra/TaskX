@@ -164,11 +164,13 @@ export default function ManageRoles() {
                                 </div>
 
                                 {role.permissions?.length > 0 ? (
-                                    <p className={css("permissionChips")}>
-                                        {role.permissions
-                                            .map((permission) => permission.name || permission)
-                                            .join(" · ")}
-                                    </p>
+                                    <>
+                                        <p className={css("permissionChips")}>
+                                            {role.permissions
+                                                .map((permission) => permission.name || permission)
+                                                .join(" · ")}
+                                        </p>
+                                    </>
                                 ) : (
                                     <p className={css("permissionEmpty")}>No permissions assigned</p>
                                 )}

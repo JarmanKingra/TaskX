@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRoleStore } from "@/store/roleStore";
 import styles from "./styles.module.css";
@@ -13,13 +13,77 @@ const SingleRolePage = () => {
   const searchParams = useSearchParams();
   const roleId = searchParams.get("roleId");
   const teamId = searchParams.get("teamId");
-  const { getRoleById, loading, error, currRole } = useRoleStore();
+  const [updatedPermissions, setUpdatedPermissions] = useState([]);
+  const [permissionPopupOpen, setPermissionPopupOpen] = useState(false);
+  const [permissionDraft, setPermissionDraft] = useState([]);
+  const {
+    getRoleById,
+    getPermissions,
+    permissions: permissionCatalog,
+    error,
+    currRole,
+    updateRoleById,
+  } = useRoleStore();
 
   useEffect(() => {
     if (roleId && teamId) getRoleById(teamId, roleId);
+    getPermissions();
   }, [roleId, teamId]);
 
-  if (loading) {
+  useEffect(() => {
+    if (currRole) {
+      setUpdatedPermissions(currRole.permissions || []);
+    }
+  }, [currRole]);
+
+  const persistPermissions = async (nextPermissions) => {
+    setUpdatedPermissions(nextPermissions);
+    await updateRoleById(
+      teamId,
+      roleId,
+      currRole?.name,
+      currRole?.description,
+      nextPermissions.map((p) => p._id),
+    );
+  };
+
+  const handleRemovePermission = async (permissionId) => {
+    await persistPermissions(
+      updatedPermissions.filter((p) => p._id !== permissionId),
+    );
+  };
+
+  const availablePermissions = (permissionCatalog || []).filter(
+    (item) => !updatedPermissions.some((picked) => picked._id === item._id),
+  );
+
+  const openPermissionPopup = () => {
+    setPermissionDraft([]);
+    setPermissionPopupOpen(true);
+  };
+
+  const toggleDraftPermission = (item) => {
+    setPermissionDraft((prev) =>
+      prev.some((picked) => picked._id === item._id)
+        ? prev.filter((picked) => picked._id !== item._id)
+        : [...prev, item],
+    );
+  };
+
+  const isDraftSelected = (permissionId) =>
+    permissionDraft.some((picked) => picked._id === permissionId);
+
+  const applyPermissionDraft = async () => {
+    if (permissionDraft.length === 0) {
+      setPermissionPopupOpen(false);
+      return;
+    }
+    await persistPermissions([...updatedPermissions, ...permissionDraft]);
+    setPermissionDraft([]);
+    setPermissionPopupOpen(false);
+  };
+
+  if (!currRole) {
     return (
       <div className={css("singleRolePage")}>
         <div className={css("loadingWrapper")}>
@@ -40,17 +104,7 @@ const SingleRolePage = () => {
     );
   }
 
-  if (!currRole) {
-    return (
-      <div className={css("singleRolePage")}>
-        <div className={css("loadingWrapper")}>
-          <p className={css("loadingText")}>Role not found.</p>
-        </div>
-      </div>
-    );
-  }
-
-  const permissions = currRole.permissions || [];
+  const permissions = updatedPermissions || [];
 
   return (
     <div className={css("singleRolePage")}>
@@ -80,15 +134,34 @@ const SingleRolePage = () => {
         </section>
 
         <section className={css("rolePermissions")}>
-          <h2 className={css("permissionTitle")}>Permissions</h2>
+          <div className={css("permissionHeader")}>
+            <h2 className={css("permissionTitle")}>Permissions</h2>
+            <button
+              type="button"
+              className={css("addPermissionBtn")}
+              onClick={openPermissionPopup}
+              disabled={availablePermissions.length === 0}
+            >
+              Add permission
+            </button>
+          </div>
           {permissions.length > 0 ? (
             <div className={css("permissionList")}>
               {permissions.map((permission) => (
                 <div key={permission._id} className={css("permissionItem")}>
-                  <p className={css("permissionName")}>{permission.name}</p>
-                  <p className={css("permissionDescription")}>
-                    {permission.description || "No description"}
-                  </p>
+                  <div>
+                    <p className={css("permissionName")}>{permission.name}</p>
+                    <p className={css("permissionDescription")}>
+                      {permission.description || "No description"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className={css("removePermissionBtn")}
+                    onClick={() => handleRemovePermission(permission._id)}
+                  >
+                    Remove
+                  </button>
                 </div>
               ))}
             </div>
@@ -99,6 +172,87 @@ const SingleRolePage = () => {
           )}
         </section>
       </div>
+
+      {permissionPopupOpen && (
+        <div
+          className={css("overlay")}
+          onClick={() => setPermissionPopupOpen(false)}
+        >
+          <div
+            className={css("overlayBox")}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className={css("overlayTitle")}>Add Permissions</h3>
+            <p className={css("permissionPopupHint")}>
+              Only permissions not already on this role are shown.
+            </p>
+            <div className={css("permissionPopupActions")}>
+              <button
+                type="button"
+                className={css("secondaryBtn")}
+                onClick={() => setPermissionDraft(availablePermissions)}
+              >
+                Select all
+              </button>
+              <button
+                type="button"
+                className={css("secondaryBtn")}
+                onClick={() => setPermissionDraft([])}
+              >
+                Clear
+              </button>
+            </div>
+            <ul className={css("permissionPickList")}>
+              {availablePermissions.length > 0 ? (
+                availablePermissions.map((item) => {
+                  const checked = isDraftSelected(item._id);
+                  return (
+                    <li key={item._id}>
+                      <button
+                        type="button"
+                        className={css("permissionRow", {
+                          permissionRowSelected: checked,
+                        })}
+                        onClick={() => toggleDraftPermission(item)}
+                      >
+                        <span
+                          className={css("permissionCheck", {
+                            permissionCheckOn: checked,
+                          })}
+                        >
+                          {checked ? "✓" : ""}
+                        </span>
+                        <span className={css("permissionRowText")}>
+                          <span className={css("permissionRowName")}>
+                            {item.name}
+                          </span>
+                          {item.description && (
+                            <span className={css("permissionRowDesc")}>
+                              {item.description}
+                            </span>
+                          )}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })
+              ) : (
+                <li className={css("permissionPopupHint")}>
+                  This role already has every permission.
+                </li>
+              )}
+            </ul>
+            <button
+              type="button"
+              className={css("overlayAssignBtn")}
+              disabled={permissionDraft.length === 0}
+              onClick={applyPermissionDraft}
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

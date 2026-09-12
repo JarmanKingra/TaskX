@@ -196,11 +196,15 @@ export const useRoleStore = create((set) => ({
         }
     },
 
-    updateById: async (teamId, roleId) => {
+    updateRoleById: async (teamId, roleId, name, description, permissions=[]) => {
         try {
 
             set({ loading: true, error: null });
-            const res = await clientServer.put(`/api/rba/teams/${teamId}/roles/${roleId}`);
+            const res = await clientServer.put(`/api/rba/teams/${teamId}/roles/${roleId}`, {
+                name,
+                description,
+                permissions,
+            });
 
             if (!res.data.success) {
                 throw new Error("Failed to edit this role");
