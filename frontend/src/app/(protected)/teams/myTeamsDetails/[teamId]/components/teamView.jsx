@@ -10,6 +10,7 @@ import { notify } from "@/store/notificationStore";
 import MemberOptions from "@/components/memberOptions/memberOptions";
 import { can } from "@/utils/can";
 import { useAuthStore } from "@/store/authStore";
+import ButtonSpinner from "@/components/loaders/longSpinnerLoader";
 
 export default function TeamView({ setSubComponent, teamId, team }) {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function TeamView({ setSubComponent, teamId, team }) {
   const [optionDots, setOptionDots] = useState(false);
   const [roleChangeModal, setRoleChangeModal] = useState(false);
   const [memberId, setMemberId] = useState(null);
+  const [navigationLoading, setNavigationLoading] = useState(null);
   const { removeMember, addMember } = useTeamStore();
   const owner = team.owner;
   const ownerId = team.owner._id.toString();
@@ -35,6 +37,11 @@ export default function TeamView({ setSubComponent, teamId, team }) {
     await removeMember(teamId, memberId);
     setOpenRemoveMember(null);
   };
+
+  function handleNavigation(path, id) {
+    setNavigationLoading(id);
+    router.push(path);
+  }
 
   const addNewMember = async () => {
     try {
@@ -57,7 +64,16 @@ export default function TeamView({ setSubComponent, teamId, team }) {
         <div className={styles.mainHeading}>
           <div className={styles.mainHeadingOptions}>
             <h3>Team Members</h3>
-            {can("member:add") && (<button onClick={() => setOpenTeamId(teamId)}>Add Member</button>)}
+            <div className={styles.mainHeadingOptionsButtons}>
+              {can("role:manage") && <button
+                onClick={() => handleNavigation(`/roles/manage/${teamId}`, "ManageRole")}
+                disabled={navigationLoading === "ManageRole"}
+                className={styles.optionsButton}
+              >
+                {navigationLoading === "ManageRole" ? <ButtonSpinner text="Loading..." /> : <><span>Manage Roles</span></>}
+              </button>}
+              {can("member:add") && (<button onClick={() => setOpenTeamId(teamId)} className={styles.optionsButton}>Add Member</button>)}
+            </div>
           </div>
         </div>
 
@@ -77,9 +93,10 @@ export default function TeamView({ setSubComponent, teamId, team }) {
 
                 onClick={() => {
                   if (can("task:view:all")) {
-                    router.push(
+                    handleNavigation(
                       `/teams/myTeamsDetails/${teamId}/members/${member.user._id}`,
-                    )
+                      member.user._id
+                    );
                   }
                 }
                 }
@@ -87,7 +104,7 @@ export default function TeamView({ setSubComponent, teamId, team }) {
                 {isMe(member.user._id) ?
                   <span className={styles.meBadgeYou}>You</span>
                   :
-                  member?.user?.fullName
+                  navigationLoading === member.user._id ? <ButtonSpinner text="Loading..." /> : member?.user?.fullName
                 }
               </h3>
 
@@ -102,30 +119,38 @@ export default function TeamView({ setSubComponent, teamId, team }) {
                 }}
               />
             </div>
-
-            {openRemoveMember === member.user._id && can("member:remove") && (
-
-              <div
-                className={styles.overlay}
-                onClick={() => setOpenRemoveMember(null)}
-              >
-                <div
-                  className={styles.modal}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <h3>Remove {member.user.fullName}?</h3>
-                  <button
-                    className={`${styles.modalBtn} ${styles.delete}`}
-                    onClick={() => handleRemoveMember(member.user._id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         ))}
       </div>
+
+
+      {openRemoveMember && (
+        <div
+          className={styles.overlay}
+          onClick={() => setOpenRemoveMember(null)}
+        >
+          <div
+            className={styles.modal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>
+              Remove{" "}
+              {
+                members.find(
+                  (m) => m.user._id === openRemoveMember
+                )?.user.fullName
+              }?
+            </h3>
+
+            <button
+              className={`${styles.modalBtn} ${styles.delete}`}
+              onClick={() => handleRemoveMember(openRemoveMember)}
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      )}
 
       {openTeamId && (
         <div className={styles.overlay} onClick={() => setOpenTeamId(null)}>
