@@ -214,7 +214,7 @@ export const useRoleStore = create((set) => ({
                 loading: false,
             });
 
-        } catch (error) {
+        } catch (err) {
             const message = err.response?.data?.message || "Failed to edit this role";
             set({
                 error: message,

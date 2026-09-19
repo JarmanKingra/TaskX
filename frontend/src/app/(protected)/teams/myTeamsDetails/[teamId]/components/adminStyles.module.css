@@ -42,26 +42,32 @@
   color: var(--color-text-primary);
 }
 
-.mainHeadingOptions button {
+.mainHeadingOptionsButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.optionsButton {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-deep));
   color: var(--color-text-on-primary);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.65rem 1.25rem;
-  border-radius: 10px;
+  padding: 0.5rem 0.5rem;
+  border-radius: 4px;
   border: 1px solid var(--color-primary-hover);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 16px var(--color-glow-primary);
 }
 
-.mainHeadingOptions button:hover {
+.optionsButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px var(--color-glow-primary-strong);
   background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
 }
 
-.mainHeadingOptions button:active {
+.optionsButton:active {
   transform: translateY(0);
 }
 

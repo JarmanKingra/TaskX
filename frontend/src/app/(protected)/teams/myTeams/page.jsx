@@ -174,20 +174,15 @@ function MyTeamsContent() {
                 <div className={styles.cardFooter}>
 
                   <div className={styles.membersWrapper}>
-                    {can("role:manage") ?
-                      <button
-                        onClick={() => router.push(`/roles/manage/${team._id}`)}
-                        className={styles.detailsButton}
-                      >
-                        Manage Roles
-                      </button>
-                      : <div className={styles.avatarGroup}>
-                        {team.members.slice(0, 3).map((_, idx) => (
-                          <div key={idx} className={styles.avatar}>
-                            U{idx + 1}
-                          </div>
-                        ))}
-                      </div>}
+
+
+                    <div className={styles.avatarGroup}>
+                      {team.members.slice(0, 3).map((_, idx) => (
+                        <div key={idx} className={styles.avatar}>
+                          U{idx + 1}
+                        </div>
+                      ))}
+                    </div>
 
                     <span className={styles.memberCount}>
                       {team.members.length} {team.members.length === 1 ? "member" : "members"}
