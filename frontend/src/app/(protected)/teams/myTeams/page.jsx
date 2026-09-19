@@ -1,99 +1,11 @@
-// "use client";
-
-// import { useAuthStore } from "@/store/authStore";
-// import { useTeamStore } from "@/store/teamStore";
-// import styles from "./style.module.css";
-// import { useRouter } from "next/navigation";
-// import { useEffect } from "react";
-
-// export default function MyTeams() {
-//   return <MyTeamsContent />
-// }
-
-// function MyTeamsContent() {
-//   const user = useAuthStore((s) => s.user);
-//   const { teams, loading, error, getMyTeams } = useTeamStore();
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     getMyTeams();
-//   }, []);
-
-//   if (!user) return <div>Loading user...</div>;
-//   if (loading) {
-//     return (
-//       <div className={styles.loadingWrapper}>
-//         <div className={styles.loader}></div>
-//         <p className={styles.loadingText}>Loading Teams...</p>
-//       </div>
-//     );
-//   }
-//   if (error) return <div>{error}</div>;
-
-//   return (
-//     <>
-
-//       <div className={styles.mainContainer}>
-//         <div className={styles.container}>
-//           <div className={styles.mainHeading}>
-//             <div className={styles.mainHeadingOptions}>
-//               <h3>Teams - {teams.length}</h3>
-//             </div>
-//             <div className={styles.mainHeadingOptions}>
-//               <button
-//                 className={styles.createTeamButton}
-//                 onClick={() => {
-//                   router.push(`/teams/createTeam`);
-//                 }}
-//               >
-//                 Create Team
-//               </button>
-//             </div>
-//           </div>
-
-//           {teams.length == 0 && (
-//             <p className={styles.empty}>No teams created yet.</p>
-//           )}
-
-//           <div className={styles.MyTeamDetails}>
-//             {teams.map((team) => (
-//               <div key={team._id} className={styles.MyTeamDetailCard}>
-//                 <div className={styles.MyTeamDetailCardContent}>
-//                   <div className={styles.myTeamHeading}>
-//                     <h3>{team.name}</h3>
-//                   </div>
-
-//                   <div className={styles.myTeamOptions}>
-//                     <div className={styles.options}>{team.members.length}</div>
-//                     <div className={styles.options}>
-//                       <button
-//                         onClick={() => {
-//                           router.push(`/teams/myTeamsDetails/${team._id}`);
-//                         }}
-//                         className={styles.options}
-//                       >
-//                         Details
-//                       </button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
 "use client";
 
 import { useAuthStore } from "@/store/authStore";
 import { useTeamStore } from "@/store/teamStore";
 import styles from "./style.module.css";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { can } from "@/utils/can";
+import { useEffect, useState } from "react";
+import ButtonSpinner from "@/components/loaders/longSpinnerLoader";
 
 export default function MyTeams() {
   return <MyTeamsContent />;
@@ -102,7 +14,13 @@ export default function MyTeams() {
 function MyTeamsContent() {
   const user = useAuthStore((s) => s.user);
   const { teams, loading, error, getMyTeams } = useTeamStore();
+  const [navigationLoading, setNavigationLoading] = useState(null);
   const router = useRouter();
+
+  function handleNavigation(path, id) {
+    setNavigationLoading(id);
+    router.push(path);
+  }
 
   useEffect(() => {
     getMyTeams();
@@ -145,9 +63,10 @@ function MyTeamsContent() {
           </div>
           <button
             className={styles.createTeamButton}
-            onClick={() => router.push("/teams/createTeam")}
+            onClick={() => handleNavigation("/teams/createTeam", "CreateTeam")}
+            disabled={navigationLoading === "CreateTeam"}
           >
-            <span>+</span> Create New Team
+            {navigationLoading === "CreateTeam" ? <ButtonSpinner text="Creating team..." /> : <><span>+</span> Create New Team</>}
           </button>
         </header>
 
@@ -190,23 +109,27 @@ function MyTeamsContent() {
                   </div>
 
                   <button
-                    onClick={() => router.push(`/teams/myTeamsDetails/${team._id}`)}
+                    onClick={() => handleNavigation(`/teams/myTeamsDetails/${team._id}`, team._id)}
+                    disabled={navigationLoading === team._id}
                     className={styles.detailsButton}
                   >
-                    Details
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
+                    {navigationLoading === team._id ? <ButtonSpinner text="Loading..." /> : <><span>Details</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                      </svg>
+                    </>}
+
+
                   </button>
                 </div>
               </div>

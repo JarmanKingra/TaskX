@@ -1,11 +1,19 @@
 "use client";
 
+import ButtonSpinner from "@/components/loaders/longSpinnerLoader";
 import styles from "./MyTasks.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 export default function MyTasksComponent({ setSubComponent, tasks, onOpenTask }) {
     const pathname = usePathname();
+    const [navigationLoading, setNavigationLoading] = useState(null);
+    const router = useRouter();
+    function handleNavigation(path, id) {
+        setNavigationLoading(id);
+        router.push(path);
+    }
 
     if (!tasks) return null;
 
@@ -56,10 +64,11 @@ export default function MyTasksComponent({ setSubComponent, tasks, onOpenTask })
                                 <div className={styles.myTasksOptions}>
                                     <div className={`${styles.eachTasksOption}`}>
                                         <button
-                                            onClick={() => onOpenTask(task._id)}
+                                            onClick={() => handleNavigation(`/tasks/myTasksDetails/${task._id}`, task._id)}
+                                            disabled={navigationLoading === task._id}
                                             className={styles.taskDetailBtn}
                                         >
-                                            Go to Task
+                                            {navigationLoading === task._id ? <ButtonSpinner text="Loading..." /> : <><span>Go to Task</span></>}
                                         </button>
                                     </div>
 
